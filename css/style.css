@@ -71,7 +71,7 @@ sub, sup { line-height: 0; }
 .hero h1 { font-size: 2.95rem; line-height: 1.06; margin: 0 0 14px; letter-spacing: -1.3px; font-weight: 800; }
 @media (max-width: 640px) { .hero h1 { font-size: 2.1rem; } }
 .hero h1 .accent { color: var(--primary-text); }
-.hero h1 .gold { color: var(--accent); }
+.hero h1 .gold { color: var(--accent-text); }
 .hero .lead { font-size: 1.1rem; color: var(--text-muted); margin: 0 0 22px; max-width: 600px; }
 .hero .lead b { color: var(--text); }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -92,7 +92,7 @@ sub, sup { line-height: 0; }
 .wf-step:first-child { border-radius: 10px 0 0 10px; }
 .wf-step:last-child { border-radius: 0 10px 10px 0; }
 .wf-step + .wf-step { border-left: none; }
-.wf-step .wf-n { font-size: 0.68rem; color: var(--accent); font-weight: 700; letter-spacing: .08em; }
+.wf-step .wf-n { font-size: 0.68rem; color: var(--accent-text); font-weight: 700; letter-spacing: .08em; }
 .wf-step .wf-t { font-weight: 600; font-size: 0.84rem; }
 .wf-step .wf-d { font-size: 0.74rem; color: var(--text-muted); }
 
@@ -109,7 +109,7 @@ sub, sup { line-height: 0; }
 .feature .f-num { position: absolute; top: 10px; left: 10px; width: 26px; height: 26px; border-radius: 50%; background: var(--primary); color: var(--on-primary); font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 1; }
 .feature h3 { margin: 4px 0 0; font-size: 1rem; }
 .feature p { margin: 0; font-size: 0.84rem; color: var(--text-muted); }
-.feature .f-tag { font-size: 0.68rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.feature .f-tag { font-size: 0.68rem; font-weight: 700; color: var(--accent-text); text-transform: uppercase; letter-spacing: .06em; }
 .feature .f-soon { margin-left: 6px; vertical-align: 1px; font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 8px; border-radius: 999px; background: var(--bg-soft); color: var(--text-muted); border: 1px solid var(--border); }
 
 /* ---------- Material strip ---------- */
@@ -119,7 +119,7 @@ sub, sup { line-height: 0; }
 .material .mt-t { font-weight: 700; font-size: 0.86rem; margin-top: 6px; }
 .material .mt-s { font-size: 0.76rem; color: var(--text-muted); }
 .material .mt-k { display: inline-block; font-size: 0.64rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 1px 7px; border-radius: 999px; margin-top: 6px; background: var(--primary-soft); color: var(--primary-text); }
-.material .mt-k.g { background: var(--accent-soft); color: var(--accent); }
+.material .mt-k.g { background: var(--accent-soft); color: var(--accent-text); }
 .material .mt-k.l { background: rgba(var(--leaf-rgb), .14); color: var(--leaf); }
 
 /* ---------- Method gallery ---------- */
@@ -131,7 +131,7 @@ sub, sup { line-height: 0; }
 .method-card .m-name { font-weight: 600; font-size: 0.88rem; margin-top: 8px; }
 .method-card .m-sub { font-size: 0.74rem; color: var(--text-muted); }
 .method-card .m-fam { display: inline-block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; padding: 1px 7px; border-radius: 999px; margin-bottom: 6px; }
-.m-fam.cal { background: var(--accent-soft); color: var(--accent); }
+.m-fam.cal { background: var(--accent-soft); color: var(--accent-text); }
 .m-fam.agua { background: rgba(47, 95, 196, .13); color: var(--rain); }
 .m-fam.fen { background: rgba(var(--leaf-rgb), .14); color: var(--leaf); }
 .m-fam.cli { background: var(--primary-soft); color: var(--primary-text); }
@@ -204,7 +204,7 @@ sub, sup { line-height: 0; }
 .acc:first-of-type { border-top: none; }
 .acc > summary { cursor: pointer; padding: 12px 4px; font-weight: 600; font-size: 0.95rem; list-style: none; display: flex; align-items: center; gap: 10px; }
 .acc > summary::-webkit-details-marker { display: none; }
-.acc > summary::before { content: "▸"; color: var(--accent); font-size: 0.85rem; transition: transform .15s; display: inline-block; }
+.acc > summary::before { content: "▸"; color: var(--accent-text); font-size: 0.85rem; transition: transform .15s; display: inline-block; }
 .acc[open] > summary::before { transform: rotate(90deg); }
 .acc > summary:hover { color: var(--primary-text); }
 .acc > summary .acc-tag { margin-left: auto; font-size: 0.66rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
@@ -234,7 +234,7 @@ sub, sup { line-height: 0; }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; }
 .chip { font: inherit; font-size: 0.76rem; padding: 3px 10px; border-radius: 999px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; }
 .chip.on, .chip.p { background: var(--primary-soft); border-color: rgba(var(--primary-rgb), 0.3); color: var(--primary-text); font-weight: 600; }
-.chip.a { background: var(--accent-soft); border-color: rgba(var(--accent-rgb), 0.3); color: var(--accent); }
+.chip.a { background: var(--accent-soft); border-color: rgba(var(--accent-rgb), 0.3); color: var(--accent-text); }
 .chip.bad { background: var(--danger-soft); border-color: var(--danger); color: var(--danger-text); font-weight: 600; }
 
 /* ---------- Forms ---------- */
@@ -389,7 +389,7 @@ details.acc-plain > summary { cursor: pointer; font-weight: 600; font-size: 0.9r
 .help-care { border-left: 3px solid var(--warning); padding-left: 10px; }
 .help-ref { color: var(--text-muted); font-size: 0.74rem !important; font-style: italic; }
 .help-scale-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin: 8px 0 4px; }
-.help-conv { font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--accent); margin-left: 6px; }
+.help-conv { font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--accent-text); margin-left: 6px; }
 .help-scale { display: flex; gap: 2px; margin: 0 0 10px; }
 .help-band { padding: 5px 6px; font-size: 0.68rem; line-height: 1.25; border-radius: 6px; background: var(--bg-soft); box-shadow: inset 0 3px 0 var(--border-strong); min-width: 0; }
 .help-band b { display: block; font-size: 0.7rem; }
