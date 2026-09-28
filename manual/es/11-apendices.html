@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Apéndices</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+  .refs { list-style: none; padding: 0; margin: 0.06in 0 0; }
+  .refs li { margin: 0 0 0.09in 0.24in; text-indent: -0.24in; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-ap" data-pestana="Ap" data-orden="11" style="--acento: var(--bx)">
+  <div class="cap-apertura">
+    <div class="cap-num">A</div>
+    <div class="cap-etiqueta">Apéndices</div>
+    <h1>Apéndices</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Lo que hace falta tener a la mano y no cabía en ningún capítulo: qué archivos lee y escribe la app, las reglas de decisión de los diez bloques reunidas en una sola lista, el vocabulario de la agroclimatología, qué hacer cuando algo no sale, las referencias detrás de cada cálculo y la licencia de la herramienta.</p>
+    <ul class="cap-contenido">
+      <li><b>A</b>Los archivos que la app lee y escribe</li>
+      <li><b>B</b>Las reglas de decisión, reunidas</li>
+      <li><b>C</b>Glosario</li>
+      <li><b>D</b>Cuando algo no sale</li>
+      <li><b>E</b>Referencias</li>
+      <li><b>F</b>La herramienta: licencia y cómo citarla</li>
+    </ul>
+  </div>
+
+  <!-- A -->
+  <h2 id="ap-a"><span class="num">A</span>Los archivos que la app lee y escribe</h2>
+  <p class="lead">PhenologyPro es un programa de escritorio que corre en el navegador y no envía nada a ningún servidor: todos los archivos entran y salen de la carpeta de la computadora. Este apéndice dice cuáles son.</p>
+  <h3>A.1 · Lo que la app lee</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:1.3in">Formato</th><th>Dónde y para qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>.csv, .txt, .tsv</b></td><td>Bloque 2, la serie diaria. Separador por coma, punto y coma, tabulador o espacios, detectado solo; encabezado de una o varias líneas; «Nulo», «NA», «-» o vacío como faltante; fechas en cualquier orden o repartidas en año, mes y día; grados Fahrenheit, viento en km/h o nudos y radiación en W m⁻² se convierten al leer.</td></tr>
+      <tr><td><b>pegado</b></td><td>Bloque 2, el cuadro de texto: un bloque de celdas copiado de una hoja de cálculo con su fila de encabezados. Es la forma más rápida.</td></tr>
+      <tr><td><b>.json</b> de proyecto</td><td>Bloque 2, <span class="ui">Cargar proyecto</span> o la zona de archivos. El sitio y la serie limpia con sus marcas, escritos antes por la app.</td></tr>
+      <tr><td><b>fechas observadas</b></td><td>Bloque 8, pegadas: una línea por observación, <code>año; etapa; fecha</code> o <code>siembra; etapa; fecha</code>.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Un libro de cálculo no se lee, y es a propósito</div>
+    <p>Un <code>.xlsx</code>, <code>.xls</code> u <code>.ods</code> no se abre; la app pide guardarlo como .csv o copiar y pegar las celdas. Leerlo exigiría incorporar una biblioteca ajena de cientos de miles de líneas para un problema que se resuelve en dos clics. Se prefirió que la app <b>no cargue una sola línea que no sea propia</b>: es lo que le permite abrirse con doble clic, sin instalar nada, y funcionar sin internet.</p>
+  </div>
+  <h3>A.2 · Lo que la app escribe</h3>
+  <p>Todos los archivos llevan por delante el nombre del sitio. Con el sitio «Bajío semiárido (1 800 m)», por ejemplo, la serie limpia sale como <span class="ruta">Bajio_semiarido_1_800_m.csv</span>.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.6in">Bloque</th><th style="width:2.3in">Botón</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">⤓ Plantilla .csv</span></td><td>Las columnas que la app entiende, con dos filas de muestra.</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">⤓ Serie limpia (.csv)</span></td><td>La serie tras el control de calidad, con la columna <code>flags</code> que dice qué se hizo en cada fila.</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">⤓ Guardar proyecto (.json)</span></td><td>El sitio y la serie limpia; se vuelve a abrir en cualquier copia de la app.</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td><span class="ui">⤓ Normales (.csv)</span></td><td>Las doce filas de normales mensuales con todas sus columnas.</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><span class="ui">⤓ Por año (.csv)</span> · <span class="ui">⤓ Mapa completo (.csv)</span></td><td>Los grados-día por año desde la siembra; el mapa por fecha de siembra cada cinco días.</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td><span class="ui">⤓ Mensual (.csv)</span> · <span class="ui">⤓ Diaria con todos los términos (.csv)</span></td><td>La ETo mensual por método; la diaria con Ra, Rs, Rn, es, ea, u₂ y la ETo de cada método.</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><span class="ui">⤓ Por año (.csv)</span> · <span class="ui">⤓ Balance diario del año visto (.csv)</span></td><td>El balance de cada temporada; el balance día a día del año elegido.</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><span class="ui">⤓ Calendario del año (.csv)</span> · <span class="ui">⤓ Todos los años (.csv)</span></td><td>Los riegos del año visto; los totales de cada año.</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td><span class="ui">⤓ Fechas por año (.csv)</span> · <span class="ui">⤓ Frío por invierno (.csv)</span></td><td>La fecha de cada etapa en cada año; el frío de cada invierno en las tres unidades.</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td><span class="ui">⤓ Ventana completa (.csv)</span></td><td>La ventana de siembra cada cinco días con los cuatro criterios y el éxito.</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td>⤓ de cada figura · <span class="ui">⤓ Exportar las seleccionadas</span> · <span class="ui">.zip</span></td><td>Figuras en PNG, JPG o SVG hasta 900 ppp, con los colores del estilo ya resueltos.</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">⤓ Descargar informe .html</span></td><td>El informe de un solo archivo, imprimible a PDF.</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">⤓ Construir y descargar el paquete .zip</span></td><td><code>LEEME.txt</code>, <code>informe.html</code>, <code>proyecto.json</code>, <code>parametros.json</code>, <code>cuadros/</code> y <code>figuras/</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- B -->
+  <h2 id="ap-b"><span class="num">B</span>Las reglas de decisión, reunidas</h2>
+  <p>Las escalas que la app pone junto a cada número, en una sola lista. Las marcadas como <i>convención</i> son costumbres de lectura, no leyes: lo que se sabe del cultivo, del cultivar y de la parcela siempre manda.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.5in">Bloque</th><th style="width:2in">Magnitud</th><th>Escala</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span></td><td>Años completos en la serie</td><td>&lt; 3 una anécdota · 3–10 una estimación · 10–30 aceptable · ≥ 30 normal climática (OMM)</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td>Días interpolados por hueco</td><td>≤ 3 seguro · 3–6 aceptable con cuidado · &gt; 6 no interpolar</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Índice de aridez P/ETP (PNUMA)</td><td>&lt; 0.05 hiperárido · 0.05–0.20 árido · 0.20–0.50 semiárido · 0.50–0.65 subhúmedo seco · ≥ 0.65 húmedo</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Índice de humedad Im (Thornthwaite 1955)</td><td>&lt; −66.7 árido (E) · −66.7 a −33.3 semiárido (D) · −33.3 a 0 subhúmedo seco (C1) · 0–20 subhúmedo húmedo (C2) · 20–100 húmedo (B1–B4) · ≥ 100 perhúmedo (A)</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Concentración de la lluvia (PCI)</td><td>&lt; 10 uniforme · 10–15 moderadamente estacional · 15–20 estacional · &gt; 20 fuertemente estacional</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Temperatura mínima del aire</td><td>&gt; 2 °C sin helada · 0–2 riesgo en superficie · −2 a 0 helada ligera · −4 a −2 moderada · &lt; −4 severa</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td>CV de los °C·d de la temporada entre años</td><td>&lt; 5 % muy estable · 5–10 % estable · 10–20 % variable (planea con el P20) · &gt; 20 % muy variable</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>ETo diaria (mm/día)</td><td>&lt; 2 baja · 2–4 moderada · 4–6 alta · 6–8 muy alta · &gt; 8 extrema</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>Desviación de Hargreaves respecto a PM</td><td>&lt; 10 % aceptable · 10–20 % calibrar · &gt; 20 % no usar sin corregir</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>RMSE diario del método simple</td><td>&lt; 0.5 mm/día muy bueno · 0.5–1.0 aceptable · 1.0–1.5 pobre · &gt; 1.5 malo</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>Parte aerodinámica de la ETo</td><td>&lt; 25 % la radiación manda · 25–45 % equilibrado · 45–60 % advectivo · &gt; 60 % fuertemente advectivo</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Kc</td><td>&lt; 0.5 suelo casi desnudo · 0.5–0.9 cobertura parcial · 0.9–1.2 dosel completo · &gt; 1.2 muy alto</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>ADT por metro de suelo</td><td>&lt; 90 mm/m baja (arenosos) · 90–140 media · &gt; 140 alta</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Coeficiente de estrés Ks</td><td>1 sin estrés · 0.8–1 leve · 0.5–0.8 moderado · &lt; 0.5 severo</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Número de curva CN</td><td>&lt; 60 poco escurrimiento · 60–75 moderado · 75–85 alto · &gt; 85 muy alto</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Rendimiento relativo Ya/Ym (FAO-33)</td><td>≥ 0.90 sin pérdida apreciable · 0.75–0.90 moderada · 0.50–0.75 severa · &lt; 0.50 cosecha comprometida</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td>Eficiencia de aplicación</td><td>&lt; 60 % gravedad mal nivelada · 60–75 % gravedad bien manejada, aspersión con viento · 75–88 % aspersión, pivote, microaspersión · &gt; 88 % goteo</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td>CV del tiempo térmico a una etapa entre años</td><td>&lt; 5 % excelente · 5–10 % bueno · 10–20 % utilizable · &gt; 20 % pobre</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td>Porciones de frío del invierno</td><td>&lt; 20 muy poco · 20–45 frío medio · 45–70 frío alto · &gt; 70 muy alto</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td>Años con calor (o helada) en la etapa sensible</td><td>&lt; 10 % bajo · 10–25 % moderado · 25–50 % alto · &gt; 50 % muy alto</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td>Éxito de una fecha de siembra</td><td>≥ 80 % ventana recomendable · 60–80 % aceptable con riesgo · &lt; 60 % evitar</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td>Resolución de exportación</td><td>&lt; 150 ppp pantalla · 150–300 tesis · 300–600 revistas · &gt; 600 carteles</td></tr>
+    </tbody>
+  </table>
+
+  <!-- C -->
+  <h2 id="ap-c"><span class="num">C</span>Glosario</h2>
+  <table class="compacta glosario">
+    <thead><tr><th style="width:2.1in">Término</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td><b>Agotamiento (Dr)</b></td><td>Lo que le falta a la zona radical para estar a capacidad de campo, en mm. Cero es suelo lleno; igual al ADT es el punto de marchitez.</td></tr>
+      <tr><td><b>Agua disponible total (ADT; TAW)</b></td><td>La lámina entre capacidad de campo y punto de marchitez en la profundidad de raíces: (θCC − θPMP) × Zr.</td></tr>
+      <tr><td><b>Agua fácilmente aprovechable (AFA; RAW)</b></td><td>La fracción p del ADT que el cultivo toma sin estrés. Regar al agotarla es la regla de referencia de FAO-56.</td></tr>
+      <tr><td><b>Año completo</b></td><td>Un año con al menos 90 % de los días con Tmax, Tmin y lluvia. Solo los completos entran en las normales por omisión.</td></tr>
+      <tr><td><b>BBCH</b></td><td>Escala decimal de estados de desarrollo, común a mono y dicotiledóneas (Meier 2018): 00 semilla seca, 09 emergencia, 65 plena floración, 89 madurez fisiológica.</td></tr>
+      <tr><td><b>Climograma de Walter–Lieth</b></td><td>Diagrama de temperatura y lluvia mensuales con la escala 10 °C = 20 mm; donde la lluvia va por encima el mes es húmedo, donde va por debajo, seco.</td></tr>
+      <tr><td><b>Coeficiente de cultivo (Kc)</b></td><td>La razón ETc/ETo, que sube de la siembra al dosel completo y baja hacia la madurez; se corrige al viento y la humedad con la ecuación 62 de FAO-56.</td></tr>
+      <tr><td><b>Coeficiente de estrés (Ks)</b></td><td>La fracción de la ETc que el cultivo transpira cuando el agotamiento pasa del AFA; 1 sin estrés, 0 en el punto de marchitez.</td></tr>
+      <tr><td><b>Corte del umbral superior</b></td><td>Qué hace el método de grados-día con las horas por encima del umbral: horizontal (las cuenta como el umbral), intermedio (las descuenta), vertical (no las cuenta) o ninguno.</td></tr>
+      <tr><td><b>Déficit (no transpirado)</b></td><td>ETc menos ETc real: el agua que la planta pidió y no tuvo, en mm de la temporada.</td></tr>
+      <tr><td><b>Escurrimiento por número de curva</b></td><td>El método del NRCS para la parte de la lluvia que no entra al suelo; el número de curva CN crece con la arcilla, la compactación y la falta de cobertura.</td></tr>
+      <tr><td><b>Evapotranspiración de referencia (ETo)</b></td><td>La de un pasto de 12 cm bien regado bajo el clima del sitio, por Penman–Monteith FAO-56. Depende del clima, no del cultivo.</td></tr>
+      <tr><td><b>Evapotranspiración del cultivo (ETc)</b></td><td>Kc × ETo: la demanda del cultivo sin estrés. La ETc real es ETc × Ks.</td></tr>
+      <tr><td><b>Factor de respuesta Ky (FAO-33)</b></td><td>Cuánto rendimiento relativo se pierde por cada unidad de déficit relativo de agua en la temporada: 1 − Ya/Ym = Ky (1 − ETa/ETm).</td></tr>
+      <tr><td><b>Fotoperiodo</b></td><td>La duración del día; con crepúsculo civil (sol a −6°) es el que las plantas perciben.</td></tr>
+      <tr><td><b>Grados-día (°C·d)</b></td><td>La suma diaria de la temperatura por encima de la base, acotada al umbral superior según el corte; la moneda del tiempo térmico.</td></tr>
+      <tr><td><b>Grados-hora de crecimiento (GDH)</b></td><td>El calor acumulado hora a hora después de cubierto el frío, que fecha la floración de un frutal (Anderson, Richardson y Kesner 1986).</td></tr>
+      <tr><td><b>Helada meteorológica / agronómica</b></td><td>Tmin del aire ≤ 0 °C / daño en las hojas, que en noche despejada se enfrían por debajo del aire; por eso el umbral de 2 °C para cultivos sensibles.</td></tr>
+      <tr><td><b>Horas frío, unidades Utah, porciones de frío</b></td><td>Las tres formas de contar el frío del invierno: horas entre 0 y 7.2 °C; horas ponderadas que pueden restar; y el modelo dinámico, en el que el frío fijado ya no se pierde.</td></tr>
+      <tr><td><b>Índice de aridez (PNUMA)</b></td><td>P/ETP anual con la ETP de Thornthwaite; clases en 0.05, 0.20, 0.50 y 0.65.</td></tr>
+      <tr><td><b>Lluvia efectiva</b></td><td>La parte de la lluvia que queda disponible para el cultivo: en el balance diario, lo que entra a la cubeta y no percola; en la necesidad mensual, la fórmula del USDA-SCS.</td></tr>
+      <tr><td><b>Mediana, P20, P80</b></td><td>El valor central entre los años del registro y los percentiles 20 y 80: el 60 % central de los años queda entre ambos. Casi todo lo que la app calcula año por año se resume así.</td></tr>
+      <tr><td><b>Método delta</b></td><td>Sumar un incremento fijo de temperatura (y escalar la lluvia) a toda la serie para ver cómo responde el estudio; un análisis de sensibilidad, no un pronóstico.</td></tr>
+      <tr><td><b>Método de Linvill</b></td><td>La reconstrucción de las 24 temperaturas horarias del día a partir de la máxima y la mínima, con una senoide de día y un enfriamiento logarítmico de noche.</td></tr>
+      <tr><td><b>Normal climática</b></td><td>El promedio mensual de una variable sobre un periodo largo; la OMM pide 30 años, en la práctica se aceptan 10.</td></tr>
+      <tr><td><b>Periodo libre de heladas</b></td><td>Los días entre la última helada de primavera y la primera de otoño, con la temporada partida en el mes más cálido.</td></tr>
+      <tr><td><b>Requerimiento térmico</b></td><td>Los °C·d que una etapa necesita desde la siembra; el del catálogo es orientativo, el calibrado es el del cultivar en el sitio.</td></tr>
+      <tr><td><b>Temperatura base</b></td><td>La temperatura por debajo de la cual el desarrollo se detiene; la de Arnold es la que hace mínimo el CV del tiempo térmico entre años.</td></tr>
+      <tr><td><b>Temporada de lluvias (inicio y fin)</b></td><td>Definición agronómica de Stern, Dennett y Garbutt: 20 mm en 3 días sin una racha seca de 10 días en el mes siguiente; fin cuando caen menos de 10 mm en 30 días, al menos 60 días después.</td></tr>
+      <tr><td><b>Ventana de siembra</b></td><td>Las fechas en que, en al menos la fracción objetivo de los años, el cultivo maduró y no vio helada, calor ni falta de agua a la vez.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- D -->
+  <h2 id="ap-d"><span class="num">D</span>Cuando algo no sale</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Lo que pasa</th><th>Qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td>La app abre pero un bloque dice «Primero hace falta una serie»</td><td>No hay serie en memoria: carga una en el Bloque 2 o abre el proyecto .json. La serie de la sesión anterior solo se recupera en el mismo navegador de la misma computadora.</td></tr>
+      <tr><td>Pegué la tabla y dice «No se encontraron filas con números»</td><td>Falta la fila de encabezados, o la fecha viene en un formato que no se reconoce (por ejemplo, texto como «3 de marzo»). Revisa que haya una columna de fecha o las de año, mes y día.</td></tr>
+      <tr><td>Las fechas salieron con el mes y el día cambiados</td><td>En la tarjeta 3 del Bloque 2 elige <span class="ui">día/mes/año</span> o <span class="ui">mes/día/año</span> a mano y vuelve a armar la serie.</td></tr>
+      <tr><td>Las temperaturas parecen absurdas (60 °C de máxima)</td><td>Están en Fahrenheit: elige °F en la tarjeta 3. Si el viento sale enorme, revisa km/día contra m/s.</td></tr>
+      <tr><td>El Bloque 3 marca error de normales</td><td>Algún mes no tiene ningún año con 80 % de días; usa <span class="ui">Todos, mes por mes</span> o revisa el calendario de disponibilidad.</td></tr>
+      <tr><td>El maíz no alcanza la meta térmica en ningún año</td><td>El sitio es frío para ese requerimiento o la temporada es corta: alarga la temporada, baja la meta con un cultivar precoz o cambia la fecha. El mapa del Bloque 4 lo muestra.</td></tr>
+      <tr><td>La ETo de Penman–Monteith es más baja que la de Hargreaves en verano</td><td>Es normal con radiación estimada de la amplitud térmica en climas con lluvias de verano; la tabla de k mensual lo cuantifica.</td></tr>
+      <tr><td>El déficit controlado aplica más agua que regar al AFA</td><td>Con lluvias de verano, esperar más obliga a rellenar una cubeta más vacía justo antes de una lluvia. La app lo advierte; usa la regla de referencia.</td></tr>
+      <tr><td>Las unidades Utah salen negativas</td><td>El sitio es demasiado cálido para ese modelo; reporta porciones de frío.</td></tr>
+      <tr><td>La calibración no encuentra base de Arnold</td><td>Hace falta una etapa con al menos tres años observados.</td></tr>
+      <tr><td>Exporté diez figuras y solo bajaron unas cuantas</td><td>El navegador bloquea las descargas seguidas; usa <span class="ui">Todas las seleccionadas en un .zip</span>.</td></tr>
+      <tr><td>El PNG a 900 ppp tarda o el navegador se queja</td><td>Un PNG de 8750 × 4000 píxeles es pesado; expórtalo solo o usa SVG, que no tiene resolución.</td></tr>
+      <tr><td>El informe no trae una sección que esperaba</td><td>Ese bloque no estaba calculado o su casilla estaba desmarcada; visítalo y genera de nuevo.</td></tr>
+      <tr><td>La ventana de imprimir no se abre</td><td>El navegador bloqueó la ventana emergente; descarga el informe y desde él, Imprimir → Guardar como PDF.</td></tr>
+      <tr><td>Quiero comprobar que el motor calcula bien aquí</td><td>Abre <span class="ruta">tests/index.html</span>: son las pruebas contra los ejemplos resueltos de FAO-56 y las fórmulas de cada método; todas deben salir en verde.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- E -->
+  <h2 id="ap-e"><span class="num">E</span>Referencias</h2>
+  <p>Las cuarenta referencias de la portada de la app, por familia, más las que citan las fichas de ayuda. El informe del Bloque 10 cita solo las de los métodos que el estudio usó.</p>
+  <h3>Evapotranspiración</h3>
+  <ol class="refs">
+    <li>Allen, R.G., Pereira, L.S., Raes, D. &amp; Smith, M. (1998). <i>Crop evapotranspiration: guidelines for computing crop water requirements</i>. FAO Irrigation and Drainage Paper 56. FAO, Rome.</li>
+    <li>Doorenbos, J. &amp; Pruitt, W.O. (1977). <i>Guidelines for predicting crop water requirements</i>. FAO Irrigation and Drainage Paper 24. FAO, Rome.</li>
+    <li>Hargreaves, G.H. &amp; Samani, Z.A. (1985). Reference crop evapotranspiration from temperature. <i>Applied Engineering in Agriculture</i> 1(2): 96–99.</li>
+    <li>Hargreaves, G.H. &amp; Allen, R.G. (2003). History and evaluation of Hargreaves evapotranspiration equation. <i>Journal of Irrigation and Drainage Engineering</i> 129(1): 53–63.</li>
+    <li>Priestley, C.H.B. &amp; Taylor, R.J. (1972). On the assessment of surface heat flux and evaporation using large-scale parameters. <i>Monthly Weather Review</i> 100: 81–92.</li>
+    <li>Thornthwaite, C.W. (1948). An approach toward a rational classification of climate. <i>Geographical Review</i> 38: 55–94.</li>
+    <li>Turc, L. (1961). Évaluation des besoins en eau d'irrigation, évapotranspiration potentielle. <i>Annales Agronomiques</i> 12: 13–49.</li>
+    <li>Willmott, C.J., Rowe, C.M. &amp; Mintz, Y. (1985). Climatology of the terrestrial seasonal water cycle. <i>Journal of Climatology</i> 5: 589–606.</li>
+  </ol>
+  <h3>Tiempo térmico</h3>
+  <ol class="refs">
+    <li>McMaster, G.S. &amp; Wilhelm, W.W. (1997). Growing degree-days: one equation, two interpretations. <i>Agricultural and Forest Meteorology</i> 87: 291–300.</li>
+    <li>Baskerville, G.L. &amp; Emin, P. (1969). Rapid estimation of heat accumulation from maximum and minimum temperatures. <i>Ecology</i> 50: 514–517.</li>
+    <li>Allen, J.C. (1976). A modified sine wave method for calculating degree days. <i>Environmental Entomology</i> 5: 388–396.</li>
+    <li>Lindsey, A.A. &amp; Newman, J.E. (1956). Use of official weather data in spring time: temperature analysis of an Indiana phenological record. <i>Ecology</i> 37: 812–823.</li>
+    <li>Zalom, F.G., Goodell, P.B., Wilson, L.T., Barnett, W.W. &amp; Bentley, W.J. (1983). <i>Degree-days: the calculation and use of heat units in pest management</i>. University of California, Division of Agriculture and Natural Resources, Leaflet 21373.</li>
+    <li>Brown, D.M. (1975). <i>Heat units for corn in southern Ontario</i>. Ontario Ministry of Agriculture and Food, Factsheet 75-077.</li>
+    <li>Brown, D.M. &amp; Bootsma, A. (1993). <i>Crop heat units for corn and other warm-season crops in Ontario</i>. Ontario Ministry of Agriculture and Food, Factsheet 93-119.</li>
+    <li>Arnold, C.Y. (1959). The determination and significance of the base temperature in a linear heat unit system. <i>Proceedings of the American Society for Horticultural Science</i> 74: 430–445.</li>
+    <li>Neild, R.E. &amp; Newman, J.E. (1990). <i>Growing season characteristics and requirements in the Corn Belt</i>. National Corn Handbook NCH-40. Purdue University Cooperative Extension Service.</li>
+    <li>Abendroth, L.J., Elmore, R.W., Boyer, M.J. &amp; Marlay, S.K. (2011). <i>Corn growth and development</i>. PMR 1009. Iowa State University Extension.</li>
+    <li>Miller, P., Lanier, W. &amp; Brandt, S. (2001). <i>Using growing degree days to predict plant stages</i>. MontGuide MT200103 AG. Montana State University Extension.</li>
+    <li>Ritchie, S.W., Hanway, J.J. &amp; Benson, G.O. (1993). <i>How a corn plant develops</i>. Special Report 48. Iowa State University of Science and Technology, Cooperative Extension Service.</li>
+  </ol>
+  <h3>Frío y fenología</h3>
+  <ol class="refs">
+    <li>Weinberger, J.H. (1950). Chilling requirements of peach varieties. <i>Proceedings of the American Society for Horticultural Science</i> 56: 122–128.</li>
+    <li>Richardson, E.A., Seeley, S.D. &amp; Walker, D.R. (1974). A model for estimating the completion of rest for 'Redhaven' and 'Elberta' peach trees. <i>HortScience</i> 9: 331–332.</li>
+    <li>Fishman, S., Erez, A. &amp; Couvillon, G.A. (1987). The temperature dependence of dormancy breaking in plants: mathematical analysis of a two-step model involving a cooperative transition. <i>Journal of Theoretical Biology</i> 124: 473–483.</li>
+    <li>Erez, A., Fishman, S., Linsley-Noakes, G.C. &amp; Allan, P. (1990). The dynamic model for rest completion in peach buds. <i>Acta Horticulturae</i> 276: 165–174.</li>
+    <li>Linvill, D.E. (1990). Calculating chilling hours and chill units from daily maximum and minimum temperature observations. <i>HortScience</i> 25: 14–16.</li>
+    <li>Anderson, J.L., Richardson, E.A. &amp; Kesner, C.D. (1986). Validation of chill unit and flower bud phenology models for 'Montmorency' sour cherry. <i>Acta Horticulturae</i> 184: 71–78.</li>
+    <li>Luedeling, E. (2012). Climate change impacts on winter chill for temperate fruit and nut production: a review. <i>Scientia Horticulturae</i> 144: 218–229.</li>
+    <li>Meier, U. (ed.) (2018). <i>Growth stages of mono- and dicotyledonous plants: BBCH Monograph</i>. Julius Kühn-Institut, Quedlinburg.</li>
+    <li>Zadoks, J.C., Chang, T.T. &amp; Konzak, C.F. (1974). A decimal code for the growth stages of cereals. <i>Weed Research</i> 14: 415–421.</li>
+    <li>Forsythe, W.C., Rykiel, E.J., Stahl, R.S., Wu, H. &amp; Schoolfield, R.M. (1995). A model comparison for daylength as a function of latitude and day of year. <i>Ecological Modelling</i> 80: 87–95.</li>
+  </ol>
+  <h3>Balance y riego</h3>
+  <ol class="refs">
+    <li>Thornthwaite, C.W. &amp; Mather, J.R. (1955). <i>The water balance</i>. Publications in Climatology 8(1). Drexel Institute of Technology, Centerton, NJ.</li>
+    <li>Thornthwaite, C.W. &amp; Mather, J.R. (1957). Instructions and tables for computing potential evapotranspiration and the water balance. <i>Publications in Climatology</i> 10(3): 185–311.</li>
+    <li>Doorenbos, J. &amp; Kassam, A.H. (1979). <i>Yield response to water</i>. FAO Irrigation and Drainage Paper 33. FAO, Rome.</li>
+    <li>Smith, M. (1992). <i>CROPWAT: a computer program for irrigation planning and management</i>. FAO Irrigation and Drainage Paper 46. FAO, Rome.</li>
+    <li>Dastane, N.G. (1974). <i>Effective rainfall in irrigated agriculture</i>. FAO Irrigation and Drainage Paper 25. FAO, Rome.</li>
+    <li>Brouwer, C., Prins, K. &amp; Heibloem, M. (1989). <i>Irrigation water management: irrigation scheduling</i>. Training Manual 4. FAO, Rome.</li>
+    <li>USDA Natural Resources Conservation Service (2004). Estimation of direct runoff from storm rainfall. <i>National Engineering Handbook</i>, Part 630 Hydrology, Chapter 10. Washington, DC.</li>
+  </ol>
+  <h3>Clima y riesgo</h3>
+  <ol class="refs">
+    <li>Walter, H. &amp; Lieth, H. (1960–1967). <i>Klimadiagramm-Weltatlas</i>. Gustav Fischer Verlag, Jena.</li>
+    <li>Lang, R. (1920). <i>Verwitterung und Bodenbildung als Einführung in die Bodenkunde</i>. Schweizerbart, Stuttgart.</li>
+    <li>De Martonne, E. (1926). Une nouvelle fonction climatologique: l'indice d'aridité. <i>La Météorologie</i> 2: 449–458.</li>
+    <li>UNEP (1992). <i>World atlas of desertification</i>. Middleton, N. &amp; Thomas, D.S.G. (eds.). Edward Arnold, London.</li>
+    <li>Peel, M.C., Finlayson, B.L. &amp; McMahon, T.A. (2007). Updated world map of the Köppen–Geiger climate classification. <i>Hydrology and Earth System Sciences</i> 11: 1633–1644.</li>
+    <li>Kottek, M., Grieser, J., Beck, C., Rudolf, B. &amp; Rubel, F. (2006). World map of the Köppen–Geiger climate classification updated. <i>Meteorologische Zeitschrift</i> 15: 259–263.</li>
+    <li>García, E. (2004). <i>Modificaciones al sistema de clasificación climática de Köppen</i> (5.ª ed.). Instituto de Geografía, UNAM, México.</li>
+    <li>Oliver, J.E. (1980). Monthly precipitation distribution: a comparative index. <i>The Professional Geographer</i> 32: 300–309.</li>
+    <li>Stern, R.D., Dennett, M.D. &amp; Garbutt, D.J. (1981). The start of the rains in West Africa. <i>Journal of Climatology</i> 1: 59–68.</li>
+    <li>Snyder, R.L. &amp; de Melo-Abreu, J.P. (2005). <i>Frost protection: fundamentals, practice and economics</i>. FAO Environment and Natural Resources Series 10. FAO, Rome.</li>
+    <li>FAO (1978). <i>Report on the agro-ecological zones project. Vol. 1: Methodology and results for Africa</i>. World Soil Resources Report 48. FAO, Rome.</li>
+    <li>Hatfield, J.L. &amp; Prueger, J.H. (2015). Temperature extremes: effect on plant growth and development. <i>Weather and Climate Extremes</i> 10: 4–10.</li>
+    <li>Porter, J.R. &amp; Gawith, M. (1999). Temperatures and the growth and development of wheat: a review. <i>European Journal of Agronomy</i> 10: 23–36.</li>
+    <li>Hatfield, J.L., Boote, K.J., Kimball, B.A., Ziska, L.H., Izaurralde, R.C., Ort, D., Thomson, A.M. &amp; Wolfe, D. (2011). Climate impacts on agriculture: implications for crop production. <i>Agronomy Journal</i> 103: 351–370.</li>
+    <li>IPCC (2021). <i>Climate Change 2021: The Physical Science Basis</i>. Contribution of Working Group I to the Sixth Assessment Report. Cambridge University Press.</li>
+    <li>WMO (2017). <i>WMO guidelines on the calculation of climate normals</i>. WMO-No. 1203. World Meteorological Organization, Geneva.</li>
+    <li>WMO (2018). <i>Guide to climatological practices</i>. WMO-No. 100. World Meteorological Organization, Geneva.</li>
+  </ol>
+  <h3>Reproducibilidad</h3>
+  <ol class="refs">
+    <li>Sandve, G.K., Nekrutenko, A., Taylor, J. &amp; Hovig, E. (2013). Ten simple rules for reproducible computational research. <i>PLoS Computational Biology</i> 9(10): e1003285.</li>
+    <li>Wilkinson, M.D. et al. (2016). The FAIR Guiding Principles for scientific data management and stewardship. <i>Scientific Data</i> 3: 160018.</li>
+  </ol>
+
+  <!-- F -->
+  <h2 id="ap-f"><span class="num">F</span>La herramienta: licencia y cómo citarla</h2>
+  <h3>F.1 · Qué lleva la app por dentro</h3>
+  <p>PhenologyPro está escrita en HTML, CSS y JavaScript sin ninguna biblioteca de terceros: ni para las gráficas, ni para leer archivos, ni para escribir el .zip. Las ecuaciones son las de FAO-56 y de los artículos originales de cada método, citadas por número; los coeficientes de cultivo, las fracciones de agotamiento y los factores Ky son los de las tablas públicas de la FAO; los seis climas de ejemplo son sintéticos y ficticios, generados por el propio programa. El archivo <span class="ruta">PROCEDENCIA.md</span> de la carpeta del programa detalla el origen de cada cosa, y <span class="ruta">tests/index.html</span> comprueba el motor contra los ejemplos resueltos de FAO-56.</p>
+  <h3>F.2 · Licencia</h3>
+  <p>El programa se distribuye bajo la <b>Licencia Pública General de GNU, versión 3 o posterior</b> (GPL-3.0-or-later): se puede usar, copiar, estudiar y modificar libremente, con la condición de que las versiones modificadas se distribuyan bajo la misma licencia y conserven la atribución. El texto completo está en el archivo <span class="ruta">LICENSE</span>. Este manual es © 2026 Luis Ángel Barrera-Guzmán, todos los derechos reservados.</p>
+  <h3>F.3 · Cómo citarla</h3>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos</i> (versión 1.0) [Programa de cómputo].</div>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>PhenologyPro. Manual de usuario</i> (1.ª ed.). Distribuido con PhenologyPro, versión 1.0.</div>
+  <p class="small">El identificador de objeto digital se añadirá a ambas citas cuando la versión 1.0 se archive. La cita del programa está también en <span class="ruta">CITATION.cff</span> y al final de cada informe del Bloque 10.</p>
+</section>
+
+</body>
+</html>

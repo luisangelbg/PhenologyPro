@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<!-- PhenologyPro — Copyright (C) 2026 Luis Ángel Barrera-Guzmán.
+     Free software under the GNU General Public License, version 3; see LICENSE. -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-es="PhenologyPro — Agroclimatología y fenología de cultivos" data-en="PhenologyPro — Agroclimatology and crop phenology">PhenologyPro — Agroclimatología y fenología de cultivos</title>
+<meta name="description" content="Degree-days, reference evapotranspiration (FAO-56 Penman-Monteith, Hargreaves), water balance, irrigation scheduling, phenological stages, winter chill and climographs, in the browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='22' cy='10' r='5.2' fill='%23f0a92a'/%3E%3Cpath d='M6 27 C 8 17, 14 12, 20 11 C 19 19, 14 25, 6 27 Z' fill='%234f8f3a'/%3E%3Cpath d='M22 18 c -2.6 3.6 -2.6 6.6 0 6.6 c 2.6 0 2.6 -3 0 -6.6 z' fill='%232f5fc4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/i18n.js"></script>
+</head>
+<body class="on-home">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-row">
+      <div class="brand" id="brand" data-es-title="Inicio" data-en-title="Home"><span id="brandLogo"></span><span>Phenology<span class="brand-pro">Pro</span></span>
+        <span class="brand-sub">· <span data-l="es">agroclimatología y fenología</span><span data-l="en">agroclimatology and phenology</span></span></div>
+      <div class="top-tools">
+        <button class="icon-btn" id="figStyleBtn" data-es-title="Estudio de figuras: paleta, tipografía y fondo de todas las gráficas" data-en-title="Figure studio: palette, font and background of every chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.9 2-2 0-.6-.2-1-.6-1.4-.4-.4-.6-.8-.6-1.3 0-1 .9-1.8 2-1.8H16a5 5 0 0 0 5-5c0-3.6-4-6.5-9-6.5z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg>
+        </button>
+        <div class="seg lang-seg" role="group" aria-label="Idioma / Language">
+          <button data-lang="es" title="Español">ES</button><button data-lang="en" title="English">EN</button>
+        </div>
+        <button class="icon-btn theme-btn" id="themeBtn" data-es-title="Cambiar a tema claro u oscuro" data-en-title="Switch between light and dark theme">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="stepper" id="stepper" aria-label="Blocks"></nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ==================== BLOCK 1 · HOME ==================== -->
+<section class="step-panel active" id="panel-1">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow"><span data-l="es">Agroclimatología y fenología de cultivos</span><span data-l="en">Agroclimatology and crop phenology</span></div>
+        <h1><span data-l="es">¿Cuánto <span class="accent">calor</span>, cuánta <span class="gold">agua</span> y para cuándo?</span><span data-l="en">How much <span class="accent">heat</span>, how much <span class="gold">water</span>, and by when?</span></h1>
+        <p class="lead"><span data-l="es">De la serie de la estación al calendario del cultivo: <b>grados-día</b>, <b>evapotranspiración</b> (Penman–Monteith FAO-56 y Hargreaves), <b>balance hídrico</b>, <b>calendario de riego</b>, <b>etapas fenológicas</b>, <b>frío invernal</b> y <b>climogramas</b>, con las escalas para leer cada número. Pensada para agrónomos, tesistas y técnicos de campo, sin programar y sin instalar nada.</span><span data-l="en">From the station series to the crop calendar: <b>degree-days</b>, <b>evapotranspiration</b> (FAO-56 Penman–Monteith and Hargreaves), <b>water balance</b>, <b>irrigation calendar</b>, <b>phenological stages</b>, <b>winter chill</b> and <b>climographs</b>, with the scales to read every number. Written for agronomists, thesis students and field technicians, with no programming and nothing to install.</span></p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" id="startBtn"><span data-l="es">Empezar con mi estación →</span><span data-l="en">Start with my station →</span></button>
+          <button class="btn btn-secondary btn-lg" id="simBtn"><span data-l="es">Probar los laboratorios</span><span data-l="en">Try the labs</span></button>
+          <button class="btn btn-ghost btn-lg" id="theoryBtn"><span data-l="es">Leer la teoría</span><span data-l="en">Read the theory</span></button>
+          <button class="btn btn-ghost btn-lg" id="citeBtn"><span data-l="es">Cómo citar</span><span data-l="en">How to cite</span></button>
+        </div>
+        <div class="badge-row">
+          <span class="badge ok"><span data-l="es">Funciona completo en tu navegador</span><span data-l="en">Runs entirely in your browser</span></span>
+          <span class="badge ok"><span data-l="es">Tus datos no salen de tu computadora</span><span data-l="en">Your data never leave your computer</span></span>
+          <span class="badge ok"><span data-l="es">Español e inglés</span><span data-l="en">Spanish and English</span></span>
+          <span class="badge ok"><span data-l="es">Ecuaciones de FAO-56 verificadas con sus ejemplos</span><span data-l="en">FAO-56 equations checked against its worked examples</span></span>
+          <span class="badge ok"><span data-l="es">Figuras editables hasta 900 ppp</span><span data-l="en">Editable figures up to 900 dpi</span></span>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" role="img" aria-label="A crop year: sun, temperature above the base, accumulated heat, plant stages, rain and soil water"></div>
+    </div>
+  </div>
+
+  <div class="messages" id="homeMessages"></div>
+
+  <h2 class="section-title"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></h2>
+  <p class="section-sub"><span data-l="es">Una ruta guiada en el orden en que se hace un estudio agroclimático. Cada bloque explica la idea, revisa si tus datos alcanzan y recomienda qué hacer después.</span><span data-l="en">A guided route in the order in which an agroclimatic study is done. Each block explains the idea, checks whether your data suffice and recommends what to do next.</span></p>
+  <div class="workflow">
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 1</span><span data-l="en">STEP 1</span></div><div class="wf-t"><span data-l="es">Cargar</span><span data-l="en">Load</span></div><div class="wf-d"><span data-l="es">la serie diaria de la estación</span><span data-l="en">the station's daily series</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 2</span><span data-l="en">STEP 2</span></div><div class="wf-t"><span data-l="es">Describir el clima</span><span data-l="en">Describe the climate</span></div><div class="wf-d"><span data-l="es">climograma, heladas, aridez</span><span data-l="en">climograph, frost, aridity</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 3</span><span data-l="en">STEP 3</span></div><div class="wf-t"><span data-l="es">Contar el calor</span><span data-l="en">Count the heat</span></div><div class="wf-d"><span data-l="es">grados-día por fecha de siembra</span><span data-l="en">degree-days by sowing date</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 4</span><span data-l="en">STEP 4</span></div><div class="wf-t"><span data-l="es">Medir la demanda</span><span data-l="en">Measure the demand</span></div><div class="wf-d"><span data-l="es">ETo, Kc y ETc</span><span data-l="en">ETo, Kc and ETc</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 5</span><span data-l="en">STEP 5</span></div><div class="wf-t"><span data-l="es">Balancear el agua</span><span data-l="en">Balance the water</span></div><div class="wf-d"><span data-l="es">suelo, lluvia efectiva, riego</span><span data-l="en">soil, effective rain, irrigation</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 6</span><span data-l="en">STEP 6</span></div><div class="wf-t"><span data-l="es">Fechar las etapas</span><span data-l="en">Date the stages</span></div><div class="wf-d"><span data-l="es">BBCH, frío, fotoperiodo</span><span data-l="en">BBCH, chill, photoperiod</span></div></div>
+    <div class="wf-step"><div class="wf-n"><span data-l="es">PASO 7</span><span data-l="en">STEP 7</span></div><div class="wf-t"><span data-l="es">Decidir y publicar</span><span data-l="en">Decide and publish</span></div><div class="wf-d"><span data-l="es">riesgos, ventana, informe</span><span data-l="en">risks, window, report</span></div></div>
+  </div>
+
+  <!-- ---------- Interactive labs ---------- -->
+  <h2 class="section-title" id="labs"><span data-l="es">Pruébalo: dos laboratorios con el motor real</span><span data-l="en">Try it: two labs with the real engine</span></h2>
+  <p class="section-sub"><span data-l="es">Nada aquí es una animación: cada vez que mueves un control la app genera el año de clima del sitio, acumula el calor día por día, calcula la evapotranspiración y hace el balance del agua en el suelo con las mismas funciones que usará con tu estación. Los seis sitios son <b>ficticios</b>, con los órdenes de magnitud de regiones reales de México.</span><span data-l="en">Nothing here is an animation: every time you move a control the app generates the site's weather year, accumulates the heat day by day, computes evapotranspiration and balances the soil water with the same functions it will use on your station. The six sites are <b>fictional</b>, with the orders of magnitude of real regions of Mexico.</span></p>
+
+  <div class="playground">
+    <div class="lab-tabs" role="tablist">
+      <button class="lab-tab on" data-lab="labGdd" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18c4 0 5-12 9-12s5 12 9 12"/><path d="M3 12h18"/></svg>
+        <span data-l="es">Laboratorio de tiempo térmico</span><span data-l="en">Thermal time lab</span></button>
+      <button class="lab-tab" data-lab="labWater" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 5-6 8-6 12a6 6 0 0 0 12 0c0-4-3-7-6-12z"/></svg>
+        <span data-l="es">Laboratorio del agua</span><span data-l="en">Water lab</span></button>
+    </div>
+
+    <!-- thermal time lab -->
+    <div class="lab on" id="labGdd">
+      <p class="hint" style="margin-top:0"><span data-l="es">Elige un sitio, un cultivo y una fecha de siembra. La app acumula los grados-día desde esa fecha con el método y los umbrales que fijes, fecha cada etapa fenológica del catálogo y avisa si la estación se cierra —por helada o por frío— antes de la madurez. Los requerimientos por etapa son orientativos y se calibran en el Bloque 8.</span><span data-l="en">Pick a site, a crop and a sowing date. The app accumulates degree-days from that date with the method and thresholds you set, dates every phenological stage of the catalogue and warns if the season closes —by frost or by cold— before maturity. The requirements per stage are orientative and are calibrated in Block 8.</span></p>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">Sitio</span><span data-l="en">Site</span> <select id="gdSite"></select></label>
+        <label class="inline-label"><span data-l="es">Cultivo</span><span data-l="en">Crop</span> <select id="gdCrop"></select></label>
+        <label class="inline-label"><span data-l="es">Método</span><span data-l="en">Method</span> <span data-help="cutoff"></span>
+          <select id="gdMethod">
+            <option value="average" data-es="Promedio" data-en="Average">Promedio</option>
+            <option value="capped" data-es="Promedio acotado (maíz)" data-en="Capped average (maize)">Promedio acotado (maíz)</option>
+            <option value="triangle" data-es="Triángulo simple" data-en="Single triangle">Triángulo simple</option>
+            <option value="sine" data-es="Seno simple" data-en="Single sine">Seno simple</option>
+            <option value="doubleSine" data-es="Seno doble" data-en="Double sine">Seno doble</option>
+            <option value="doubleTriangle" data-es="Triángulo doble" data-en="Double triangle">Triángulo doble</option>
+          </select></label>
+        <label class="inline-label"><span data-l="es">Corte superior</span><span data-l="en">Upper cut-off</span>
+          <select id="gdCutoff">
+            <option value="horizontal" data-es="Horizontal" data-en="Horizontal">Horizontal</option>
+            <option value="vertical" data-es="Vertical" data-en="Vertical">Vertical</option>
+            <option value="intermediate" data-es="Intermedio" data-en="Intermediate">Intermedio</option>
+            <option value="none" data-es="Sin corte" data-en="None">Sin corte</option>
+          </select></label>
+        <button class="btn btn-secondary btn-sm" id="gdReset"><span data-l="es">↻ Valores del cultivo</span><span data-l="en">↻ Crop defaults</span></button>
+      </div>
+      <div class="slider-grid">
+        <div class="slider-row"><label><span data-l="es">Fecha de siembra</span><span data-l="en">Sowing date</span></label><input type="range" id="gdSow" min="1" max="365" step="1" value="105"><span class="range-val" id="gdSowVal"></span></div>
+        <div class="slider-row"><label><span data-l="es">Temperatura base</span><span data-l="en">Base temperature</span> <span data-help="tbase"></span></label><input type="range" id="gdBase" min="0" max="16" step="0.5" value="10"><span class="range-val" id="gdBaseVal"></span></div>
+        <div class="slider-row"><label><span data-l="es">Umbral superior</span><span data-l="en">Upper threshold</span></label><input type="range" id="gdUpper" min="24" max="40" step="0.5" value="30"><span class="range-val" id="gdUpperVal"></span></div>
+      </div>
+      <div class="sim-readout" id="gdReadout" style="margin-top:14px"></div>
+      <div class="pg-status" id="gdStatus"></div>
+      <div class="stage-row" id="gdStages"></div>
+      <div class="lab-grid three" style="margin-top:14px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Temperatura diaria y °C·d de cada día</span><span data-l="en">Daily temperature and each day's °C·d</span></div><svg id="gdTempChart"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Grados-día acumulados y etapas</span><span data-l="en">Accumulated degree-days and stages</span></div><svg id="gdCumChart"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Climograma del sitio (Walter–Lieth)</span><span data-l="en">Climograph of the site (Walter–Lieth)</span></div><svg id="gdClimo"></svg></div>
+      </div>
+      <p class="hint"><span data-l="es">En el primer panel las barras ámbar son los °C·d que aporta cada día: fíjate en cómo se apagan cuando la mínima cae y cómo el umbral superior recorta los días de más calor. En el segundo, cada línea punteada es una etapa del cultivo y el punto es el día en que la curva la alcanza. En el climograma, azul es húmedo (P &gt; 2T), rojo es seco y la franja celeste bajo el eje marca los meses con helada.</span><span data-l="en">In the first panel the amber bars are the °C·d each day contributes: notice how they switch off when the minimum falls and how the upper threshold trims the hottest days. In the second, each dotted line is a stage of the crop and the dot is the day the curve reaches it. In the climograph, blue is humid (P &gt; 2T), red is dry and the pale-blue strip under the axis marks the months with frost.</span></p>
+    </div>
+
+    <!-- water lab -->
+    <div class="lab" id="labWater">
+      <p class="hint" style="margin-top:0"><span data-l="es">Ahora el mismo cultivo con el suelo en la ecuación. La app calcula la ETo de cada día (Hargreaves con solo temperatura, o Penman–Monteith con la humedad y el viento del sitio), la convierte en ETc con la curva de Kc de FAO-56 corregida al clima, y lleva el balance diario de la zona radical: lluvia efectiva, percolación, agotamiento y estrés. Si activas el riego, la app riega cuando se agota el agua fácilmente aprovechable y rellena a capacidad de campo.</span><span data-l="en">Now the same crop with the soil in the equation. The app computes each day's ETo (Hargreaves with temperature only, or Penman–Monteith with the site's humidity and wind), turns it into ETc with the FAO-56 Kc curve corrected to the climate, and keeps the daily root-zone balance: effective rain, percolation, depletion and stress. If you turn irrigation on, the app irrigates when the readily available water runs out and refills to field capacity.</span></p>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">Sitio</span><span data-l="en">Site</span> <select id="wtSite"></select></label>
+        <label class="inline-label"><span data-l="es">Cultivo</span><span data-l="en">Crop</span> <select id="wtCrop"></select></label>
+        <label class="inline-label"><span data-l="es">Suelo</span><span data-l="en">Soil</span> <span data-help="taw"></span> <select id="wtSoil"></select></label>
+        <label class="inline-label">ETo <span data-help="etomethods"></span>
+          <select id="wtEto">
+            <option value="hs" data-es="Hargreaves–Samani" data-en="Hargreaves–Samani">Hargreaves–Samani</option>
+            <option value="pm" data-es="Penman–Monteith FAO-56" data-en="FAO-56 Penman–Monteith">Penman–Monteith FAO-56</option>
+          </select></label>
+        <label class="inline-label"><span data-l="es">Riego</span><span data-l="en">Irrigation</span>
+          <select id="wtIrr">
+            <option value="none" data-es="Temporal (sin riego)" data-en="Rain-fed (no irrigation)">Temporal (sin riego)</option>
+            <option value="auto" data-es="Automático al agotar el AFA" data-en="Automatic at RAW depletion">Automático al agotar el AFA</option>
+          </select></label>
+        <button class="btn btn-secondary btn-sm" id="wtReset"><span data-l="es">↻ Valores típicos</span><span data-l="en">↻ Typical values</span></button>
+      </div>
+      <div class="slider-grid">
+        <div class="slider-row"><label><span data-l="es">Fecha de siembra</span><span data-l="en">Sowing date</span></label><input type="range" id="wtSow" min="1" max="365" step="1" value="105"><span class="range-val" id="wtSowVal"></span></div>
+        <div class="slider-row"><label><span data-l="es">Umbral de riego</span><span data-l="en">Irrigation trigger</span> <span data-help="depletion"></span></label><input type="range" id="wtTrigger" min="0.4" max="1.5" step="0.05" value="1"><span class="range-val" id="wtTriggerVal"></span></div>
+        <div class="slider-row"><label><span data-l="es">Eficiencia del riego</span><span data-l="en">Irrigation efficiency</span></label><input type="range" id="wtEff" min="0.4" max="1" step="0.05" value="0.75"><span class="range-val" id="wtEffVal"></span></div>
+        <div class="slider-row"><label><span data-l="es">Agotamiento inicial</span><span data-l="en">Initial depletion</span></label><input type="range" id="wtDr0" min="0" max="100" step="5" value="30"><span class="range-val" id="wtDr0Val"></span></div>
+      </div>
+      <div class="sim-readout" id="wtReadout" style="margin-top:14px"></div>
+      <div class="pg-status" id="wtStatus"></div>
+      <div class="lab-grid" style="margin-top:14px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Demanda de agua: ETo, ETc y lluvia</span><span data-l="en">Water demand: ETo, ETc and rain</span></div><svg id="wtEtChart"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Agua en la zona radical: agotamiento, AFA y riegos</span><span data-l="en">Root-zone water: depletion, RAW and irrigations</span></div><svg id="wtDrChart"></svg></div>
+      </div>
+      <p class="hint"><span data-l="es">La ETc sigue la forma de la curva de Kc: baja al inicio, máxima con el dosel completo y decreciente al final. Cuando la línea punteada roja se despega de la verde, el cultivo transpira menos de lo que la atmósfera le pide: eso es estrés (Ks &lt; 1). En el segundo panel, el suelo se vacía hacia abajo; cada gota azul es un riego que lo devuelve a capacidad de campo. Cambia Hargreaves por Penman–Monteith y mira cuánto difieren en el sitio húmedo y en el ventoso: es la razón de calibrar.</span><span data-l="en">ETc follows the shape of the Kc curve: low at the start, maximal with the full canopy and declining at the end. When the red dashed line parts from the green one, the crop transpires less than the atmosphere asks of it: that is stress (Ks &lt; 1). In the second panel the soil empties downwards; each blue drop is an irrigation that brings it back to field capacity. Switch Hargreaves for Penman–Monteith and see how much they differ in the humid and the windy site: that is the reason to calibrate.</span></p>
+    </div>
+  </div>
+
+  <!-- ---------- Blocks ---------- -->
+  <h2 class="section-title"><span data-l="es">Qué incluye</span><span data-l="en">What's inside</span></h2>
+  <p class="section-sub"><span data-l="es">Nueve bloques de trabajo después de esta portada. Haz clic en cualquiera para abrirlo.</span><span data-l="en">Nine working blocks after this home page. Click any of them to open it.</span></p>
+  <div class="feature-grid" id="featureGrid"></div>
+
+  <h2 class="section-title"><span data-l="es">Para el sistema de producción que manejas</span><span data-l="en">For the production system you manage</span></h2>
+  <p class="section-sub"><span data-l="es">La app conoce la diferencia entre un maíz de temporal que corre contra la helada, una huerta de durazno que necesita frío y un cafetal que necesita que no falte el agua en floración.</span><span data-l="en">The app knows the difference between a rain-fed maize racing the frost, a peach orchard that needs chill and a coffee plantation that needs water not to fail at flowering.</span></p>
+  <div class="material-strip" id="materialStrip"></div>
+
+  <h2 class="section-title"><span data-l="es">Métodos que cubre</span><span data-l="en">Methods covered</span></h2>
+  <p class="section-sub"><span data-l="es">Filtra por familia para ver qué calcula cada bloque.</span><span data-l="en">Filter by family to see what each block computes.</span></p>
+  <div class="method-filter chips" id="methodFilter"></div>
+  <div class="method-gallery" id="methodGallery"></div>
+
+  <h2 class="section-title"><span data-l="es">Los métodos de ETo, lado a lado</span><span data-l="en">The ETo methods, side by side</span></h2>
+  <p class="section-sub"><span data-l="es">Ningún método sustituye a los datos. Esta es la lectura honesta de cada uno.</span><span data-l="en">No method substitutes for data. This is the honest reading of each one.</span></p>
+  <div class="method-compare" id="methodCompare"></div>
+
+  <h2 class="section-title"><span data-l="es">Lo que reúne</span><span data-l="en">What it brings together</span></h2>
+  <div class="bring-grid" id="bringGrid"></div>
+
+  <!-- ---------- Theory ---------- -->
+  <h2 class="section-title" id="theory"><span data-l="es">La teoría, en lenguaje claro</span><span data-l="en">The theory, in plain language</span></h2>
+  <p class="section-sub"><span data-l="es">Lo que hay que entender antes de acumular el primer grado-día.</span><span data-l="en">What has to be understood before accumulating the first degree-day.</span></p>
+
+  <div class="theory-card">
+
+    <details class="acc"><summary><span data-l="es">La planta no cuenta días: cuenta calor</span><span data-l="en">The plant does not count days: it counts heat</span> <span class="acc-tag"><span data-l="es">empieza aquí</span><span data-l="en">start here</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryGddFig"><div class="cap"><span data-l="es">Un día visto como senoide sobre la base, con los tres cortes del umbral superior</span><span data-l="en">One day seen as a sine above the base, with the three upper-threshold cut-offs</span></div></div>
+        <p><span data-l="es">El desarrollo de una planta —de la emergencia a la floración, de la floración a la madurez— avanza a una velocidad que depende casi linealmente de la temperatura entre dos límites: por debajo de la <b>temperatura base</b> no avanza, y por encima de un <b>umbral superior</b> deja de acelerarse. Por eso el tiempo que tarda una etapa se mide mejor en <b>grados-día</b> (°C·d) que en días: cada día aporta lo que su temperatura media excede la base, y la etapa llega cuando la suma alcanza el requerimiento del cultivar.</span><span data-l="en">A plant's development —from emergence to flowering, from flowering to maturity— advances at a speed that depends almost linearly on temperature between two limits: below the <b>base temperature</b> it does not advance, and above an <b>upper threshold</b> it stops speeding up. That is why the time a stage takes is better measured in <b>degree-days</b> (°C·d) than in days: each day contributes how much its mean temperature exceeds the base, and the stage arrives when the sum reaches the cultivar's requirement.</span></p>
+        <div class="formula">°C·d del día = máx(0, T̄ − T<sub>base</sub>)      T̄ = (Tmax + Tmin) / 2      acumulado = Σ °C·d desde la siembra</div>
+        <p><span data-l="es">La fórmula simple esconde tres decisiones. <b>Qué base</b>: 10 °C para maíz, frijol o jitomate, 0 °C para trigo, 15.6 °C para algodón; la que usó quien publicó el requerimiento. <b>Qué hacer con el calor de más</b>: acotar la máxima al umbral (corte horizontal), no contar las horas por encima (vertical) o restarlas (intermedio). Y <b>qué forma tuvo el día</b>: con solo máxima y mínima, la senoide y el triángulo cuentan las horas cálidas de un día fresco que el promedio deja en cero.</span><span data-l="en">The simple formula hides three decisions. <b>Which base</b>: 10 °C for maize, bean or tomato, 0 °C for wheat, 15.6 °C for cotton; the one used by whoever published the requirement. <b>What to do with the excess heat</b>: cap the maximum at the threshold (horizontal cut-off), not count the hours above it (vertical) or subtract them (intermediate). And <b>what shape the day had</b>: with only a maximum and a minimum, the sine and the triangle count the warm hours of a cool day that the average leaves at zero.</span></p>
+        <p class="hint"><span data-l="es">Convención de la app: °C·d con base y umbral declarados en cada figura y en el informe. Un valor publicado en °F·d se divide entre 1.8 para compararlo.</span><span data-l="en">The app's convention: °C·d with the base and threshold stated in every figure and in the report. A value published in °F·d is divided by 1.8 to compare it.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">ETo: la demanda de la atmósfera, y por qué Penman–Monteith</span><span data-l="en">ETo: the atmosphere's demand, and why Penman–Monteith</span> <span class="acc-tag"><span data-l="es">Bloque 5</span><span data-l="en">Block 5</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryEtoFig"><div class="cap"><span data-l="es">Los dos motores de la evaporación: la energía del sol y el aire seco que se lleva el vapor</span><span data-l="en">The two engines of evaporation: the sun's energy and the dry air that carries the vapour away</span></div></div>
+        <p><span data-l="es">Evaporar un milímetro de agua cuesta 2.45 MJ por metro cuadrado. Esa energía sale de la <b>radiación neta</b>, y el vapor se lo lleva el aire en proporción a lo <b>seco</b> que esté y a lo <b>rápido</b> que se renueve. Penman lo escribió como una suma de dos términos y Monteith añadió la resistencia de las hojas; FAO-56 fijó la superficie de referencia —pasto de 12 cm, bien regado— para que la <b>ETo</b> sea comparable entre sitios y años.</span><span data-l="en">Evaporating one millimetre of water costs 2.45 MJ per square metre. That energy comes from the <b>net radiation</b>, and the vapour is carried away by the air in proportion to how <b>dry</b> it is and how <b>fast</b> it is renewed. Penman wrote it as a sum of two terms and Monteith added the resistance of the leaves; FAO-56 fixed the reference surface —12 cm grass, well watered— so that <b>ETo</b> is comparable between sites and years.</span></p>
+        <div class="formula">ETo = [0.408 Δ (Rn − G) + γ · 900/(T + 273) · u₂ (es − ea)] / [Δ + γ (1 + 0.34 u₂)]</div>
+        <p><span data-l="es">Cuando falta una variable no se abandona el método: FAO-56 dice cómo estimar la humedad a partir de la mínima, la radiación a partir de la amplitud térmica y el viento a partir de un valor regional, y la app anota cuál usó. Cuando solo hay temperatura, <b>Hargreaves–Samani</b> da una ETo razonable a escala de semanas, pero se equivoca de forma conocida —de más en climas húmedos y en la costa, de menos en los áridos ventosos—, y por eso el Bloque 5 permite calibrarlo contra Penman–Monteith en el mismo sitio.</span><span data-l="en">When a variable is missing the method is not abandoned: FAO-56 says how to estimate humidity from the minimum, radiation from the temperature range and wind from a regional value, and the app records which it used. When only temperature exists, <b>Hargreaves–Samani</b> gives a reasonable ETo at the scale of weeks, but it errs in known ways —too high in humid and coastal climates, too low in windy arid ones—, and that is why Block 5 lets it be calibrated against Penman–Monteith at the same site.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">Del pasto al cultivo: Kc y ETc</span><span data-l="en">From grass to crop: Kc and ETc</span> <span class="acc-tag"><span data-l="es">Bloque 6</span><span data-l="en">Block 6</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryKcFig"><div class="cap"><span data-l="es">La curva de Kc en cuatro tramos y la planta que la explica</span><span data-l="en">The four-segment Kc curve and the plant that explains it</span></div></div>
+        <p><span data-l="es">El cultivo real no es pasto: es más alto o más bajo, cubre más o menos suelo, cierra más o menos sus estomas. Todo eso se resume en un número que multiplica a la ETo, el <b>coeficiente de cultivo</b>, que cambia a lo largo del ciclo en cuatro tramos: bajo al inicio (el suelo casi desnudo evapora poco), subiendo durante el desarrollo, máximo con el dosel completo y decreciente al final, cuando el grano se seca o la hoja envejece.</span><span data-l="en">The real crop is not grass: it is taller or shorter, covers more or less soil, closes its stomata more or less. All that is summarised in one number that multiplies ETo, the <b>crop coefficient</b>, which changes along the cycle in four segments: low at the start (the nearly bare soil evaporates little), rising through development, maximal with the full canopy and declining at the end, as the grain dries or the leaf ages.</span></p>
+        <div class="formula">ETc = Kc · ETo        Kc mid (local) = Kc mid (tabla) + [0.04 (u₂ − 2) − 0.004 (RHmin − 45)] (h/3)^0.3</div>
+        <p><span data-l="es">Los Kc de FAO-56 valen para un clima de referencia (humedad mínima 45 %, viento 2 m/s); en un sitio seco y ventoso el cultivo transpira más y la app corrige el Kc medio y final con la ecuación 62. Las <b>longitudes de las etapas</b> son el punto flaco de las tablas: cambian con el cultivar y el clima, y lo mejor es sustituirlas por las fechas observadas o por las que predice el tiempo térmico del Bloque 8.</span><span data-l="en">The FAO-56 Kc values hold for a reference climate (minimum humidity 45 %, wind 2 m/s); in a dry, windy site the crop transpires more and the app corrects the mid and end Kc with equation 62. The <b>stage lengths</b> are the weak point of the tables: they change with the cultivar and the climate, and the best is to replace them with the observed dates or with those the thermal time of Block 8 predicts.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">El suelo como cubeta: balance hídrico y calendario de riego</span><span data-l="en">The soil as a bucket: water balance and irrigation calendar</span> <span class="acc-tag"><span data-l="es">Bloques 6 y 7</span><span data-l="en">Blocks 6 and 7</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryBucketFig"><div class="cap"><span data-l="es">La cubeta de FAO-56: capacidad de campo, agua fácilmente aprovechable y marchitez</span><span data-l="en">The FAO-56 bucket: field capacity, readily available water and wilting</span></div></div>
+        <p><span data-l="es">Entre la <b>capacidad de campo</b> (el agua que el suelo retiene después de drenar) y el <b>punto de marchitez permanente</b> (la que las raíces ya no pueden sacar) está el <b>agua disponible total</b>, que depende de la textura y de la profundidad de las raíces. Pero el cultivo no la toma toda sin costo: solo una fracción <i>p</i> —la <b>fácilmente aprovechable</b>— sale sin estrés; más allá, la transpiración cae en proporción, y con ella el rendimiento.</span><span data-l="en">Between <b>field capacity</b> (the water the soil holds after draining) and the <b>permanent wilting point</b> (the water the roots can no longer extract) lies the <b>total available water</b>, which depends on the texture and the root depth. But the crop does not take it all for free: only a fraction <i>p</i> —the <b>readily available</b> water— comes out without stress; beyond it, transpiration falls in proportion, and yield with it.</span></p>
+        <div class="formula">ADT = 1000 (θCC − θPMP) Zr      AFA = p · ADT      Dr,i = Dr,i−1 − (P − Esc) − Riego + ETc,adj + Percolación</div>
+        <p><span data-l="es">El balance diario lleva la cuenta del <b>agotamiento</b> de la zona radical: cada día sube con la ETc y baja con la lluvia efectiva y el riego; lo que sobra por encima de capacidad de campo percola. La regla de riego que sale sola de aquí es la de FAO-56: <b>regar cuando el agotamiento llega al AFA y aplicar justo lo que falta para rellenar</b>. Regar antes desperdicia; regar después cuesta cosecha. El Bloque 7 convierte esa regla en un calendario con láminas brutas según la eficiencia del sistema.</span><span data-l="en">The daily balance keeps track of the root zone's <b>depletion</b>: each day it rises with ETc and falls with effective rain and irrigation; what exceeds field capacity percolates. The irrigation rule that falls out of this on its own is FAO-56's: <b>irrigate when depletion reaches RAW and apply just what is missing to refill</b>. Irrigating earlier wastes; irrigating later costs harvest. Block 7 turns that rule into a calendar with gross depths by the system's efficiency.</span></p>
+        <p class="hint"><span data-l="es">El balance mensual de Thornthwaite–Mather responde otra pregunta: no cuándo regar, sino qué tan seco o húmedo es el clima del lugar a lo largo del año. Por eso vive en los Bloques 3 y 6.</span><span data-l="en">The monthly Thornthwaite–Mather balance answers a different question: not when to irrigate, but how dry or humid the place's climate is through the year. That is why it lives in Blocks 3 and 6.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">Fechar la fenología: BBCH, tiempo térmico y calibración</span><span data-l="en">Dating phenology: BBCH, thermal time and calibration</span> <span class="acc-tag"><span data-l="es">Bloque 8</span><span data-l="en">Block 8</span></span></summary>
+      <div class="acc-body">
+        <p><span data-l="es">La escala <b>BBCH</b> numera de 00 a 99 las etapas de cualquier cultivo con el mismo esquema: 0 germinación, 1 hojas, 2 macollos o brotes laterales, 3 elongación, 5 aparición de la inflorescencia, 6 floración, 7 fruto, 8 maduración, 9 senescencia. Da un idioma común para registrar observaciones, y contra esas observaciones se calibra el modelo.</span><span data-l="en">The <b>BBCH</b> scale numbers the stages of any crop from 00 to 99 with the same scheme: 0 germination, 1 leaves, 2 tillers or side shoots, 3 elongation, 5 inflorescence emergence, 6 flowering, 7 fruit, 8 ripening, 9 senescence. It gives a common language for recording observations, and against those observations the model is calibrated.</span></p>
+        <p><span data-l="es">Un modelo fenológico de tiempo térmico tiene dos partes: la <b>tasa</b> (cómo depende el desarrollo de la temperatura: base, umbral, método) y los <b>requerimientos</b> (cuántos °C·d hasta cada etapa). La app trae un catálogo de requerimientos para arrancar, pero lo honesto es decirlo claro: <b>son orientativos</b>. Con dos o tres años de fechas observadas, el Bloque 8 los recalcula para tu cultivar y tu sitio, y la base que minimiza la variación entre años (Arnold 1959) es la que conviene usar.</span><span data-l="en">A thermal-time phenology model has two parts: the <b>rate</b> (how development depends on temperature: base, threshold, method) and the <b>requirements</b> (how many °C·d to each stage). The app ships a catalogue of requirements to get started, but the honest thing is to say it clearly: <b>they are orientative</b>. With two or three years of observed dates, Block 8 recomputes them for your cultivar and your site, and the base that minimises the variation between years (Arnold 1959) is the one to use.</span></p>
+        <p class="hint"><span data-l="es">Los cultivos sensibles al fotoperiodo (soya, sorgo tropical, cebolla) no obedecen solo al calor: su floración cambia con la fecha de siembra aunque los °C·d sean los mismos. La app lo marca en el catálogo.</span><span data-l="en">Photoperiod-sensitive crops (soybean, tropical sorghum, onion) do not obey heat alone: their flowering shifts with the sowing date even when the °C·d are the same. The app flags it in the catalogue.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">El frío que los frutales necesitan</span><span data-l="en">The chill fruit trees need</span> <span class="acc-tag"><span data-l="es">Bloque 8</span><span data-l="en">Block 8</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryChillFig"><div class="cap"><span data-l="es">Cuánto vale una hora según su temperatura en el modelo Utah</span><span data-l="en">What an hour is worth by its temperature in the Utah model</span></div></div>
+        <p><span data-l="es">Manzano, durazno, peral, nogal: los caducifolios entran en reposo en otoño y necesitan una dosis de frío para salir de él y florecer parejo. Si el invierno no la da, la brotación se retrasa, se desordena y la cosecha se pierde. Tres modelos la cuentan: las <b>horas frío</b> (horas entre 0 y 7.2 °C), las <b>unidades Utah</b> (cada hora pesa según su temperatura y las horas cálidas restan) y el <b>modelo dinámico</b>, en el que el frío se fija en <b>porciones</b> que el calor posterior ya no borra. Este último es el que mejor funciona en climas cálidos como los de México, donde Utah llega a dar valores negativos.</span><span data-l="en">Apple, peach, pear, walnut: deciduous trees enter rest in autumn and need a dose of chill to leave it and bloom evenly. If the winter does not provide it, budbreak is delayed and uneven and the harvest is lost. Three models count it: <b>chill hours</b> (hours between 0 and 7.2 °C), <b>Utah units</b> (each hour weighs by its temperature and warm hours subtract) and the <b>Dynamic model</b>, in which chill is fixed in <b>portions</b> that later warmth no longer erases. The last is the one that works best in warm climates such as Mexico's, where Utah can give negative values.</span></p>
+        <p><span data-l="es">Los tres necesitan temperaturas horarias. Cuando la estación solo da máxima y mínima, la app reconstruye las 24 horas con el método de Linvill (1990): una senoide de día y un enfriamiento logarítmico de noche, con la duración del día de la latitud y la fecha.</span><span data-l="en">All three need hourly temperatures. When the station gives only a maximum and a minimum, the app rebuilds the 24 hours with Linvill's (1990) method: a sine by day and a logarithmic cooling by night, with the day length of the latitude and the date.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">Leer un climograma y decidir la ventana de siembra</span><span data-l="en">Reading a climograph and deciding the sowing window</span> <span class="acc-tag"><span data-l="es">Bloques 3 y 9</span><span data-l="en">Blocks 3 and 9</span></span></summary>
+      <div class="acc-body clearfix">
+        <div class="theory-fig" id="theoryClimoFig"><div class="cap"><span data-l="es">Climograma de Walter–Lieth: temperatura a la izquierda, lluvia a la derecha, 10 °C = 20 mm</span><span data-l="en">Walter–Lieth climograph: temperature on the left, rain on the right, 10 °C = 20 mm</span></div></div>
+        <p><span data-l="es">El <b>climograma de Walter–Lieth</b> pone el año entero en una figura con una escala fija: 10 °C equivalen a 20 mm. Donde la curva de lluvia va por encima de la de temperatura el mes es húmedo; donde va por debajo, seco; por encima de 100 mm la escala se comprime y el área se pinta sólida. Bajo el eje se marcan los meses con helada. Con ese dibujo se ve de un golpe cuándo empieza la temporada de lluvias, cuánto dura, y si el invierno permite un segundo ciclo.</span><span data-l="en">The <b>Walter–Lieth climograph</b> puts the whole year in one figure with a fixed scale: 10 °C equals 20 mm. Where the rain curve runs above the temperature curve the month is humid; where it runs below, dry; above 100 mm the scale compresses and the area is filled solid. Below the axis the months with frost are marked. With that drawing one sees at a glance when the rainy season starts, how long it lasts and whether the winter allows a second cycle.</span></p>
+        <div class="theory-fig" id="theorySeasonFig" style="clear:right"><div class="cap"><span data-l="es">La ventana de siembra: donde coinciden el calor, el agua y la ausencia de helada</span><span data-l="en">The sowing window: where heat, water and the absence of frost coincide</span></div></div>
+        <p><span data-l="es">La <b>ventana de siembra</b> es la intersección de tres condiciones: que desde la siembra hasta la madurez el sitio junte los °C·d que el cultivo necesita, que la etapa sensible no caiga en helada ni en golpe de calor, y que —en temporal— la lluvia efectiva alcance en floración y llenado. El Bloque 9 la calcula corriendo el cultivo desde cada fecha posible del año, con la serie de años completa, y reporta la fecha con más margen y menos riesgo. Con un año de datos es una anécdota; con treinta, una normal.</span><span data-l="en">The <b>sowing window</b> is the intersection of three conditions: that from sowing to maturity the site gathers the °C·d the crop needs, that the sensitive stage falls in neither frost nor heat shock, and that —rain-fed— effective rain suffices at flowering and filling. Block 9 computes it by running the crop from every possible date of the year, over the whole series of years, and reports the date with the most margin and the least risk. With one year of data it is an anecdote; with thirty, a normal.</span></p>
+      </div>
+    </details>
+
+    <details class="acc"><summary><span data-l="es">Qué pregunta responde cada bloque</span><span data-l="en">Which question each block answers</span> <span class="acc-tag"><span data-l="es">guía de decisión</span><span data-l="en">decision guide</span></span></summary>
+      <div class="acc-body">
+        <div class="table-scroll" data-l="es">
+          <table class="mini-table">
+            <tr><th>Tu pregunta</th><th>El análisis</th><th class="c">Bloque</th></tr>
+            <tr><td>¿Sirven mis datos? ¿Qué les falta?</td><td>Control de calidad, huecos, rellenos justificados</td><td class="c">2</td></tr>
+            <tr><td>¿Cómo es el clima de mi sitio?</td><td>Normales, climograma, aridez, periodo libre de heladas</td><td class="c">3</td></tr>
+            <tr><td>¿Cuánto calor junta el sitio desde una fecha?</td><td>Grados-día por seis métodos, mapa por fecha de siembra</td><td class="c">4</td></tr>
+            <tr><td>¿Cuánta agua pide la atmósfera cada día?</td><td>ETo por Penman–Monteith, Hargreaves y tres más</td><td class="c">5</td></tr>
+            <tr><td>¿Cuánta agua pide mi cultivo y cuánta le queda?</td><td>Kc, ETc, balance diario de la zona radical</td><td class="c">6</td></tr>
+            <tr><td>¿Cuándo y cuánto riego?</td><td>Calendario por agotamiento, intervalo o lámina</td><td class="c">7</td></tr>
+            <tr><td>¿Cuándo florece y cuándo cosecho?</td><td>Etapas BBCH por tiempo térmico, calibradas</td><td class="c">8</td></tr>
+            <tr><td>¿Le alcanza el frío a mi huerta?</td><td>Horas frío, unidades Utah, porciones de frío</td><td class="c">8</td></tr>
+            <tr><td>¿Cuándo siembro para no perder por helada o sequía?</td><td>Probabilidades por fecha, ventana de siembra, escenarios</td><td class="c">9</td></tr>
+            <tr><td>¿Cómo entrego el estudio?</td><td>Figuras, informe con métodos redactados, paquete reproducible</td><td class="c">10</td></tr>
+          </table>
+        </div>
+        <div class="table-scroll" data-l="en">
+          <table class="mini-table">
+            <tr><th>Your question</th><th>The analysis</th><th class="c">Block</th></tr>
+            <tr><td>Are my data any good? What is missing?</td><td>Quality control, gaps, justified filling</td><td class="c">2</td></tr>
+            <tr><td>What is the climate of my site like?</td><td>Normals, climograph, aridity, frost-free period</td><td class="c">3</td></tr>
+            <tr><td>How much heat does the site gather from a date?</td><td>Degree-days by six methods, map by sowing date</td><td class="c">4</td></tr>
+            <tr><td>How much water does the atmosphere ask for each day?</td><td>ETo by Penman–Monteith, Hargreaves and three more</td><td class="c">5</td></tr>
+            <tr><td>How much water does my crop need and how much is left?</td><td>Kc, ETc, daily root-zone balance</td><td class="c">6</td></tr>
+            <tr><td>When and how much do I irrigate?</td><td>Calendar by depletion, interval or depth</td><td class="c">7</td></tr>
+            <tr><td>When does it flower and when do I harvest?</td><td>BBCH stages by thermal time, calibrated</td><td class="c">8</td></tr>
+            <tr><td>Does my orchard get enough chill?</td><td>Chill hours, Utah units, chill portions</td><td class="c">8</td></tr>
+            <tr><td>When do I sow to avoid frost or drought losses?</td><td>Probabilities by date, sowing window, scenarios</td><td class="c">9</td></tr>
+            <tr><td>How do I hand in the study?</td><td>Figures, report with written methods, reproducible package</td><td class="c">10</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <div id="helpGuideHost1"></div>
+
+  <!-- ---------- Cite ---------- -->
+  <h2 class="section-title" id="cite"><span data-l="es">Cómo citar</span><span data-l="en">How to cite</span></h2>
+  <p class="section-sub"><span data-l="es">Si PhenologyPro te ayudó en una tesis o un estudio, cita el programa y las obras originales de los métodos que implementa; el informe del Bloque 10 los nombra por autor y año.</span><span data-l="en">If PhenologyPro helped with a thesis or a study, please cite the software and the original works of the methods it implements; the report of Block 10 names them by author and year.</span></p>
+  <div class="cite-box">
+    <div class="cite-ref" id="citeText"><span data-l="es">Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión <span class="app-v"></span>) [software].</span><span data-l="en">Barrera-Guzmán, L.Á. (2026). PhenologyPro: a browser-based platform for agroclimatology and crop phenology (Version <span class="app-v"></span>) [Computer software].</span></div>
+    <button class="btn btn-secondary btn-sm" id="copyCite" data-es="Copiar la cita" data-en="Copy the citation">Copiar la cita</button>
+    <span class="hint" style="margin-left:8px"><span data-l="es">El DOI se añadirá al archivar la versión 1.0.</span><span data-l="en">The DOI will be added when version 1.0 is archived.</span></span>
+  </div>
+
+  <h2 class="section-title"><span data-l="es">Referencias detrás de los cálculos</span><span data-l="en">References behind the calculations</span></h2>
+  <p class="section-sub"><span data-l="es">Cada fórmula de la app viene de una obra publicada, y se vuelve a nombrar en el lugar donde se usa.</span><span data-l="en">Every formula in this app comes from a published work, and is named again where it is used.</span></p>
+  <div class="ref-tools chips" id="refFilter"></div>
+  <ol class="ref-list" id="refList"></ol>
+
+  <p class="footer-note"><span data-l="es">PhenologyPro · versión <span class="app-v"></span> · hecha para agrónomos, tesistas y técnicos que planean con el clima y no contra él.</span><span data-l="en">PhenologyPro · version <span class="app-v"></span> · made for agronomists, thesis students and technicians who plan with the climate, not against it.</span></p>
+
+</section>
+
+<!-- ==================== BLOCKS 2–10 (built in later stages) ==================== -->
+<section class="step-panel" id="panel-2">
+  <div class="panel-title"><div class="pt-num">2</div>
+    <div><h2><span data-l="es">Datos climáticos del sitio</span><span data-l="en">Climate data of the site</span></h2>
+      <p><span data-l="es">Dónde está la estación y qué midió, día por día. Todo lo que sigue —clima, calor, agua, fenología— se calcula con la serie que salga limpia de aquí, y el informe dirá qué se corrigió y qué se rellenó.</span><span data-l="en">Where the station is and what it measured, day by day. Everything that follows —climate, heat, water, phenology— is computed from the series that leaves here clean, and the report will say what was corrected and what was filled.</span></p></div>
+  </div>
+
+  <!-- ---------- 1 · the site ---------- -->
+  <div class="card">
+    <h2><span data-l="es">1 · El sitio</span><span data-l="en">1 · The site</span> <span data-help="coords"></span></h2>
+    <p class="hint"><span data-l="es">La latitud fija la radiación extraterrestre y la duración del día; la altitud, la presión atmosférica y con ella la constante psicrométrica. Sin ellas no hay ETo. La longitud solo se cita en el informe.</span><span data-l="en">Latitude fixes extraterrestrial radiation and day length; elevation, atmospheric pressure and with it the psychrometric constant. Without them there is no ETo. Longitude is only quoted in the report.</span></p>
+    <div class="form-grid">
+      <div class="field wide"><label data-es="Nombre de la estación o del sitio" data-en="Name of the station or site">Nombre de la estación o del sitio</label>
+        <input type="text" id="b2Name" data-es-ph="Estación Chapingo (DGE)" data-en-ph="Chapingo station"></div>
+      <div class="field"><label data-es="Latitud (grados decimales, sur negativo)" data-en="Latitude (decimal degrees, south negative)">Latitud</label>
+        <input type="number" id="b2Lat" min="-90" max="90" step="0.0001" data-es-ph="19.4925" data-en-ph="19.4925"></div>
+      <div class="field"><label data-es="Longitud (oeste negativo)" data-en="Longitude (west negative)">Longitud</label>
+        <input type="number" id="b2Lon" min="-180" max="180" step="0.0001" data-es-ph="−98.8925" data-en-ph="−98.8925"></div>
+      <div class="field"><label data-es="Altitud (m)" data-en="Elevation (m)">Altitud (m)</label>
+        <input type="number" id="b2Alt" min="-100" max="6000" step="1" data-es-ph="2250" data-en-ph="2250"></div>
+      <div class="field"><label data-es="Situación" data-en="Setting">Situación</label>
+        <select id="b2Coastal"><option value="interior" data-es="Interior (kRs = 0.16)" data-en="Interior (kRs = 0.16)">Interior</option><option value="coastal" data-es="Costera, a menos de ~20 km del mar (kRs = 0.19)" data-en="Coastal, within ~20 km of the sea (kRs = 0.19)">Costera</option></select>
+        <span class="field-help"><span data-l="es">Para estimar la radiación de la amplitud térmica cuando no hay medición.</span><span data-l="en">To estimate radiation from the temperature range when there is no measurement.</span></span></div>
+      <div class="field"><label data-es="Humedad del clima" data-en="Humidity of the climate">Humedad del clima</label>
+        <select id="b2Arid"><option value="humid" data-es="Húmedo o subhúmedo (Tdew ≈ Tmin)" data-en="Humid or sub-humid (Tdew ≈ Tmin)">Húmedo o subhúmedo</option><option value="arid" data-es="Árido o semiárido (Tdew ≈ Tmin − 2 °C)" data-en="Arid or semi-arid (Tdew ≈ Tmin − 2 °C)">Árido o semiárido</option></select>
+        <span class="field-help"><span data-l="es">Para estimar la humedad cuando la estación no la mide (FAO-56, ec. 48).</span><span data-l="en">To estimate humidity when the station does not measure it (FAO-56, eq. 48).</span></span></div>
+      <div class="field"><label data-es="Altura del anemómetro (m)" data-en="Anemometer height (m)">Altura del anemómetro (m)</label>
+        <input type="number" id="b2WindH" min="0.5" max="30" step="0.5" value="2"> <span data-help="windheight"></span>
+        <span class="field-help"><span data-l="es">2 en estaciones agrometeorológicas, 10 en las sinópticas. El viento se lleva a 2 m.</span><span data-l="en">2 at agrometeorological stations, 10 at synoptic ones. Wind is brought to 2 m.</span></span></div>
+      <div class="field wide"><label data-es="Notas (fuente de los datos, instrumento, observaciones)" data-en="Notes (data source, instrument, remarks)">Notas</label>
+        <input type="text" id="b2Notes" data-es-ph="Datos del Servicio Meteorológico Nacional, estación 15170, 1991–2020" data-en-ph="National weather service, station 15170, 1991–2020"></div>
+    </div>
+    <div class="chips" id="b2SiteDerived"></div>
+    <div class="messages" id="b2SiteMsg"></div>
+  </div>
+
+  <!-- ---------- 2 · the series ---------- -->
+  <div class="card">
+    <h2><span data-l="es">2 · La serie diaria</span><span data-l="en">2 · The daily series</span> <span data-help="datasource"></span></h2>
+    <p class="hint"><span data-l="es">Una fila por día con la fecha y las variables que haya: Tmax y Tmin son indispensables; la lluvia hace posible el balance hídrico; humedad, viento e insolación o radiación permiten Penman–Monteith sin estimaciones. Pega la tabla desde Excel, arrastra un archivo .csv o .txt (también el formato de texto del Servicio Meteorológico Nacional), o carga un ejemplo para practicar.</span><span data-l="en">One row per day with the date and whatever variables there are: Tmax and Tmin are indispensable; rain makes the water balance possible; humidity, wind and sunshine or radiation allow Penman–Monteith without estimates. Paste the table from Excel, drag a .csv or .txt file, or load an example to practise.</span></p>
+    <div class="two-col">
+      <div>
+        <h4><span data-l="es">Pegar desde una hoja de cálculo</span><span data-l="en">Paste from a spreadsheet</span></h4>
+        <textarea id="b2Paste" rows="7" data-es-ph="fecha	tmax	tmin	prec&#10;2020-01-01	22.5	4.1	0&#10;2020-01-02	23.0	3.6	0" data-en-ph="date	tmax	tmin	prec&#10;2020-01-01	22.5	4.1	0" style="width:100%"></textarea>
+        <div class="btn-row" style="margin-top:8px"><button class="btn btn-primary btn-sm" id="b2ParsePaste"><span data-l="es">Leer la tabla pegada</span><span data-l="en">Read the pasted table</span></button>
+          <button class="btn btn-secondary btn-sm" id="b2Template"><span data-l="es">⤓ Plantilla .csv</span><span data-l="en">⤓ .csv template</span></button></div>
+      </div>
+      <div>
+        <h4><span data-l="es">O un archivo</span><span data-l="en">Or a file</span></h4>
+        <div class="src-drop" id="b2Drop"><b><span data-l="es">Arrastra aquí un .csv, .txt o un proyecto .json</span><span data-l="en">Drop a .csv, .txt or a .json project here</span></b><small><span data-l="es">o haz clic para elegirlo. Separadores: coma, punto y coma, tabulador o espacios. Valores faltantes: vacío, NA, Nulo, −99, −999.</span><span data-l="en">or click to choose it. Delimiters: comma, semicolon, tab or spaces. Missing values: blank, NA, Nulo, −99, −999.</span></small></div>
+        <input type="file" id="b2File" accept=".csv,.txt,.tsv,.dat,.json" class="sr-only">
+        <h4 style="margin-top:14px"><span data-l="es">O un ejemplo para practicar</span><span data-l="en">Or an example to practise</span></h4>
+        <div class="pg-controls"><label class="inline-label"><span data-l="es">Años</span><span data-l="en">Years</span> <select id="b2ExYears"><option value="1">1</option><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label>
+          <label class="inline-label"><input type="checkbox" id="b2ExDirty"> <span data-l="es">con huecos y errores sembrados</span><span data-l="en">with seeded gaps and errors</span></label></div>
+        <div class="design-tiles" id="b2Examples"></div>
+      </div>
+    </div>
+    <div class="messages" id="b2SrcMsg"></div>
+  </div>
+
+  <!-- ---------- 3 · columns ---------- -->
+  <div class="card" id="b2RolesCard" style="display:none">
+    <h2><span data-l="es">3 · Qué columna es cada cosa</span><span data-l="en">3 · Which column is what</span></h2>
+    <p class="hint"><span data-l="es">La app propone un papel para cada columna por su nombre y su contenido; corrige lo que haga falta. La fecha puede venir en una columna o como año, mes y día (o año y día del año).</span><span data-l="en">The app proposes a role for each column from its name and content; correct whatever is needed. The date may come in one column or as year, month and day (or year and day of year).</span></p>
+    <div class="roles-table" id="b2Roles"></div>
+    <div class="pg-controls" style="margin-top:12px">
+      <label class="inline-label" id="b2DateFmtWrap"><span data-l="es">Orden de la fecha</span><span data-l="en">Date order</span>
+        <select id="b2DateFmt"><option value="auto" data-es="Automático" data-en="Automatic">Automático</option><option value="dmy" data-es="día/mes/año" data-en="day/month/year">día/mes/año</option><option value="mdy" data-es="mes/día/año" data-en="month/day/year">mes/día/año</option><option value="ymd" data-es="año-mes-día" data-en="year-month-day">año-mes-día</option></select>
+        <span class="hint" id="b2DateGuess" style="margin:0"></span></label>
+      <label class="inline-label"><span data-l="es">Temperatura en</span><span data-l="en">Temperature in</span> <select id="b2TempUnit"><option value="c">°C</option><option value="f">°F</option></select></label>
+      <label class="inline-label" id="b2WindWrap"><span data-l="es">Viento en</span><span data-l="en">Wind in</span> <select id="b2WindUnit"><option value="ms">m/s</option><option value="kmh">km/h</option><option value="kmd" data-es="km/día" data-en="km/day">km/día</option><option value="knots" data-es="nudos" data-en="knots">nudos</option></select></label>
+      <label class="inline-label" id="b2RsWrap"><span data-l="es">Radiación en</span><span data-l="en">Radiation in</span> <select id="b2RsUnit"><option value="mj">MJ m⁻² d⁻¹</option><option value="wm2">W m⁻² (media diaria)</option><option value="cal">cal cm⁻² d⁻¹</option><option value="kj">kJ m⁻² d⁻¹</option></select></label>
+    </div>
+    <div class="messages" id="b2RolesMsg"></div>
+    <div class="btn-row"><button class="btn btn-primary" id="b2Build"><span data-l="es">Armar la serie y revisarla →</span><span data-l="en">Build the series and check it →</span></button></div>
+  </div>
+
+  <!-- ---------- 4 · quality control ---------- -->
+  <div class="card" id="b2QcCard" style="display:none">
+    <h2><span data-l="es">4 · Control de calidad</span><span data-l="en">4 · Quality control</span> <span data-help="qc"></span></h2>
+    <p class="hint"><span data-l="es">Se descartan los valores físicamente imposibles, se corrigen los días con Tmax por debajo de Tmin, se marcan los picos aislados y los tramos planos, y se interpolan los huecos cortos de las variables continuas. La lluvia nunca se interpola. Cada cambio queda marcado en la fila.</span><span data-l="en">Physically impossible values are discarded, days with Tmax below Tmin are corrected, isolated spikes and flat runs are flagged, and short gaps in the continuous variables are interpolated. Rain is never interpolated. Every change is flagged on the row.</span></p>
+    <div class="pg-controls">
+      <label class="inline-label"><span data-l="es">Interpolar huecos de hasta</span><span data-l="en">Interpolate gaps of up to</span> <input type="number" id="b2MaxGap" min="0" max="10" step="1" value="3" style="width:64px"> <span data-l="es">días</span><span data-l="en">days</span> <span data-help="gapfill"></span></label>
+      <label class="inline-label"><input type="checkbox" id="b2Swap" checked> <span data-l="es">intercambiar Tmax &lt; Tmin (si no, se eliminan)</span><span data-l="en">swap Tmax &lt; Tmin (otherwise both are removed)</span></label>
+      <label class="inline-label"><input type="checkbox" id="b2RainZero"> <span data-l="es">lluvia faltante = 0 cuando el día sí tiene temperaturas</span><span data-l="en">missing rain = 0 when the day has temperatures</span></label>
+      <label class="inline-label"><span data-l="es">Pico</span><span data-l="en">Spike</span> &gt; <input type="number" id="b2Spike" min="5" max="30" step="1" value="15" style="width:60px"> °C</label>
+      <label class="inline-label"><span data-l="es">Plano</span><span data-l="en">Flat</span> ≥ <input type="number" id="b2Flat" min="3" max="30" step="1" value="7" style="width:60px"> <span data-l="es">días</span><span data-l="en">days</span></label>
+      <button class="btn btn-secondary btn-sm" id="b2Recheck"><span data-l="es">↻ Volver a revisar</span><span data-l="en">↻ Check again</span></button>
+    </div>
+    <div id="b2Tiles"></div>
+    <h3><span data-l="es">Por variable</span><span data-l="en">By variable</span></h3>
+    <div id="b2VarTable"></div>
+    <h3><span data-l="es">La serie completa</span><span data-l="en">The whole record</span></h3>
+    <div class="pg-pane"><div class="pg-title"><span data-l="es">Temperaturas extremas y lluvia de todo el registro</span><span data-l="en">Extreme temperatures and rain of the whole record</span></div><svg id="b2Overview"></svg></div>
+    <h3><span data-l="es">Calendario de disponibilidad</span><span data-l="en">Availability calendar</span> <span data-help="yearcomplete"></span></h3>
+    <div class="pg-pane"><div class="pg-title"><span data-l="es">Porcentaje de días con temperatura, por año y mes</span><span data-l="en">Share of days with temperature, by year and month</span></div><svg id="b2Calendar"></svg></div>
+    <div class="two-col" style="margin-top:14px">
+      <div><h3 style="margin-top:0"><span data-l="es">Por año</span><span data-l="en">By year</span></h3><div id="b2Years"></div></div>
+      <div><h3 style="margin-top:0"><span data-l="es">Incidencias</span><span data-l="en">Issues</span></h3><p class="hint" id="b2IssuesNote"></p><div id="b2Issues"></div></div>
+    </div>
+    <h3><span data-l="es">Lo que estos datos permiten</span><span data-l="en">What these data allow</span> <span data-help="capabilities"></span></h3>
+    <div class="chips" id="b2Caps"></div>
+    <div class="messages" id="b2CapMsg"></div>
+  </div>
+
+  <!-- ---------- 5 · the clean series ---------- -->
+  <div class="card" id="b2SaveCard" style="display:none">
+    <h2><span data-l="es">5 · La serie limpia</span><span data-l="en">5 · The clean series</span></h2>
+    <p class="hint" id="b2PreviewNote"></p>
+    <div id="b2Preview"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" id="b2PreviewAll"><span data-l="es">Ver todas las filas / solo las primeras</span><span data-l="en">Show all rows / only the first</span></button>
+      <button class="btn btn-secondary btn-sm" id="b2ExportCsv"><span data-l="es">⤓ Serie limpia (.csv)</span><span data-l="en">⤓ Clean series (.csv)</span></button>
+      <button class="btn btn-secondary btn-sm" id="b2SaveJson"><span data-l="es">⤓ Guardar proyecto (.json)</span><span data-l="en">⤓ Save project (.json)</span></button>
+      <label class="btn btn-secondary btn-sm" style="cursor:pointer"><span data-l="es">Abrir proyecto…</span><span data-l="en">Open project…</span><input type="file" id="b2LoadJson" accept=".json" class="sr-only"></label>
+      <button class="btn btn-ghost btn-sm" id="b2Forget"><span data-l="es">Olvidar esta serie</span><span data-l="en">Forget this series</span></button>
+    </div>
+    <p class="hint"><span data-l="es">La serie y el sitio se guardan también en este navegador, así que al volver a abrir la app estarán aquí. El archivo .json es la copia que viaja con la tesis y reproduce el estudio.</span><span data-l="en">The series and the site are also kept in this browser, so they will be here when the app is reopened. The .json file is the copy that travels with the thesis and reproduces the study.</span></p>
+    <div class="next-bar"><button class="btn btn-primary" id="b2Continue" disabled><span data-l="es">Continuar al Bloque 3: el clima del sitio →</span><span data-l="en">Continue to Block 3: the climate of the site →</span></button></div>
+  </div>
+  <div id="helpGuideHost2"></div>
+</section>
+<section class="step-panel" id="panel-3">
+  <div class="panel-title"><div class="pt-num">3</div>
+    <div><h2><span data-l="es">El clima del sitio</span><span data-l="en">The climate of the site</span></h2>
+      <p><span data-l="es">Lo que un estudio agroclimático pone en su primera página: las normales mensuales, el climograma, el régimen de lluvias con el inicio y el fin de la temporada, las heladas con sus fechas de riesgo, los índices de aridez y la clasificación climática.</span><span data-l="en">What an agroclimatic study puts on its first page: the monthly normals, the climograph, the rain regime with the onset and end of the season, the frosts with their risk dates, the aridity indices and the climatic classification.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b3Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2 (o un ejemplo de práctica); este bloque se calcula solo en cuanto exista.</span><span data-l="en">Load and clean the daily series in Block 2 (or a practice example); this block computes itself as soon as it exists.</span></p>
+    <button class="btn btn-primary" id="b3ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b3Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Con qué años y con qué criterios</span><span data-l="en">1 · With which years and which criteria</span> <span data-help="yearcomplete"></span></h2>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">Años</span><span data-l="en">Years</span>
+          <select id="b3Years"><option value="complete" data-es="Solo los años completos (≥ 90 %)" data-en="Only complete years (≥ 90 %)">Solo los años completos</option><option value="normal" data-es="Los últimos 30 años completos" data-en="The last 30 complete years">Los últimos 30 completos</option><option value="all" data-es="Todos, mes por mes" data-en="All, month by month">Todos</option></select></label>
+        <label class="inline-label"><span data-l="es">Umbral de helada</span><span data-l="en">Frost threshold</span> <span data-help="frost"></span>
+          <select id="b3FrostThr"><option value="0" data-es="0 °C (meteorológica)" data-en="0 °C (meteorological)">0 °C</option><option value="2" data-es="2 °C (daño en superficie, cultivos sensibles)" data-en="2 °C (surface damage, sensitive crops)">2 °C</option><option value="-2" data-es="−2 °C (cultivos tolerantes)" data-en="−2 °C (tolerant crops)">−2 °C</option><option value="-4" data-es="−4 °C (helada severa)" data-en="−4 °C (severe frost)">−4 °C</option></select></label>
+        <label class="inline-label"><span data-l="es">Suelo del balance (mm)</span><span data-l="en">Soil of the balance (mm)</span> <input type="number" id="b3Awc" min="25" max="400" step="25" value="100" style="width:72px"></label>
+        <label class="inline-label"><span data-l="es">Inicio de lluvias: mm en 3 días</span><span data-l="en">Rain onset: mm in 3 days</span> <input type="number" id="b3OnsetMm" min="5" max="60" step="5" value="20" style="width:64px"></label>
+        <label class="inline-label"><span data-l="es">racha seca que lo anula</span><span data-l="en">dry spell that cancels it</span> <input type="number" id="b3DryRun" min="5" max="20" step="1" value="10" style="width:56px"> <span data-l="es">días</span><span data-l="en">days</span></label>
+        <button class="btn btn-secondary btn-sm" id="b3Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button>
+      </div>
+      <div class="messages" id="b3Msg"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · El clima en una página</span><span data-l="en">2 · The climate on one page</span></h2>
+      <div id="b3Tiles"></div>
+      <div class="callout" id="b3Text"></div>
+      <div class="pg-pane" style="margin-top:14px"><div class="pg-title"><span data-l="es">Climograma de Walter–Lieth</span><span data-l="en">Walter–Lieth climograph</span> <span data-help="climograph"></span></div><svg id="b3Climo"></svg></div>
+      <p class="hint"><span data-l="es">Rayado azul: periodo húmedo (la lluvia va por encima de la temperatura, P &gt; 2T); punteado rojo: periodo seco; azul sólido: perhúmedo (más de 100 mm, con la escala comprimida a 1:10). Los números a la izquierda son la máxima y la mínima absolutas del registro.</span><span data-l="en">Blue hatching: humid period (rain runs above temperature, P &gt; 2T); red dots: dry period; solid blue: perhumid (over 100 mm, with the scale compressed 1:10). The numbers on the left are the absolute maximum and minimum of the record.</span></p>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · Normales mensuales</span><span data-l="en">3 · Monthly normals</span></h2>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Temperaturas y lluvia por mes</span><span data-l="en">Temperatures and rain by month</span></div><svg id="b3Monthly"></svg></div>
+      <div id="b3Normals" style="margin-top:12px"></div>
+      <p class="hint" id="b3NormalsNote"></p>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b3ExportNormals"><span data-l="es">⤓ Normales (.csv)</span><span data-l="en">⤓ Normals (.csv)</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Régimen de lluvias</span><span data-l="en">4 · Rain regime</span> <span data-help="rainonset"></span></h2>
+      <div id="b3RainTiles"></div>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Calendario de cada año: heladas y temporada de lluvias</span><span data-l="en">Calendar of each year: frosts and rainy season</span></div><svg id="b3Seasons"></svg></div>
+      <details class="acc-plain"><summary><span data-l="es">Inicio y fin de las lluvias, año por año</span><span data-l="en">Onset and end of the rains, year by year</span></summary>
+        <p class="hint" id="b3SeasonNote"></p><div id="b3SeasonTable"></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">5 · Heladas</span><span data-l="en">5 · Frost</span> <span data-help="frostdates"></span></h2>
+      <div id="b3FrostTiles"></div>
+      <div class="two-col">
+        <div><h4><span data-l="es">Fechas según el riesgo que aceptes</span><span data-l="en">Dates by the risk you accept</span></h4><div id="b3FrostProb"></div><p class="hint" id="b3FrostNote"></p></div>
+        <div><h4><span data-l="es">Por mes</span><span data-l="en">By month</span></h4><div id="b3FrostMonths"></div></div>
+      </div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Probabilidad de helada a lo largo del año</span><span data-l="en">Frost probability through the year</span></div><svg id="b3FrostCurves"></svg></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">6 · Índices, balance y clasificación</span><span data-l="en">6 · Indices, balance and classification</span> <span data-help="koppen"></span></h2>
+      <div id="b3Indices"></div>
+      <div class="two-col" style="margin-top:14px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Balance hídrico climático de Thornthwaite–Mather</span><span data-l="en">Thornthwaite–Mather climatic water balance</span></div><svg id="b3Balance"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Agua almacenada en el suelo</span><span data-l="en">Water stored in the soil</span></div><svg id="b3Storage"></svg></div>
+      </div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro del balance mensual</span><span data-l="en">Monthly balance table</span></summary><div id="b3BalanceTable"></div></details>
+      <div class="next-bar"><button class="btn btn-primary" id="b3Continue" disabled><span data-l="es">Continuar al Bloque 4: grados-día →</span><span data-l="en">Continue to Block 4: degree-days →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost3"></div>
+</section>
+<section class="step-panel" id="panel-4">
+  <div class="panel-title"><div class="pt-num">4</div>
+    <div><h2><span data-l="es">Grados-día y tiempo térmico</span><span data-l="en">Degree-days and thermal time</span></h2>
+      <p><span data-l="es">Cuánto calor junta el sitio desde una fecha de siembra, año por año; cuánto varía; en qué mes se acumula; y qué ofrece cada fecha posible de siembra. La materia prima de la fenología del Bloque 8 y de la ventana de siembra del Bloque 9.</span><span data-l="en">How much heat the site gathers from a sowing date, year by year; how much it varies; in which month it accumulates; and what every possible sowing date offers. The raw material of the phenology of Block 8 and of the sowing window of Block 9.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b4Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2; este bloque se calcula solo en cuanto exista.</span><span data-l="en">Load and clean the daily series in Block 2; this block computes itself as soon as it exists.</span></p>
+    <button class="btn btn-primary" id="b4ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b4Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Cultivo, método y fecha</span><span data-l="en">1 · Crop, method and date</span> <span data-help="tbase"></span></h2>
+      <p class="hint"><span data-l="es">Elegir un cultivo carga su base, su umbral, el método con que se publicó su requerimiento y los °C·d hasta la madurez (orientativos); después puedes cambiar cada número. La fecha de siembra se aplica a todos los años del registro.</span><span data-l="en">Choosing a crop loads its base, threshold, the method its requirement was published with and the °C·d to maturity (orientative); you can change each number afterwards. The sowing date is applied to every year of the record.</span></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Cultivo" data-en="Crop">Cultivo</label><select id="b4Crop"></select></div>
+        <div class="field"><label data-es="Método" data-en="Method">Método</label>
+          <select id="b4Method"><option value="average" data-es="Promedio" data-en="Average">Promedio</option><option value="capped" data-es="Promedio acotado (maíz)" data-en="Capped average (maize)">Acotado</option><option value="triangle" data-es="Triángulo simple" data-en="Single triangle">Triángulo</option><option value="sine" data-es="Seno simple" data-en="Single sine">Seno</option><option value="doubleTriangle" data-es="Triángulo doble" data-en="Double triangle">Triángulo doble</option><option value="doubleSine" data-es="Seno doble" data-en="Double sine">Seno doble</option><option value="chu" data-es="Unidades calor de Ontario (CHU)" data-en="Ontario crop heat units (CHU)">CHU</option></select></div>
+        <div class="field"><label data-es="Corte superior" data-en="Upper cut-off">Corte superior</label> <span data-help="cutoff"></span>
+          <select id="b4Cutoff"><option value="horizontal" data-es="Horizontal" data-en="Horizontal">Horizontal</option><option value="vertical" data-es="Vertical" data-en="Vertical">Vertical</option><option value="intermediate" data-es="Intermedio" data-en="Intermediate">Intermedio</option><option value="none" data-es="Sin corte" data-en="None">Sin corte</option></select></div>
+        <div class="field"><label data-es="Temperatura base (°C)" data-en="Base temperature (°C)">Temperatura base</label><input type="number" id="b4Base" step="0.5" value="10"></div>
+        <div class="field"><label data-es="Umbral superior (°C)" data-en="Upper threshold (°C)">Umbral superior</label><input type="number" id="b4Upper" step="0.5" value="30"></div>
+        <div class="field"><label data-es="Fecha de siembra" data-en="Sowing date">Fecha de siembra</label><div class="pg-controls" style="margin:0"><input type="number" id="b4SowD" min="1" max="31" value="15" style="width:64px"><select id="b4SowM"></select></div></div>
+        <div class="field"><label data-es="Meta térmica (°C·d a madurez)" data-en="Thermal target (°C·d to maturity)">Meta térmica</label> <span data-help="gdd"></span><input type="number" id="b4Target" step="10" placeholder="1450">
+          <span class="field-help"><span data-l="es">Vacía para solo medir lo que ofrece la temporada.</span><span data-l="en">Empty to only measure what the season offers.</span></span></div>
+        <div class="field"><label data-es="Temporada (días)" data-en="Season (days)">Temporada (días)</label><input type="number" id="b4Season" min="30" max="400" step="5" value="150">
+          <span class="field-help"><span data-l="es">Ventana del mapa por fecha de siembra.</span><span data-l="en">Window of the sowing-date map.</span></span></div>
+        <div class="field"><label class="checkbox-label"><input type="checkbox" id="b4Frost"> <span data-l="es">Detener la acumulación en la primera helada (umbral del Bloque 3)</span><span data-l="en">Stop the accumulation at the first frost (threshold of Block 3)</span></label></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b4Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · Desde esa fecha, cada año</span><span data-l="en">2 · From that date, every year</span> <span data-help="gddvar"></span></h2>
+      <div id="b4Tiles"></div>
+      <div class="pg-status" id="b4Status"></div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Acumulación de cada año desde la siembra</span><span data-l="en">Accumulation of every year from sowing</span></div><svg id="b4Spaghetti"></svg></div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por año</span><span data-l="en">Table by year</span></summary><div id="b4Years"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b4ExportYears"><span data-l="es">⤓ Por año (.csv)</span><span data-l="en">⤓ By year (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · El calendario térmico</span><span data-l="en">3 · The thermal calendar</span></h2>
+      <p class="hint"><span data-l="es">Cuántos °C·d aporta un día de cada mes, en promedio y en el 60 % central de los años: es la velocidad a la que corre el reloj del cultivo en cada época.</span><span data-l="en">How many °C·d a day of each month contributes, on average and in the central 60 % of years: the speed at which the crop's clock runs in each season.</span></p>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">°C·d por día, por mes</span><span data-l="en">°C·d per day, by month</span></div><svg id="b4Calendar"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">°C·d de cada año del registro</span><span data-l="en">°C·d of each year of the record</span></div><svg id="b4Yearly"></svg></div>
+      </div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro del calendario térmico</span><span data-l="en">Thermal calendar table</span></summary><div id="b4CalTable"></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Lo que ofrece cada fecha de siembra</span><span data-l="en">4 · What every sowing date offers</span> <span data-help="sowingmap"></span></h2>
+      <p class="hint"><span data-l="es">El cultivo se «siembra» cada cinco días del año en todos los años del registro. Para cada fecha: los °C·d que junta en la temporada, los días que tarda en llegar a la meta y en qué fracción de los años lo logra.</span><span data-l="en">The crop is "sown" every five days of the year in every year of the record. For each date: the °C·d it gathers in the season, the days it takes to reach the target and in what share of the years it manages.</span></p>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">°C·d disponibles por fecha de siembra</span><span data-l="en">°C·d available by sowing date</span></div><svg id="b4MapTotals"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Días a la meta por fecha de siembra</span><span data-l="en">Days to the target by sowing date</span></div><svg id="b4MapDays"></svg></div>
+      </div>
+      <p class="callout tip" id="b4MapNote"></p>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por fecha de siembra (cada diez días)</span><span data-l="en">Table by sowing date (every ten days)</span></summary><div id="b4MapTable"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b4ExportMap"><span data-l="es">⤓ Mapa completo (.csv)</span><span data-l="en">⤓ Full map (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">5 · Cuánto importa el método</span><span data-l="en">5 · How much the method matters</span></h2>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">La misma temporada con seis métodos y cuatro cortes</span><span data-l="en">The same season with six methods and four cut-offs</span></div><svg id="b4Methods"></svg></div>
+      <div id="b4MethodsTable" style="margin-top:12px"></div>
+      <p class="hint" id="b4MethodsNote"></p>
+      <div class="next-bar"><button class="btn btn-primary" id="b4Continue" disabled><span data-l="es">Continuar al Bloque 5: evapotranspiración →</span><span data-l="en">Continue to Block 5: evapotranspiration →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost4"></div>
+</section>
+<section class="step-panel" id="panel-5">
+  <div class="panel-title"><div class="pt-num">5</div>
+    <div><h2><span data-l="es">Evapotranspiración de referencia</span><span data-l="en">Reference evapotranspiration</span></h2>
+      <p><span data-l="es">La demanda de agua de la atmósfera, día por día: Penman–Monteith FAO-56 con lo que la estación midió y con lo que hubo que estimar (dicho con todas sus letras), cuatro métodos más para comparar, la calibración local de Hargreaves y la elección de la ETo que usarán el balance y el riego.</span><span data-l="en">The atmosphere's water demand, day by day: FAO-56 Penman–Monteith with what the station measured and what had to be estimated (spelled out), four more methods to compare, the local calibration of Hargreaves and the choice of the ETo the balance and the irrigation will use.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b5Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2; este bloque se calcula solo en cuanto exista.</span><span data-l="en">Load and clean the daily series in Block 2; this block computes itself as soon as it exists.</span></p>
+    <button class="btn btn-primary" id="b5ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b5Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Cómo se estima lo que falta</span><span data-l="en">1 · How what is missing is estimated</span> <span data-help="etoestimates"></span></h2>
+      <p class="hint" id="b5SiteLine"></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Radiación sin medir: kRs" data-en="Unmeasured radiation: kRs">Radiación sin medir: kRs</label>
+          <select id="b5Krs"><option value="interior" data-es="Interior, 0.16" data-en="Interior, 0.16">Interior, 0.16</option><option value="coastal" data-es="Costera, 0.19" data-en="Coastal, 0.19">Costera, 0.19</option></select>
+          <span class="field-help"><span data-l="es">Rs = kRs √(Tmax − Tmin) Ra (ec. 50) cuando no hay radiación ni insolación.</span><span data-l="en">Rs = kRs √(Tmax − Tmin) Ra (eq. 50) when there is neither radiation nor sunshine.</span></span></div>
+        <div class="field"><label data-es="Humedad sin medir: Tdew = Tmin −" data-en="Unmeasured humidity: Tdew = Tmin −">Humedad sin medir</label>
+          <select id="b5Arid"><option value="0" data-es="0 °C (húmedo o subhúmedo)" data-en="0 °C (humid or sub-humid)">0 °C</option><option value="2" data-es="2 °C (árido o semiárido)" data-en="2 °C (arid or semi-arid)">2 °C</option><option value="3" data-es="3 °C (muy árido)" data-en="3 °C (very arid)">3 °C</option></select>
+          <span class="field-help"><span data-l="es">ea = e°(Tmin − Δ) (ec. 48) cuando no hay humedad ni punto de rocío.</span><span data-l="en">ea = e°(Tmin − Δ) (eq. 48) when there is neither humidity nor dew point.</span></span></div>
+        <div class="field"><label data-es="Viento sin medir (m/s a 2 m)" data-en="Unmeasured wind (m/s at 2 m)">Viento sin medir</label><input type="number" id="b5Wind" min="0.5" max="6" step="0.1" value="2">
+          <span class="field-help"><span data-l="es">2 m/s es el valor mundial de FAO-56; 1–1.5 en valles abrigados, 3–4 en costas y llanuras ventosas.</span><span data-l="en">2 m/s is the FAO-56 world value; 1–1.5 in sheltered valleys, 3–4 on windy coasts and plains.</span></span></div>
+        <div class="field"><label data-es="Ångström as / bs (con horas de sol)" data-en="Ångström as / bs (with sunshine)">Ångström as / bs</label><div class="pg-controls" style="margin:0"><input type="number" id="b5As" min="0.1" max="0.4" step="0.01" value="0.25" style="width:80px"><input type="number" id="b5Bs" min="0.3" max="0.7" step="0.01" value="0.5" style="width:80px"></div></div>
+        <div class="field"><label data-es="Albedo de la referencia" data-en="Albedo of the reference">Albedo</label><input type="number" id="b5Albedo" min="0.1" max="0.4" step="0.01" value="0.23"></div>
+        <div class="field"><label data-es="α de Priestley–Taylor" data-en="Priestley–Taylor α">α de Priestley–Taylor</label><input type="number" id="b5Alpha" min="1" max="1.6" step="0.01" value="1.26"></div>
+        <div class="field"><label data-es="Hargreaves: coeficiente y exponente" data-en="Hargreaves: coefficient and exponent">Hargreaves</label><div class="pg-controls" style="margin:0"><input type="number" id="b5HsCoef" min="0.001" max="0.004" step="0.0001" value="0.0023" style="width:90px"><input type="number" id="b5HsExp" min="0.3" max="0.7" step="0.01" value="0.5" style="width:70px"></div>
+          <span class="field-help"><span data-l="es">0.0023 y 0.5 son los originales de 1985.</span><span data-l="en">0.0023 and 0.5 are the 1985 originals.</span></span></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b5Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button><button class="btn btn-ghost btn-sm" id="b5Reset"><span data-l="es">Valores de FAO-56</span><span data-l="en">FAO-56 values</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · La ETo del sitio</span><span data-l="en">2 · The ETo of the site</span> <span data-help="eto"></span></h2>
+      <div id="b5Tiles"></div>
+      <div class="pg-status" id="b5Status"></div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">ETo por mes: cinco métodos</span><span data-l="en">ETo by month: five methods</span></div><svg id="b5Methods"></svg></div>
+      <div id="b5Monthly" style="margin-top:12px"></div>
+      <p class="hint"><span data-l="es">P20 y P80 son los percentiles entre años del promedio mensual; el P90 diario y el máximo diario son los valores de diseño de un sistema de riego, que debe poder reponer la demanda de los días más exigentes, no la del promedio.</span><span data-l="en">P20 and P80 are the between-year percentiles of the monthly mean; the daily P90 and the daily maximum are the design values of an irrigation system, which must be able to replace the demand of the most demanding days, not the average.</span></p>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b5ExportMonthly"><span data-l="es">⤓ Mensual (.csv)</span><span data-l="en">⤓ Monthly (.csv)</span></button><button class="btn btn-secondary btn-sm" id="b5ExportDaily"><span data-l="es">⤓ Diaria con todos los términos (.csv)</span><span data-l="en">⤓ Daily with every term (.csv)</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · De dónde sale la ETo</span><span data-l="en">3 · Where the ETo comes from</span> <span data-help="etoterms"></span></h2>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Todo el registro: Penman–Monteith y Hargreaves</span><span data-l="en">The whole record: Penman–Monteith and Hargreaves</span></div><svg id="b5Record"></svg></div>
+      <div class="two-col" style="margin-top:12px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Los dos términos de Penman–Monteith</span><span data-l="en">The two terms of Penman–Monteith</span></div><svg id="b5Terms"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">El balance de radiación del sitio</span><span data-l="en">The radiation budget of the site</span></div><svg id="b5Radiation"></svg></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Hargreaves calibrado contra Penman–Monteith</span><span data-l="en">4 · Hargreaves calibrated against Penman–Monteith</span> <span data-help="etocalib"></span></h2>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Día por día: Hargreaves contra Penman–Monteith</span><span data-l="en">Day by day: Hargreaves against Penman–Monteith</span></div><svg id="b5Scatter"></svg></div>
+        <div><div id="b5CalTable"></div><h4 style="margin-top:12px"><span data-l="es">Factor por mes</span><span data-l="en">Factor by month</span></h4><div id="b5CalMonths"></div></div>
+      </div>
+      <p class="callout" id="b5CalNote"></p>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">ETo anual de cada año, por método</span><span data-l="en">Annual ETo of each year, by method</span></div><svg id="b5Yearly"></svg></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">5 · Qué ETo usarán los bloques siguientes</span><span data-l="en">5 · Which ETo the next blocks will use</span></h2>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">ETo diaria para el balance y el riego</span><span data-l="en">Daily ETo for the balance and the irrigation</span>
+          <select id="b5Use"><option value="pm">Penman–Monteith FAO-56</option><option value="hs">Hargreaves–Samani</option><option value="hsk" data-es="Hargreaves × factor k" data-en="Hargreaves × factor k">Hargreaves × k</option><option value="hsr" data-es="Hargreaves corregido por regresión" data-en="Hargreaves corrected by regression">Hargreaves (regresión)</option><option value="pt">Priestley–Taylor</option><option value="turc">Turc</option></select></label>
+      </div>
+      <p class="callout tip" id="b5ChoiceLine"></p>
+      <p class="hint"><span data-l="es">Penman–Monteith es el estándar aunque lleve variables estimadas: FAO-56 lo recomienda por encima de cambiar de método. Las alternativas están para comparar y para el caso en que la estación destino solo tenga temperatura.</span><span data-l="en">Penman–Monteith is the standard even with estimated variables: FAO-56 recommends it over switching methods. The alternatives are there to compare and for the case in which the destination station only has temperature.</span></p>
+      <div class="next-bar"><button class="btn btn-primary" id="b5Continue" disabled><span data-l="es">Continuar al Bloque 6: balance hídrico →</span><span data-l="en">Continue to Block 6: water balance →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost5"></div>
+</section>
+<section class="step-panel" id="panel-6">
+  <div class="panel-title"><div class="pt-num">6</div>
+    <div><h2><span data-l="es">Balance hídrico del cultivo</span><span data-l="en">Water balance of the crop</span></h2>
+      <p><span data-l="es">El suelo como cubeta, día por día y año por año: cuánta agua pide el cultivo (ETc), cuánta le da la lluvia, cuánta le queda en la zona de raíces, cuándo sufre y cuánto rendimiento pierde en temporal. Con la ETo elegida en el Bloque 5 y la curva de Kc de FAO-56 corregida al clima del sitio.</span><span data-l="en">The soil as a bucket, day by day and year by year: how much water the crop asks for (ETc), how much the rain gives it, how much is left in the root zone, when it suffers and how much yield it loses rain-fed. With the ETo chosen in Block 5 and the FAO-56 Kc curve corrected to the site's climate.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b6Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Hacen falta la serie y la ETo</span><span data-l="en">The series and the ETo are needed</span></h3>
+    <p><span data-l="es">Carga la serie en el Bloque 2 y calcula la ETo en el Bloque 5; este bloque se calcula solo en cuanto existan.</span><span data-l="en">Load the series in Block 2 and compute the ETo in Block 5; this block computes itself as soon as they exist.</span></p>
+    <div class="btn-row" style="justify-content:center"><button class="btn btn-primary" id="b6ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button><button class="btn btn-secondary" id="b6ToEto"><span data-l="es">Ir al Bloque 5 →</span><span data-l="en">Go to Block 5 →</span></button></div>
+  </div>
+
+  <div id="b6Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Cultivo, suelo y siembra</span><span data-l="en">1 · Crop, soil and sowing</span> <span data-help="kc"></span></h2>
+      <p class="hint"><span data-l="es">Elegir el cultivo carga las longitudes de etapa, los Kc, la raíz, la fracción de agotamiento y el factor de respuesta Ky de las tablas de FAO-56 y FAO-33; elegir el suelo carga el agua disponible por metro y el número de curva. Todo es editable.</span><span data-l="en">Choosing the crop loads the stage lengths, the Kc, the root, the depletion fraction and the yield-response factor Ky of the FAO-56 and FAO-33 tables; choosing the soil loads the available water per metre and the curve number. Everything is editable.</span></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Cultivo" data-en="Crop">Cultivo</label><select id="b6Crop"></select></div>
+        <div class="field"><label data-es="Fecha de siembra" data-en="Sowing date">Fecha de siembra</label><div class="pg-controls" style="margin:0"><input type="number" id="b6SowD" min="1" max="31" value="15" style="width:64px"><select id="b6SowM"></select></div></div>
+        <div class="field"><label data-es="Etapas: ini / des / med / fin (días)" data-en="Stages: ini / dev / mid / late (days)">Etapas (días)</label><div class="pg-controls" style="margin:0"><input type="number" id="b6Lini" min="5" max="120" style="width:58px"><input type="number" id="b6Ldev" min="5" max="120" style="width:58px"><input type="number" id="b6Lmid" min="5" max="250" style="width:58px"><input type="number" id="b6Llate" min="5" max="150" style="width:58px"></div></div>
+        <div class="field"><label data-es="Kc ini / mid / end (tabla)" data-en="Kc ini / mid / end (table)">Kc ini / mid / end</label><div class="pg-controls" style="margin:0"><input type="number" id="b6KcIni" min="0.1" max="1.5" step="0.05" style="width:64px"><input type="number" id="b6KcMid" min="0.1" max="1.5" step="0.05" style="width:64px"><input type="number" id="b6KcEnd" min="0.1" max="1.5" step="0.05" style="width:64px"></div></div>
+        <div class="field"><label data-es="Raíz inicial / máxima (m)" data-en="Root initial / maximum (m)">Raíz (m)</label><div class="pg-controls" style="margin:0"><input type="number" id="b6Zini" min="0.05" max="1" step="0.05" style="width:70px"><input type="number" id="b6Zmax" min="0.2" max="3" step="0.1" style="width:70px"></div></div>
+        <div class="field"><label data-es="Fracción p (Tabla 22)" data-en="Fraction p (Table 22)">Fracción p</label> <span data-help="taw"></span><input type="number" id="b6P" min="0.1" max="0.8" step="0.05"></div>
+        <div class="field"><label data-es="Ky (FAO-33, estacional)" data-en="Ky (FAO-33, seasonal)">Ky</label> <span data-help="kyield"></span><input type="number" id="b6Ky" min="0.5" max="1.5" step="0.05"></div>
+        <div class="field"><label data-es="Suelo" data-en="Soil">Suelo</label><select id="b6Soil"></select></div>
+        <div class="field"><label data-es="Agua disponible (mm/m)" data-en="Available water (mm/m)">Agua disponible</label><input type="number" id="b6Taw" min="30" max="250" step="5"></div>
+        <div class="field"><label class="checkbox-label"><input type="checkbox" id="b6Runoff" checked> <span data-l="es">Escurrimiento por número de curva</span><span data-l="en">Runoff by curve number</span></label> <span data-help="runoff"></span><input type="number" id="b6Cn" min="30" max="98" step="1"></div>
+        <div class="field"><label data-es="Agotamiento inicial (% del ADT)" data-en="Initial depletion (% of TAW)">Agotamiento inicial</label><input type="number" id="b6Dr0" min="0" max="100" step="5" value="50">
+          <span class="field-help"><span data-l="es">50 % si se siembra al inicio de las lluvias; 0 tras un riego de presiembra.</span><span data-l="en">50 % when sowing at the start of the rains; 0 after a pre-sowing irrigation.</span></span></div>
+        <div class="field"><label class="checkbox-label"><input type="checkbox" id="b6KcCorrect" checked> <span data-l="es">Corregir Kc mid y end al viento y la humedad de la temporada (ec. 62)</span><span data-l="en">Correct Kc mid and end to the season's wind and humidity (eq. 62)</span></label></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b6Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · El balance en temporal, año por año</span><span data-l="en">2 · The rain-fed balance, year by year</span> <span data-help="ks"></span></h2>
+      <div id="b6Tiles"></div>
+      <div class="pg-status" id="b6Status"></div>
+      <div class="pg-controls" style="margin-top:12px"><label class="inline-label"><span data-l="es">Ver el año</span><span data-l="en">View the year</span> <select id="b6Year"></select></label></div>
+      <p class="hint" id="b6YearLine"></p>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Demanda: ETo, ETc, ETc real y lluvia</span><span data-l="en">Demand: ETo, ETc, actual ETc and rain</span></div><svg id="b6Demand"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Agua en la zona radical</span><span data-l="en">Water in the root zone</span> <span data-help="depletion"></span></div><svg id="b6Depletion"></svg></div>
+      </div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Todos los años: ETc, déficit y lluvia efectiva</span><span data-l="en">Every year: ETc, deficit and effective rain</span></div><svg id="b6Years"></svg></div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Rendimiento relativo de cada año (FAO-33)</span><span data-l="en">Relative yield of each year (FAO-33)</span></div><svg id="b6Yield"></svg></div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por año</span><span data-l="en">Table by year</span></summary><div id="b6YearTable"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b6ExportYears"><span data-l="es">⤓ Por año (.csv)</span><span data-l="en">⤓ By year (.csv)</span></button><button class="btn btn-secondary btn-sm" id="b6ExportDaily"><span data-l="es">⤓ Balance diario del año visto (.csv)</span><span data-l="en">⤓ Daily balance of the year shown (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · Por etapa del cultivo</span><span data-l="en">3 · By crop stage</span></h2>
+      <p class="hint"><span data-l="es">Medianas entre años. La etapa media (floración y llenado) es la que decide el rendimiento: un Ks de 0.8 ahí cuesta más que un Ks de 0.6 al final.</span><span data-l="en">Medians across years. The mid-season stage (flowering and filling) decides the yield: a Ks of 0.8 there costs more than a Ks of 0.6 at the end.</span></p>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Balance por etapa</span><span data-l="en">Balance by stage</span></div><svg id="b6Stages"></svg></div>
+        <div id="b6StageTable"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · El agua según la fecha de siembra</span><span data-l="en">4 · Water by sowing date</span> <span data-help="sowingmap"></span></h2>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Rendimiento relativo en temporal por fecha de siembra</span><span data-l="en">Rain-fed relative yield by sowing date</span></div><svg id="b6Sowing"></svg></div>
+      <p class="callout tip" id="b6SowingNote"></p>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por fecha de siembra</span><span data-l="en">Table by sowing date</span></summary><div id="b6SowingTable"></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">5 · Necesidad climática de riego, por mes</span><span data-l="en">5 · Climatic irrigation need, by month</span> <span data-help="pe"></span></h2>
+      <p class="hint"><span data-l="es">Para el pasto de referencia: la ETo del mes menos la lluvia efectiva (USDA-SCS). Es el número que un plan de riego regional o un dimensionamiento de bomba necesita antes de conocer el cultivo.</span><span data-l="en">For the reference grass: the month's ETo minus the effective rain (USDA-SCS). It is the number a regional irrigation plan or a pump sizing needs before the crop is known.</span></p>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Lluvia, lluvia efectiva, ETo y necesidad por mes</span><span data-l="en">Rain, effective rain, ETo and need by month</span></div><svg id="b6Need"></svg></div>
+      <div id="b6NeedTable" style="margin-top:12px"></div>
+      <div class="next-bar"><button class="btn btn-primary" id="b6Continue" disabled><span data-l="es">Continuar al Bloque 7: calendario de riego →</span><span data-l="en">Continue to Block 7: irrigation calendar →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost6"></div>
+</section>
+<section class="step-panel" id="panel-7">
+  <div class="panel-title"><div class="pt-num">7</div>
+    <div><h2><span data-l="es">Calendarización del riego</span><span data-l="en">Irrigation scheduling</span></h2>
+      <p><span data-l="es">Cuándo y cuánto regar: el balance del Bloque 6 vuelto calendario en cada año del registro, con el sistema y su eficiencia, cuatro estrategias comparadas, la capacidad que el sistema necesita en el pico y lo que se ahorra frente a regar por costumbre.</span><span data-l="en">When and how much to irrigate: the balance of Block 6 turned into a calendar in every year of the record, with the system and its efficiency, four strategies compared, the capacity the system needs at the peak and what is saved against irrigating by habit.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b7Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Hace falta el balance del Bloque 6</span><span data-l="en">The balance of Block 6 is needed</span></h3>
+    <p><span data-l="es">Define el cultivo, el suelo y la siembra en el Bloque 6; este bloque toma esa temporada y le pone riego.</span><span data-l="en">Define the crop, the soil and the sowing in Block 6; this block takes that season and irrigates it.</span></p>
+    <button class="btn btn-primary" id="b7ToBalance"><span data-l="es">Ir al Bloque 6 →</span><span data-l="en">Go to Block 6 →</span></button>
+  </div>
+
+  <div id="b7Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Sistema y regla de riego</span><span data-l="en">1 · System and irrigation rule</span> <span data-help="irrstrategy"></span></h2>
+      <p class="hint" id="b7Context"></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Sistema" data-en="System">Sistema</label><select id="b7System"></select></div>
+        <div class="field"><label data-es="Eficiencia de aplicación" data-en="Application efficiency">Eficiencia</label> <span data-help="efficiency"></span><input type="number" id="b7Eff" min="0.3" max="1" step="0.05" value="0.75"></div>
+        <div class="field"><label data-es="Regla" data-en="Rule">Regla</label>
+          <select id="b7Mode"><option value="raw" data-es="Al agotar el AFA (FAO-56)" data-en="At RAW depletion (FAO-56)">Al agotar el AFA</option><option value="deficit" data-es="Déficit controlado (más allá del AFA)" data-en="Controlled deficit (beyond RAW)">Déficit controlado</option><option value="interval" data-es="Intervalo fijo" data-en="Fixed interval">Intervalo fijo</option><option value="depth" data-es="Lámina fija" data-en="Fixed depth">Lámina fija</option></select></div>
+        <div class="field" id="b7DeficitWrap"><label data-es="Regar al llegar a (× AFA)" data-en="Irrigate on reaching (× RAW)">Regar al llegar a (× AFA)</label><input type="number" id="b7Deficit" min="1" max="2" step="0.05" value="1.3"></div>
+        <div class="field" id="b7IntervalWrap"><label data-es="Intervalo (días)" data-en="Interval (days)">Intervalo (días)</label><input type="number" id="b7Interval" min="1" max="30" step="1" value="7"></div>
+        <div class="field" id="b7RefillWrap"><label data-es="Lámina de cada riego" data-en="Depth of each irrigation">Lámina de cada riego</label>
+          <select id="b7Refill"><option value="refill" data-es="Rellenar a capacidad de campo" data-en="Refill to field capacity">Rellenar</option><option value="fixed" data-es="Lámina neta fija" data-en="Fixed net depth">Fija</option></select></div>
+        <div class="field" id="b7DepthWrap"><label data-es="Lámina neta (mm)" data-en="Net depth (mm)">Lámina neta (mm)</label><input type="number" id="b7Depth" min="5" max="150" step="5" value="30"></div>
+        <div class="field"><label data-es="Días sin riego antes de la cosecha" data-en="Days without irrigation before harvest">Corte antes de la cosecha</label><input type="number" id="b7Stop" min="0" max="60" step="1" value="10"></div>
+        <div class="field"><label data-es="Días sin riego tras la siembra" data-en="Days without irrigation after sowing">Sin riego tras la siembra</label><input type="number" id="b7Start" min="0" max="60" step="1" value="0"></div>
+        <div class="field"><label data-es="Intervalo mínimo del sistema (días)" data-en="Minimum interval of the system (days)">Intervalo mínimo</label><input type="number" id="b7MinInt" min="1" max="30" step="1" value="1"></div>
+        <div class="field"><label class="checkbox-label"><input type="checkbox" id="b7Presow" checked> <span data-l="es">Riego de presiembra (el suelo empieza lleno)</span><span data-l="en">Pre-sowing irrigation (the soil starts full)</span></label></div>
+        <div class="field"><label data-es="Capacidad del sistema (mm/día), opcional" data-en="System capacity (mm/day), optional">Capacidad (mm/día)</label> <span data-help="irrdesign"></span><input type="number" id="b7Capacity" min="0" max="50" step="0.5" placeholder="8">
+          <span class="field-help"><span data-l="es">Para calcular las horas de cada riego y comprobar el pico.</span><span data-l="en">To compute the hours of each irrigation and check the peak.</span></span></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b7Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · El calendario, año por año</span><span data-l="en">2 · The calendar, year by year</span> <span data-help="depletion"></span></h2>
+      <div id="b7Tiles"></div>
+      <div class="pg-status" id="b7Status"></div>
+      <div class="pg-controls" style="margin-top:12px"><label class="inline-label"><span data-l="es">Ver el año</span><span data-l="en">View the year</span> <select id="b7Year"></select></label></div>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Calendario del año: riegos, lluvia y agotamiento</span><span data-l="en">Calendar of the year: irrigations, rain and depletion</span></div><svg id="b7Calendar"></svg></div>
+      <div class="two-col" style="margin-top:12px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Agua en la zona radical</span><span data-l="en">Water in the root zone</span></div><svg id="b7Depletion"></svg></div>
+        <div><h4><span data-l="es">Los riegos del año</span><span data-l="en">The irrigations of the year</span></h4><div id="b7CalTable"></div><p class="hint" id="b7CalNote"></p>
+          <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b7ExportCal"><span data-l="es">⤓ Calendario del año (.csv)</span><span data-l="en">⤓ Calendar of the year (.csv)</span></button><button class="btn btn-secondary btn-sm" id="b7ExportYears"><span data-l="es">⤓ Todos los años (.csv)</span><span data-l="en">⤓ Every year (.csv)</span></button></div></div>
+      </div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Riego bruto y rendimiento de cada año</span><span data-l="en">Gross irrigation and yield of each year</span></div><svg id="b7Years"></svg></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · Cuatro estrategias, lado a lado</span><span data-l="en">3 · Four strategies, side by side</span></h2>
+      <p class="hint"><span data-l="es">Las mismas temporadas con cada regla, más el temporal como referencia. Usa los valores de déficit, intervalo y lámina escritos arriba.</span><span data-l="en">The same seasons with each rule, plus rain-fed as reference. It uses the deficit, interval and depth typed above.</span></p>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Agua aplicada contra rendimiento, por estrategia</span><span data-l="en">Water applied against yield, by strategy</span></div><svg id="b7Strategies"></svg></div>
+      <div id="b7StratTable" style="margin-top:12px"></div>
+      <p class="callout" id="b7StratNote"></p>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Por mes, diseño y ahorro</span><span data-l="en">4 · By month, design and savings</span> <span data-help="irrdesign"></span></h2>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Riego bruto por mes</span><span data-l="en">Gross irrigation by month</span></div><svg id="b7Monthly"></svg></div>
+        <div id="b7MonthTable"></div>
+      </div>
+      <h4 style="margin-top:14px"><span data-l="es">Para dimensionar el sistema</span><span data-l="en">To size the system</span></h4>
+      <div class="callout" id="b7Design"></div>
+      <h4 style="margin-top:14px"><span data-l="es">Frente a regar por costumbre</span><span data-l="en">Against irrigating by habit</span></h4>
+      <div class="pg-controls"><label class="inline-label"><span data-l="es">La costumbre: cada</span><span data-l="en">The habit: every</span> <input type="number" id="b7CustInt" min="1" max="30" step="1" value="10" style="width:60px"> <span data-l="es">días,</span><span data-l="en">days,</span> <input type="number" id="b7CustDepth" min="5" max="200" step="5" value="40" style="width:70px"> <span data-l="es">mm brutos</span><span data-l="en">mm gross</span></label></div>
+      <div class="callout tip" id="b7Savings"></div>
+      <div class="next-bar"><button class="btn btn-primary" id="b7Continue" disabled><span data-l="es">Continuar al Bloque 8: fenología →</span><span data-l="en">Continue to Block 8: phenology →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost7"></div>
+</section>
+<section class="step-panel" id="panel-8">
+  <div class="panel-title"><div class="pt-num">8</div>
+    <div><h2><span data-l="es">Predicción de etapas fenológicas</span><span data-l="en">Prediction of phenological stages</span></h2>
+      <p><span data-l="es">Cuándo emerge, florece y madura el cultivo en este sitio, año por año, con su tiempo térmico; cómo calibrar esos requerimientos con tus fechas de campo; si el invierno da el frío que un frutal necesita; y cómo cambia el día a lo largo del año.</span><span data-l="en">When the crop emerges, flowers and matures at this site, year by year, by its thermal time; how to calibrate those requirements with your field dates; whether the winter gives the chill a fruit tree needs; and how the day changes through the year.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b8Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2; este bloque se calcula solo en cuanto exista.</span><span data-l="en">Load and clean the daily series in Block 2; this block computes itself as soon as it exists.</span></p>
+    <button class="btn btn-primary" id="b8ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b8Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Cultivo, requerimientos y siembra</span><span data-l="en">1 · Crop, requirements and sowing</span> <span data-help="bbch"></span></h2>
+      <p class="hint"><span data-l="es">Las etapas y sus °C·d vienen del catálogo y son orientativos: edítalos, añade o quita etapas, o calíbralos abajo con fechas observadas. El código es el de la escala BBCH (o el de la escala propia del cultivo).</span><span data-l="en">The stages and their °C·d come from the catalogue and are orientative: edit them, add or remove stages, or calibrate them below with observed dates. The code is that of the BBCH scale (or the crop's own scale).</span></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Cultivo" data-en="Crop">Cultivo</label><select id="b8Crop"></select></div>
+        <div class="field"><label data-es="Método" data-en="Method">Método</label><select id="b8Method"><option value="average" data-es="Promedio" data-en="Average">Promedio</option><option value="capped" data-es="Promedio acotado (maíz)" data-en="Capped average (maize)">Acotado</option><option value="triangle" data-es="Triángulo simple" data-en="Single triangle">Triángulo</option><option value="sine" data-es="Seno simple" data-en="Single sine">Seno</option><option value="doubleTriangle" data-es="Triángulo doble" data-en="Double triangle">Triángulo doble</option><option value="doubleSine" data-es="Seno doble" data-en="Double sine">Seno doble</option></select></div>
+        <div class="field"><label data-es="Corte superior" data-en="Upper cut-off">Corte</label><select id="b8Cutoff"><option value="horizontal" data-es="Horizontal" data-en="Horizontal">Horizontal</option><option value="vertical" data-es="Vertical" data-en="Vertical">Vertical</option><option value="intermediate" data-es="Intermedio" data-en="Intermediate">Intermedio</option><option value="none" data-es="Sin corte" data-en="None">Sin corte</option></select></div>
+        <div class="field"><label data-es="Base (°C)" data-en="Base (°C)">Base</label><input type="number" id="b8Base" step="0.5" value="10"></div>
+        <div class="field"><label data-es="Umbral superior (°C)" data-en="Upper threshold (°C)">Umbral</label><input type="number" id="b8Upper" step="0.5" value="30"></div>
+        <div class="field"><label data-es="Fecha de siembra" data-en="Sowing date">Siembra</label><div class="pg-controls" style="margin:0"><input type="number" id="b8SowD" min="1" max="31" value="15" style="width:64px"><select id="b8SowM"></select></div></div>
+      </div>
+      <h4 style="margin-top:12px"><span data-l="es">Etapas y tiempo térmico acumulado desde la siembra</span><span data-l="en">Stages and thermal time accumulated from sowing</span></h4>
+      <div id="b8Stages"></div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b8Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button><button class="btn btn-ghost btn-sm" id="b8FromGdd"><span data-l="es">Tomar cultivo y fecha del Bloque 4</span><span data-l="en">Take crop and date from Block 4</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · El calendario fenológico del sitio</span><span data-l="en">2 · The phenological calendar of the site</span> <span data-help="gddvar"></span></h2>
+      <div id="b8Tiles"></div>
+      <div class="pg-status" id="b8Status"></div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Calendario fenológico: fecha mediana de cada etapa y su dispersión entre años</span><span data-l="en">Phenological calendar: median date of each stage and its spread between years</span></div><svg id="b8Calendar"></svg></div>
+      <div id="b8StageTable" style="margin-top:12px"></div>
+      <div class="pg-pane" style="margin-top:12px"><div class="pg-title"><span data-l="es">Las etapas de cada año</span><span data-l="en">The stages of every year</span></div><svg id="b8Years"></svg></div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro de fechas por año</span><span data-l="en">Table of dates by year</span></summary><div id="b8YearTable"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b8ExportStages"><span data-l="es">⤓ Fechas por año (.csv)</span><span data-l="en">⤓ Dates by year (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · Calibrar con fechas observadas</span><span data-l="en">3 · Calibrate with observed dates</span> <span data-help="calibration"></span></h2>
+      <p class="hint"><span data-l="es">Pega una línea por observación: <b>año; etapa; fecha</b> (2019; 65; 25/07/2019). La siembra de cada año es la de arriba, salvo que escribas la fecha de siembra en lugar del año (15/05/2019; 65; 25/07/2019). La app calcula los °C·d que ese año acumuló hasta cada fecha, su media y su variación entre años, y con tres o más años busca la base que menos varía (Arnold 1959).</span><span data-l="en">Paste one line per observation: <b>year; stage; date</b> (2019; 65; 25/07/2019). Each year's sowing is the one above, unless you write the sowing date instead of the year (15/05/2019; 65; 25/07/2019). The app computes the °C·d that year accumulated to each date, their mean and their variation between years, and with three or more years searches the base that varies least (Arnold 1959).</span></p>
+      <textarea id="b8Obs" rows="6" style="width:100%" data-es-ph="2019; 65; 25/07/2019&#10;2020; 65; 02/08/2020&#10;2021; 89; 20/10/2021" data-en-ph="2019; 65; 25/07/2019&#10;2020; 65; 02/08/2020"></textarea>
+      <div class="btn-row"><button class="btn btn-primary btn-sm" id="b8ObsRun"><span data-l="es">Calcular con las observaciones</span><span data-l="en">Compute with the observations</span></button><button class="btn btn-ghost btn-sm" id="b8ObsExample"><span data-l="es">Cargar observaciones de ejemplo</span><span data-l="en">Load example observations</span></button></div>
+      <div class="messages" id="b8CalMsg"></div>
+      <div class="two-col">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">°C·d observados hasta cada etapa, por año</span><span data-l="en">Observed °C·d to each stage, by year</span></div><svg id="b8CalChart"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Búsqueda de la temperatura base (Arnold)</span><span data-l="en">Base temperature search (Arnold)</span></div><svg id="b8BaseChart"></svg></div>
+      </div>
+      <div id="b8CalTable" style="margin-top:12px"></div>
+      <div class="btn-row"><button class="btn btn-primary btn-sm" id="b8CalApply" disabled><span data-l="es">Usar los requerimientos observados</span><span data-l="en">Use the observed requirements</span></button><button class="btn btn-secondary btn-sm" id="b8CalApplyBase"><span data-l="es">Usar también la base de Arnold</span><span data-l="en">Also use Arnold's base</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Frío invernal</span><span data-l="en">4 · Winter chill</span> <span data-help="chill"></span></h2>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">Invierno de</span><span data-l="en">Winter from</span> <select id="b8ChillStart"></select> <span data-l="es">a</span><span data-l="en">to</span> <select id="b8ChillEnd"></select> <span data-help="chillwindow"></span></label>
+        <label class="inline-label"><span data-l="es">Requerimiento</span><span data-l="en">Requirement</span> <input type="number" id="b8ChillReq" min="0" max="3000" step="5" value="50" style="width:80px"> <select id="b8ChillUnit"><option value="cp" data-es="porciones (dinámico)" data-en="portions (Dynamic)">porciones</option><option value="utah" data-es="unidades Utah" data-en="Utah units">Utah</option><option value="hours" data-es="horas frío (0–7.2 °C)" data-en="chill hours (0–7.2 °C)">horas frío</option></select></label>
+        <label class="inline-label"><span data-l="es">GDH a floración (opcional)</span><span data-l="en">GDH to bloom (optional)</span> <span data-help="gdh"></span> <input type="number" id="b8Gdh" min="0" max="20000" step="100" placeholder="6000" style="width:90px"></label>
+      </div>
+      <p class="hint" id="b8ChillNote"></p>
+      <div id="b8ChillTiles"></div>
+      <div class="pg-status" id="b8ChillStatus"></div>
+      <div class="two-col" style="margin-top:12px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Acumulación de frío de cada invierno</span><span data-l="en">Chill accumulation of every winter</span></div><svg id="b8ChillCurves"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Frío total de cada invierno</span><span data-l="en">Total chill of every winter</span></div><svg id="b8ChillYears"></svg></div>
+      </div>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por invierno</span><span data-l="en">Table by winter</span></summary><div id="b8ChillTable"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b8ExportChill"><span data-l="es">⤓ Frío por invierno (.csv)</span><span data-l="en">⤓ Chill by winter (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">5 · Fotoperiodo</span><span data-l="en">5 · Photoperiod</span> <span data-help="photoperiod"></span></h2>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Duración del día a lo largo del año</span><span data-l="en">Day length through the year</span></div><svg id="b8Photo"></svg></div>
+      <p class="callout" id="b8PhotoText"></p>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro mensual</span><span data-l="en">Monthly table</span></summary><div id="b8PhotoTable"></div></details>
+      <div class="next-bar"><button class="btn btn-primary" id="b8Continue" disabled><span data-l="es">Continuar al Bloque 9: riesgos y escenarios →</span><span data-l="en">Continue to Block 9: risks and scenarios →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost8"></div>
+</section>
+<section class="step-panel" id="panel-9">
+  <div class="panel-title"><div class="pt-num">9</div>
+    <div><h2><span data-l="es">Riesgos y escenarios</span><span data-l="en">Risks and scenarios</span></h2>
+      <p><span data-l="es">Qué puede salir mal y cuándo: la helada y el golpe de calor en cada etapa del cultivo, la ventana de siembra que junta calor, agua y heladas en una sola probabilidad de éxito, y qué le pasa al calendario del cultivo, a la demanda de agua y al frío invernal si el sitio se calienta 1, 2 o 3 °C.</span><span data-l="en">What can go wrong and when: frost and heat shock at each stage of the crop, the sowing window that joins heat, water and frost in a single probability of success, and what happens to the crop calendar, the water demand and the winter chill if the site warms by 1, 2 or 3 °C.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b9Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2; este bloque se calcula solo en cuanto exista (y aprovecha lo que hayas definido en los Bloques 3, 5, 6 y 8).</span><span data-l="en">Load and clean the daily series in Block 2; this block computes itself as soon as it exists (and uses whatever you defined in Blocks 3, 5, 6 and 8).</span></p>
+    <button class="btn btn-primary" id="b9ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b9Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Cultivo, umbrales y criterios</span><span data-l="en">1 · Crop, thresholds and criteria</span> <span data-help="heatstress"></span></h2>
+      <p class="hint" id="b9Context"></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Cultivo" data-en="Crop">Cultivo</label><select id="b9Crop"></select></div>
+        <div class="field"><label data-es="Fecha de siembra (para el riesgo por etapa)" data-en="Sowing date (for the risk by stage)">Fecha de siembra</label><div class="pg-controls" style="margin:0"><input type="number" id="b9SowD" min="1" max="31" value="15" style="width:64px"><select id="b9SowM"></select></div></div>
+        <div class="field"><label data-es="Helada: Tmin ≤ (°C)" data-en="Frost: Tmin ≤ (°C)">Helada</label><input type="number" id="b9Frost" step="0.5" value="0"></div>
+        <div class="field"><label data-es="Golpe de calor: Tmax ≥ (°C)" data-en="Heat shock: Tmax ≥ (°C)">Golpe de calor</label><input type="number" id="b9Heat" step="0.5" value="35"></div>
+        <div class="field"><label data-es="Etapa sensible" data-en="Sensitive stage">Etapa sensible</label><select id="b9Sensitive"></select></div>
+        <div class="field"><label data-es="La helada cuenta en" data-en="Frost counts in">La helada cuenta en</label><select id="b9FrostWhere"><option value="sensitive" data-es="la etapa sensible" data-en="the sensitive stage">la etapa sensible</option><option value="cycle" data-es="todo el ciclo" data-en="the whole cycle">todo el ciclo</option></select></div>
+        <div class="field"><label class="checkbox-label"><input type="checkbox" id="b9UseWater" checked> <span data-l="es">Exigir agua suficiente en temporal (balance del Bloque 6)</span><span data-l="en">Require enough water rain-fed (balance of Block 6)</span></label></div>
+        <div class="field"><label data-es="Rendimiento relativo mínimo (%)" data-en="Minimum relative yield (%)">Rendimiento mínimo</label><input type="number" id="b9YieldMin" min="30" max="100" step="5" value="75"></div>
+        <div class="field"><label data-es="Éxito objetivo (% de los años)" data-en="Target success (% of years)">Éxito objetivo</label> <span data-help="sowingwindow"></span><input type="number" id="b9Target" min="50" max="100" step="5" value="80"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b9Run"><span data-l="es">↻ Recalcular</span><span data-l="en">↻ Recompute</span></button></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · Helada y golpe de calor por etapa</span><span data-l="en">2 · Frost and heat shock by stage</span> <span data-help="frost"></span></h2>
+      <div id="b9Tiles"></div>
+      <div class="pg-status" id="b9StageStatus"></div>
+      <div class="two-col" style="margin-top:12px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Años con helada y con calor en cada etapa</span><span data-l="en">Years with frost and with heat at each stage</span></div><svg id="b9ByStage"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Probabilidad de helada y de calor cada día del año</span><span data-l="en">Probability of frost and heat on each day of the year</span></div><svg id="b9ByDate"></svg></div>
+      </div>
+      <div id="b9StageTable" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · La ventana de siembra</span><span data-l="en">3 · The sowing window</span> <span data-help="season"></span></h2>
+      <p class="hint"><span data-l="es">El cultivo se siembra cada cinco días del año en todos los años del registro. Para cada fecha y cada año se comprueba si maduró, si la etapa sensible (o el ciclo) escapó de la helada, si escapó del golpe de calor y si el agua de temporal bastó. El «éxito» exige las cuatro cosas en el mismo año.</span><span data-l="en">The crop is sown every five days of the year in every year of the record. For each date and year it is checked whether it matured, whether the sensitive stage (or the cycle) escaped frost, whether it escaped heat shock and whether rain-fed water sufficed. "Success" requires all four in the same year.</span></p>
+      <div class="pg-pane"><div class="pg-title"><span data-l="es">Ventana de siembra: cada criterio y su conjunción</span><span data-l="en">Sowing window: each criterion and their conjunction</span></div><svg id="b9Window"></svg></div>
+      <p class="callout tip" id="b9WindowNote"></p>
+      <details class="acc-plain"><summary><span data-l="es">Cuadro por fecha de siembra (cada diez días)</span><span data-l="en">Table by sowing date (every ten days)</span></summary><div id="b9WindowTable"></div>
+        <div class="btn-row"><button class="btn btn-secondary btn-sm" id="b9ExportWindow"><span data-l="es">⤓ Ventana completa (.csv)</span><span data-l="en">⤓ Full window (.csv)</span></button></div></details>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Escenarios: si el sitio se calienta</span><span data-l="en">4 · Scenarios: if the site warms</span> <span data-help="scenarios"></span></h2>
+      <div class="pg-controls">
+        <label class="inline-label"><span data-l="es">Aumentos de temperatura (°C)</span><span data-l="en">Temperature increases (°C)</span> <input type="text" id="b9Deltas" value="1, 2, 3" style="width:90px"></label>
+        <label class="inline-label"><span data-l="es">Cambio de la lluvia (%)</span><span data-l="en">Rain change (%)</span> <input type="number" id="b9DeltaP" min="-50" max="50" step="5" value="0" style="width:70px"></label>
+        <label class="inline-label"><input type="checkbox" id="b9Chill"> <span data-l="es">Incluir el frío invernal (porciones)</span><span data-l="en">Include winter chill (portions)</span> <input type="number" id="b9ChillReq" min="5" max="120" step="5" value="40" style="width:64px"> CP</label>
+      </div>
+      <div id="b9ScenTable"></div>
+      <div class="two-col" style="margin-top:12px">
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">Cada indicador respecto al clima actual</span><span data-l="en">Each indicator relative to the current climate</span></div><svg id="b9Scenarios"></svg></div>
+        <div class="pg-pane"><div class="pg-title"><span data-l="es">El calendario del cultivo en cada escenario</span><span data-l="en">The crop calendar in each scenario</span></div><svg id="b9ScenCalendar"></svg></div>
+      </div>
+      <p class="callout warn" id="b9ScenStatus"></p>
+      <div class="next-bar"><button class="btn btn-primary" id="b9Continue" disabled><span data-l="es">Continuar al Bloque 10: figuras e informe →</span><span data-l="en">Continue to Block 10: figures and report →</span></button></div>
+    </div>
+  </div>
+  <div id="helpGuideHost9"></div>
+</section>
+<section class="step-panel" id="panel-10">
+  <div class="panel-title"><div class="pt-num">10</div>
+    <div><h2><span data-l="es">Figuras, informe y paquete</span><span data-l="en">Figures, report and package</span></h2>
+      <p><span data-l="es">Todo lo que calculaste, listo para salir de la app: cada figura del estudio en PNG, JPG o SVG hasta 900 ppp con el estilo que elijas; un informe que se abre en cualquier navegador y se imprime a PDF, con los métodos redactados a partir de lo que realmente corriste; y un .zip con el informe, las figuras, los cuadros y el proyecto que lo reproduce.</span><span data-l="en">Everything you computed, ready to leave the app: every figure of the study in PNG, JPG or SVG up to 900 dpi in the style you choose; a report that opens in any browser and prints to PDF, with the methods written from what you actually ran; and a .zip with the report, the figures, the tables and the project that reproduces it.</span></p></div>
+  </div>
+
+  <div class="soon-box" id="b10Empty"><div class="soon-art"></div>
+    <h3><span data-l="es">Primero hace falta una serie</span><span data-l="en">A series is needed first</span></h3>
+    <p><span data-l="es">Carga y limpia la serie diaria en el Bloque 2 y visita los bloques que quieras incluir; este bloque reúne lo que exista.</span><span data-l="en">Load and clean the daily series in Block 2 and visit the blocks you want to include; this block gathers whatever exists.</span></p>
+    <button class="btn btn-primary" id="b10ToData"><span data-l="es">Ir al Bloque 2 →</span><span data-l="en">Go to Block 2 →</span></button>
+  </div>
+
+  <div id="b10Body" style="display:none">
+    <div class="card">
+      <h2><span data-l="es">1 · Estado del estudio</span><span data-l="en">1 · State of the study</span> <span data-help="reproducible"></span></h2>
+      <p class="callout" id="b10StateMsg"></p>
+      <div class="b10-state" id="b10State"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">2 · Catálogo de figuras</span><span data-l="en">2 · Catalogue of figures</span> <span data-help="figformat"></span></h2>
+      <p class="hint"><span data-l="es">Todas las figuras dibujadas hasta ahora. Marca las que quieras, elige formato y resolución, y expórtalas de una vez; el estilo (paleta, fuente, fondo) es el del estudio de figuras y se aplica a todas por igual. Con más de seis figuras la descarga llega en un .zip, porque el navegador bloquea muchas descargas seguidas.</span><span data-l="en">Every figure drawn so far. Tick the ones you want, choose format and resolution, and export them at once; the style (palette, font, background) is the one of the figure studio and applies to all alike. With more than six figures the download comes as a .zip, because the browser blocks many downloads in a row.</span></p>
+      <div class="pg-controls b10-controls">
+        <label class="inline-label"><span data-l="es">Formato</span><span data-l="en">Format</span><select id="b10Format"><option value="png">PNG</option><option value="jpg">JPG</option><option value="svg">SVG</option></select></label>
+        <label class="inline-label" id="b10DpiWrap"><span data-l="es">Resolución</span><span data-l="en">Resolution</span> <span data-help="dpi"></span><select id="b10Dpi"><option value="150" data-es="150 ppp · pantalla" data-en="150 dpi · screen">150 ppp · pantalla</option><option value="300" selected data-es="300 ppp · impresión" data-en="300 dpi · print">300 ppp · impresión</option><option value="600" data-es="600 ppp · revista" data-en="600 dpi · journal">600 ppp · revista</option><option value="900" data-es="900 ppp · cartel" data-en="900 dpi · poster">900 ppp · cartel</option></select></label>
+        <label class="inline-label"><span data-l="es">Tema</span><span data-l="en">Theme</span><select id="b10Theme"><option value="light" data-es="claro" data-en="light">claro</option><option value="dark" data-es="oscuro" data-en="dark">oscuro</option><option value="auto" data-es="el de la pantalla" data-en="the one on screen">el de la pantalla</option></select></label>
+        <label class="inline-label"><span data-l="es">Fondo</span><span data-l="en">Background</span><select id="b10Bg"><option value="auto" data-es="según el estilo" data-en="as styled">según el estilo</option><option value="white" data-es="blanco" data-en="white">blanco</option><option value="card" data-es="tarjeta" data-en="card">tarjeta</option><option value="none" data-es="transparente" data-en="transparent">transparente</option></select></label>
+        <label class="checkbox-label"><input type="checkbox" id="b10WithTitle" checked> <span data-l="es">Con título dentro de la figura</span><span data-l="en">With the title inside the figure</span></label>
+        <button class="btn btn-secondary btn-sm" id="b10Style"><span data-l="es">Estudio de figuras</span><span data-l="en">Figure studio</span></button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="b10ExportSel"><span data-l="es">⤓ Exportar las seleccionadas</span><span data-l="en">⤓ Export the selected ones</span></button>
+        <button class="btn btn-secondary" id="b10ZipFigs"><span data-l="es">Todas las seleccionadas en un .zip</span><span data-l="en">All the selected ones in a .zip</span></button>
+        <button class="btn btn-ghost btn-sm" id="b10SelAll"><span data-l="es">Marcar todas</span><span data-l="en">Select all</span></button>
+        <button class="btn btn-ghost btn-sm" id="b10SelNone"><span data-l="es">Ninguna</span><span data-l="en">None</span></button>
+        <span class="chip" id="b10CatCount"></span>
+      </div>
+      <div class="pg-status" id="b10CatStatus"></div>
+      <div class="b10-catalogue" id="b10Catalogue"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">3 · Informe</span><span data-l="en">3 · Report</span> <span data-help="reportmethods"></span></h2>
+      <p class="hint"><span data-l="es">Un solo archivo .html, sin dependencias, con el resumen, una sección por bloque calculado (cuadros y figuras incluidos), los métodos redactados a partir de lo que realmente se corrió, las referencias de esos métodos y el registro de cálculo. Ábrelo en cualquier navegador; para el PDF usa Imprimir → Guardar como PDF.</span><span data-l="en">One .html file, no dependencies, with the summary, one section per computed block (tables and figures included), the methods written from what was actually run, the references of those methods and the calculation record. Open it in any browser; for the PDF use Print → Save as PDF.</span></p>
+      <div class="form-grid">
+        <div class="field"><label data-es="Título del informe" data-en="Report title">Título del informe</label><input type="text" id="b10Title" placeholder=""></div>
+        <div class="field"><label data-es="Autoría" data-en="Authorship">Autoría</label><input type="text" id="b10Author" placeholder="—"></div>
+      </div>
+      <div class="b10-sections" id="b10Sections"></div>
+      <label class="checkbox-label"><input type="checkbox" id="b10Appendix" checked> <span data-l="es">Anexo con el registro de cálculo (todos los parámetros)</span><span data-l="en">Appendix with the calculation record (every parameter)</span></label>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="b10Preview_btn"><span data-l="es">Vista previa</span><span data-l="en">Preview</span></button>
+        <button class="btn btn-primary" id="b10Download"><span data-l="es">⤓ Descargar informe .html</span><span data-l="en">⤓ Download report .html</span></button>
+        <button class="btn btn-secondary" id="b10Print"><span data-l="es">Imprimir a PDF</span><span data-l="en">Print to PDF</span></button>
+      </div>
+      <div class="pg-status" id="b10ReportStatus"></div>
+      <div id="b10PreviewWrap" style="display:none"><iframe id="b10Preview" class="b10-preview" title="Report preview"></iframe></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-l="es">4 · Paquete reproducible</span><span data-l="en">4 · Reproducible package</span> <span data-help="reproducible"></span></h2>
+      <p class="hint"><span data-l="es">Un .zip escrito por la propia app: el informe, el proyecto que lo reproduce, el registro de cálculo, los cuadros en .csv y las figuras seleccionadas en el catálogo (en el formato y la resolución elegidos arriba). Es lo que se entrega con el artículo, la tesis o el dictamen.</span><span data-l="en">A .zip written by the app itself: the report, the project that reproduces it, the calculation record, the tables as .csv and the figures selected in the catalogue (in the format and resolution chosen above). It is what goes with the paper, the thesis or the technical opinion.</span></p>
+      <ul class="b10-pkglist" id="b10PkgList"></ul>
+      <div class="pg-controls">
+        <label class="checkbox-label"><input type="checkbox" id="b10PkgFigs" checked> <span data-l="es">Incluir las figuras seleccionadas</span><span data-l="en">Include the selected figures</span></label>
+        <label class="checkbox-label"><input type="checkbox" id="b10PkgSvgToo" checked> <span data-l="es">y además en SVG (editable)</span><span data-l="en">and also as SVG (editable)</span></label>
+      </div>
+      <div class="btn-row"><button class="btn btn-accent btn-lg" id="b10Build"><span data-l="es">⤓ Construir y descargar el paquete .zip</span><span data-l="en">⤓ Build and download the .zip package</span></button></div>
+      <div class="pg-status" id="b10PkgStatus"></div>
+    </div>
+
+    <div id="helpGuideHost10"></div>
+  </div>
+</section>
+
+</main>
+
+<script src="js/core.js"></script>
+<script src="js/agromet.js"></script>
+<script src="js/crops.js"></script>
+<script src="js/climate.js"></script>
+<script src="js/art.js"></script>
+<script src="js/plotkit.js"></script>
+<script src="js/figstyle.js"></script>
+<script src="js/figure.js"></script>
+<script src="js/help.js"></script>
+<script src="js/playground.js"></script>
+<script src="js/wxio.js"></script>
+<script src="js/plots2.js"></script>
+<script src="js/block2.js"></script>
+<script src="js/climate3.js"></script>
+<script src="js/plots3.js"></script>
+<script src="js/block3.js"></script>
+<script src="js/thermal4.js"></script>
+<script src="js/plots4.js"></script>
+<script src="js/block4.js"></script>
+<script src="js/eto5.js"></script>
+<script src="js/plots5.js"></script>
+<script src="js/block5.js"></script>
+<script src="js/water6.js"></script>
+<script src="js/plots6.js"></script>
+<script src="js/block6.js"></script>
+<script src="js/irrig7.js"></script>
+<script src="js/plots7.js"></script>
+<script src="js/block7.js"></script>
+<script src="js/pheno8.js"></script>
+<script src="js/plots8.js"></script>
+<script src="js/block8.js"></script>
+<script src="js/risk9.js"></script>
+<script src="js/plots9.js"></script>
+<script src="js/block9.js"></script>
+<script src="js/zip.js"></script>
+<script src="js/report.js"></script>
+<script src="js/block10.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

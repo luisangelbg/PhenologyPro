@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b8" data-pestana="B8" data-orden="8" style="--acento: var(--b8)">
+  <div class="cap-apertura">
+    <div class="cap-num">8</div>
+    <div class="cap-etiqueta">Bloque 8 · Fenología</div>
+    <h1>Predicción de etapas fenológicas</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Cuándo emerge, cuándo florece, cuándo madura. Las etapas del cultivo en la escala BBCH fechadas por su tiempo térmico en cada año del registro, con su fecha mediana y su dispersión; la calibración de los requerimientos con tus propias fechas observadas y la búsqueda de la temperatura base que menos varía; el frío del invierno para los frutales caducifolios en horas frío, unidades Utah y porciones de frío; y el fotoperiodo del sitio.</p>
+    <ul class="cap-contenido">
+      <li><b>8.1</b>Fechar la fenología</li>
+      <li><b>8.2</b>Cultivo, requerimientos y siembra</li>
+      <li><b>8.3</b>El calendario fenológico del sitio</li>
+      <li><b>8.4</b>Calibrar con fechas observadas</li>
+      <li><b>8.5</b>El frío invernal</li>
+      <li><b>8.6</b>El fotoperiodo</li>
+      <li><b>8.7</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 8.1 -->
+  <h2 id="s8-1"><span class="num">8.1</span>Fechar la fenología</h2>
+  <p class="lead">Un modelo fenológico de tiempo térmico tiene dos partes: la <b>escala</b> que nombra las etapas y el <b>requerimiento</b> de cada una en grados-día. La escala es la BBCH (Meier 2018): un código de dos cifras, igual para todos los cultivos, donde 09 es la emergencia, 65 la plena floración y 89 la madurez fisiológica; los cereales conservan además su código propio (V6, VT/R1, R6 en el maíz). El requerimiento es el que el Bloque 4 acumula: la etapa cae el día en que la suma desde la siembra cruza su valor.</p>
+  <p>El catálogo trae, para cada cultivo anual, cinco o seis etapas con requerimientos tomados de la literatura de extensión, y los llama <b>orientativos</b> en cada pantalla. Un requerimiento publicado en Iowa para un híbrido de 110 días no es el de un criollo del Bajío. Por eso la tarjeta de calibración es el corazón del bloque: con dos o tres años de fechas observadas en la parcela, la app calcula los requerimientos de <i>tu</i> cultivar en <i>tu</i> sitio, dice qué tan estables son y busca la base que los hace más estables.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · por qué el tiempo térmico y no el calendario</div>
+    <p>Si la fenología dependiera del calendario, la floración caería siempre a los mismos días de la siembra. No lo hace: en el Bajío, el maíz sembrado el 15 de mayo floreció entre el 12 y el 26 de julio según el año. Si depende del calor, los °C·d hasta la floración deben variar menos entre años que los días. Ese es el criterio de Arnold (1959) para elegir la base: la temperatura base correcta es la que hace mínimo el coeficiente de variación del tiempo térmico entre años. La app lo aplica en la tarjeta 3 y compara el CV en °C·d con el CV en días.</p>
+  </div>
+
+  <!-- 8.2 -->
+  <h2 id="s8-2"><span class="num">8.2</span>Cultivo, requerimientos y siembra</h2>
+  <figure>
+    <div class="marco"><img src="../img/b8-params.png" alt="La tarjeta 1 del Bloque 8: cultivo, método, corte, base, umbral, fecha de siembra y la tabla editable de etapas con su código BBCH, su nombre y sus grados-día"></div>
+    <figcaption><b>Figura 8.1.</b> El maíz del Bajío: promedio acotado, base 10, umbral 30, siembra el 15 de mayo, y la tabla de etapas del catálogo, que se edita renglón por renglón. <span class="ui">Tomar cultivo y fecha del Bloque 4</span> hereda lo elegido allá.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1in">BBCH</th><th>Etapa</th><th class="c" style="width:1in">°C·d</th></tr></thead>
+    <tbody>
+      <tr><td>09</td><td>Emergencia</td><td class="c">65</td></tr>
+      <tr><td>16</td><td>Seis hojas (V6)</td><td class="c">300</td></tr>
+      <tr><td>65</td><td>Floración (VT/R1)</td><td class="c">780</td></tr>
+      <tr><td>75</td><td>Grano lechoso (R3)</td><td class="c">950</td></tr>
+      <tr><td>89</td><td>Madurez fisiológica (R6)</td><td class="c">1,450</td></tr>
+    </tbody>
+  </table>
+  <p>La tabla se edita: cada celda acepta un valor nuevo, la ✕ quita una etapa, <span class="ui">Añadir etapa</span> agrega un renglón y <span class="ui">Valores del catálogo</span> restaura los originales. El método, la base y el umbral son los mismos del Bloque 4 y conviene que coincidan con la fuente del requerimiento. Los frutales caducifolios traen su escala propia (61 floración, 89 madurez) y la fecha es la del inicio de la brotación.</p>
+
+  <!-- 8.3 -->
+  <h2 id="s8-3"><span class="num">8.3</span>El calendario fenológico del sitio</h2>
+  <figure>
+    <div class="marco"><img src="../img/b8-calendario.png" alt="Los cuatro recuadros del calendario fenológico y la figura del calendario: la fecha mediana de cada etapa y su dispersión entre años"></div>
+    <figcaption><b>Figura 8.2.</b> El calendario fenológico del maíz del Bajío sembrado el 15 de mayo: floración el 20 de julio (del 16 al 23 en el 60 % central de los años), madurez el 10 de octubre a los 148 días, con ± 8 días de desviación entre años.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:0.6in">BBCH</th><th>Etapa</th><th class="c">°C·d</th><th class="c">Fecha mediana</th><th class="c">Días</th><th class="c">P20</th><th class="c">P80</th><th class="c">± días</th><th class="c">Años que la alcanzan</th></tr></thead>
+    <tbody>
+      <tr><td>09</td><td>Emergencia</td><td class="c">65</td><td class="c">20 may</td><td class="c">5</td><td class="c">20 may</td><td class="c">21 may</td><td class="c">1</td><td class="c">100 %</td></tr>
+      <tr><td>16</td><td>Seis hojas (V6)</td><td class="c">300</td><td class="c">8 jun</td><td class="c">24</td><td class="c">6 jun</td><td class="c">9 jun</td><td class="c">2</td><td class="c">100 %</td></tr>
+      <tr><td>65</td><td>Floración (VT/R1)</td><td class="c">780</td><td class="c">20 jul</td><td class="c">66</td><td class="c">16 jul</td><td class="c">23 jul</td><td class="c">4</td><td class="c">100 %</td></tr>
+      <tr><td>75</td><td>Grano lechoso (R3)</td><td class="c">950</td><td class="c">6 ago</td><td class="c">83</td><td class="c">2 ago</td><td class="c">10 ago</td><td class="c">4</td><td class="c">100 %</td></tr>
+      <tr><td>89</td><td>Madurez fisiológica (R6)</td><td class="c">1,450</td><td class="c">10 oct</td><td class="c">148</td><td class="c">6 oct</td><td class="c">19 oct</td><td class="c">8</td><td class="c">100 %</td></tr>
+    </tbody>
+  </table>
+  <p>La dispersión crece con la etapa: un día en la emergencia, cuatro en la floración, ocho en la madurez, porque el otoño paga el calor más despacio y una semana fresca retrasa mucho. La figura de las etapas de cada año, y su cuadro (<span class="ui">⤓ Fechas por año (.csv)</span>), dan la fecha de cada etapa en cada uno de los veinte años: la madurez más temprana fue el 27 de septiembre de 2016 y la más tardía el 25 de octubre de 2025.</p>
+  <figure>
+    <div class="marco"><img src="../img/b8-tabla.png" alt="La tabla del calendario fenológico y la figura de las etapas de cada año"></div>
+    <figcaption><b>Figura 8.3.</b> La tabla del calendario y las etapas de cada año, una fila por año: se ve de un vistazo qué años adelantaron y cuáles atrasaron.</figcaption>
+  </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Del Bloque 4 al Bloque 8 cambia la fecha de siembra</div>
+    <p>El Bloque 4 sembró el 15 de abril para explorar el calor; el Bloque 8 hereda del Bloque 6 la siembra del 15 de mayo, con las lluvias, que es la que el estudio sigue de aquí en adelante. Por eso la madurez pasa de 127 a 148 días: sembrar un mes más tarde mete el llenado de grano en octubre, cuando el calendario térmico va a 6 °C·d por día. El Bloque 9 cruza esa fecha con el agua y las heladas.</p>
+  </div>
+
+  <!-- 8.4 -->
+  <h2 id="s8-4"><span class="num">8.4</span>Calibrar con fechas observadas</h2>
+  <p>La tarjeta 3 recibe las fechas que se hayan observado en campo, una línea por observación: <code>año; etapa; fecha</code> (por ejemplo <code>2019; 65; 25/07/2019</code>). Si la siembra de ese año no fue la de arriba, se escribe la fecha de siembra en lugar del año: <code>15/05/2019; 65; 25/07/2019</code>. Para cada observación la app calcula los °C·d que ese año acumuló desde la siembra hasta esa fecha; con ellos, la media y la variación de cada etapa entre años; y con tres o más años, la base de Arnold.</p>
+  <figure>
+    <div class="marco"><img src="../img/b8-calib.png" alt="La tabla de calibración con las observaciones de ejemplo, la figura de los grados-día observados hasta cada etapa por año y la búsqueda de la temperatura base"></div>
+    <figcaption><b>Figura 8.4.</b> La calibración con las observaciones de ejemplo (diez años, floración y madurez): la tabla con el catálogo contra lo observado, los °C·d observados por año y la curva de la búsqueda de la base con su mínimo.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · las observaciones de ejemplo</div>
+    <p><span class="ui">Cargar observaciones de ejemplo</span> escribe veinte fechas ficticias de floración y madurez de diez años alternos, y <span class="ui">Calcular con las observaciones</span> las lee: <i>«20 observaciones de 20 leídas. Con la etapa 65 (10 años), el tiempo térmico varía menos entre años con base 13.5 °C (CV 3.5 %) frente a 3.6 % con la base actual de 10.0 °C; considera cambiarla.»</i></p>
+    <table class="compacta" style="margin-top:0.08in">
+      <thead><tr><th>BBCH</th><th>Etapa</th><th class="c">Años</th><th class="c">Catálogo</th><th class="c">Observado (media)</th><th class="c">Mín.</th><th class="c">Máx.</th><th class="c">CV</th><th class="c">Días (media)</th><th class="c">CV en días</th></tr></thead>
+      <tbody>
+        <tr><td>65</td><td>Floración</td><td class="c">10</td><td class="c">780</td><td class="c">796</td><td class="c">755</td><td class="c">846</td><td class="c">3.6 % <i>excelente</i></td><td class="c">66</td><td class="c">8.1 %</td></tr>
+        <tr><td>89</td><td>Madurez</td><td class="c">10</td><td class="c">1,450</td><td class="c">1,450</td><td class="c">1,423</td><td class="c">1,480</td><td class="c">1.3 % <i>excelente</i></td><td class="c">149</td><td class="c">6.4 %</td></tr>
+      </tbody>
+    </table>
+    <p>Los °C·d observados varían 3.6 % entre años y los días 8.1 %: el tiempo térmico explica la floración mejor que el calendario, que es lo que un modelo de grados-día promete. La diferencia entre la base actual (CV 3.6 %) y la de Arnold (3.5 %) es despreciable aquí, así que no vale la pena cambiar la base; <span class="ui">Usar también la base de Arnold</span> la aplicaría. Las observaciones de ejemplo se generaron con el propio modelo y por eso calzan tan bien: con fechas reales los CV son mayores y ahí es donde la tabla informa de verdad.</p>
+  </div>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · qué tan calibrable es la etapa</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el CV del tiempo térmico a la etapa es menor de 5 %</td><td><b>entonces</b> excelente: usa la media observada como requerimiento.</td></tr>
+      <tr><td><b>Si</b> está entre 5 y 10 %</td><td><b>entonces</b> bueno: úsala y reporta el rango.</td></tr>
+      <tr><td><b>Si</b> está entre 10 y 20 %</td><td><b>entonces</b> utilizable: revisa la base (Arnold) y el fotoperiodo.</td></tr>
+      <tr><td><b>Si</b> pasa de 20 %</td><td><b>entonces</b> otra cosa manda: agua, fotoperiodo o cultivar; el tiempo térmico solo no basta.</td></tr>
+      <tr><td><b>Si</b> el CV en °C·d no es menor que el CV en días</td><td><b>entonces</b> el modelo térmico no gana nada al calendario para esa etapa.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Escala de la ficha <i>Calibrar los requerimientos térmicos</i>. Con dos años no hay CV que valga; con tres empieza a decir algo; con cinco se puede publicar.</p>
+  </div>
+
+  <!-- 8.5 -->
+  <h2 id="s8-5"><span class="num">8.5</span>El frío invernal</h2>
+  <p>Manzano, durazno, peral, nogal: los caducifolios entran en reposo en otoño y necesitan una dosis de frío para salir de él y florecer parejo. Si el invierno no la da, la brotación se retrasa y se desordena, y la cosecha se pierde. La tarjeta 4 la cuenta con los tres modelos que se usan, sobre la ventana de invierno que se elija (de noviembre a febrero en el hemisferio norte por omisión).</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Modelo</th><th>Cómo cuenta</th></tr></thead>
+    <tbody>
+      <tr><td><b>Horas frío</b> (Weinberger 1950)</td><td>Cada hora entre 0 y 7.2 °C vale una. Simple y todavía muy citada; no descuenta el calor.</td></tr>
+      <tr><td><b>Unidades Utah</b> (Richardson, Seeley y Walker 1974)</td><td>Cada hora vale entre −1 y +1 según su temperatura: máximo entre 2.5 y 9.1 °C, cero cerca de 0 y de 13 °C, negativo por encima de 16 °C. En climas cálidos el total puede salir negativo, y entonces el modelo no sirve.</td></tr>
+      <tr><td><b>Porciones de frío</b>, modelo dinámico (Fishman, Erez y Couvillon 1987)</td><td>El frío se acumula en un intermediario que el calor puede destruir hasta que se fija en una porción; una porción fijada ya no se pierde. Es el modelo más robusto en climas templados cálidos y el que se recomienda comparar entre sitios (Luedeling 2012).</td></tr>
+    </tbody>
+  </table>
+  <p>Los tres necesitan temperaturas horarias. Cuando la estación solo da máxima y mínima, la app reconstruye las 24 horas de cada día con el método de <b>Linvill (1990)</b>: una senoide de día y un enfriamiento logarítmico de noche, con la duración del día que salen de la latitud y la fecha. El sello del Bloque 2 lo anuncia: <i>«Frío invernal (horas estimadas de Tmax/Tmin)»</i>.</p>
+  <p>El Bajío no es sitio de caducifolios (12.4 porciones en el invierno mediano, <i>muy poco frío</i>; las unidades Utah salen negativas y la app advierte que ahí no valen). Para enseñar la tarjeta se usa el <b>Valle templado (2 250 m)</b> con el manzano:</p>
+  <figure>
+    <div class="marco"><img src="../img/b8-frio.png" alt="Los cuatro recuadros del frío invernal del Valle templado con el manzano, la acumulación de frío de cada invierno y el frío total de cada invierno"></div>
+    <figcaption><b>Figura 8.5.</b> El frío del Valle templado: 27 porciones en el invierno mediano, 392 unidades Utah, 541 horas frío; la acumulación día a día de cada invierno y el total de cada uno contra el requerimiento del manzano.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el manzano en el Valle templado</div>
+    <p style="font-style:italic">«Entre noviembre y febrero el sitio acumula 27.0 porciones de frío en el invierno mediano y 21.2 en uno de cada cinco inviernos cálidos (392 unidades Utah, 541 horas frío). Un cultivar de 58 porciones no cubre su frío casi ningún invierno (0 %): el sitio no es para él.»</p>
+    <p>El catálogo dice del manzano: <i>45–70 porciones (800–1200 unidades Utah, 800–1400 horas frío) según el cultivar; se toma el centro del rango</i>, 58. El valle da menos de la mitad: entre 18.8 (2012–13) y 39.8 (2007–08) porciones según el invierno. Un manzano de alto requerimiento no prospera ahí; un durazno de bajo requerimiento (20–30 porciones) sí la mayoría de los inviernos, y el campo <span class="ui">Requerimiento</span> permite probarlo. Con un requerimiento que sí se cubre, la tabla dice en qué fecha se cubrió cada invierno y, si se escribe la meta de grados-hora de crecimiento (GDH), en qué fecha florecería.</p>
+  </div>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · las porciones de frío del invierno</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el invierno mediano da menos de 20 porciones</td><td><b>entonces</b> muy poco frío: solo cultivares de bajo requerimiento, y con riesgo.</td></tr>
+      <tr><td><b>Si</b> da de 20 a 45</td><td><b>entonces</b> frío medio: durazno y ciruelo de requerimiento medio.</td></tr>
+      <tr><td><b>Si</b> da de 45 a 70</td><td><b>entonces</b> frío alto: manzano, peral, cerezo.</td></tr>
+      <tr><td><b>Si</b> da más de 70</td><td><b>entonces</b> frío muy alto: zonas de invierno largo.</td></tr>
+      <tr><td><b>Si</b> las unidades Utah salen negativas</td><td><b>entonces</b> el sitio es demasiado cálido para ese modelo: fíate de las porciones.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Decide con el P20 (uno de cada cinco inviernos cálidos), no con la mediana: un huerto vive treinta años.</p>
+  </div>
+
+  <!-- 8.6 -->
+  <h2 id="s8-6"><span class="num">8.6</span>El fotoperiodo</h2>
+  <figure>
+    <div class="marco"><img src="../img/b8-foto.png" alt="La tarjeta 5 del Bloque 8: la duración del día a lo largo del año y la tabla por mes con y sin crepúsculo civil"></div>
+    <figcaption><b>Figura 8.6.</b> El fotoperiodo del Bajío a 20.6° de latitud: de 11.7 h el 20 de diciembre a 14.2 h el 21 de junio con el crepúsculo civil, que es el que las plantas perciben.</figcaption>
+  </figure>
+  <p>La duración del día depende solo de la latitud y la fecha (Forsythe et al. 1995). La app da dos: el <b>sol sobre el horizonte</b> y el día <b>con crepúsculo civil</b>, con el sol a −6°, que es el que las plantas sensibles perciben. Para el maíz del Bajío escribe: <i>«En la floración prevista el día dura 14.0 h (13.9 h al sembrar, días alargándose). Este cultivo se considera poco sensible al fotoperiodo; el tiempo térmico basta para fecharlo.»</i> En un cultivo sensible —soya, sorgo, frijol de día corto, cebolla— la misma línea advierte que el tiempo térmico solo no basta, y esa es la primera sospecha cuando la calibración da un CV alto.</p>
+
+  <!-- 8.7 -->
+  <h2 id="s8-7"><span class="num">8.7</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>Los requerimientos del catálogo son orientativos. Con dos o tres años de fechas observadas, la sección 3 los recalcula</i></td><td>Recordatorio permanente hasta que se calibra. El informe llama a los requerimientos «orientativos» o «calibrados con fechas observadas» según el caso.</td></tr>
+      <tr><td><i>N observaciones de M leídas</i></td><td>Las que no se leyeron tienen una fecha o un código que la app no entendió; revisa el formato <code>año; etapa; fecha</code>.</td></tr>
+      <tr><td><i>… el tiempo térmico varía menos entre años con base X °C (CV …) frente a … con la base actual; considera cambiarla</i></td><td>La base de Arnold. Si la mejora es de décimas, no cambies nada; si es de puntos, aplícala y vuelve a fechar.</td></tr>
+      <tr><td><i>Las unidades Utah salen negativas en algún invierno: el modelo Utah no sirve en climas tan cálidos; fíate de las porciones</i></td><td>Reporta porciones de frío; las Utah y las horas frío solo como referencia.</td></tr>
+      <tr><td><i>Un cultivar de N porciones no cubre su frío casi ningún invierno: el sitio no es para él</i></td><td>Prueba un requerimiento menor en el campo <span class="ui">Requerimiento</span> antes de descartar la especie.</td></tr>
+      <tr><td><i>Este cultivo se considera sensible al fotoperiodo…</i></td><td>Las fechas por tiempo térmico pueden fallar en cultivares de día corto o largo; calibra y mira el CV en días.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

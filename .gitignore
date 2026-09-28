@@ -1,0 +1,10 @@
+# Local Claude Code configuration (absolute paths of this machine)
+.claude/
+
+# Local development tools (headless screenshots for the manual; they reference paths of this machine)
+tools/local/
+
+# Operating-system files
+Thumbs.db
+desktop.ini
+.DS_Store

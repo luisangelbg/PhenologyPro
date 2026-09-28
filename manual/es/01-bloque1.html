@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b1" data-pestana="B1" data-orden="1" style="--acento: var(--b1)">
+  <div class="cap-apertura">
+    <div class="cap-num">1</div>
+    <div class="cap-etiqueta">Bloque 1 · Inicio</div>
+    <h1>Inicio: el motor, los laboratorios y la teoría</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">La primera pantalla no es una portada decorativa: trae el motor completo del programa en dos laboratorios que calculan de verdad, el catálogo de los veinte métodos con su fuente, la comparación de los cinco métodos de evapotranspiración, la teoría indispensable en ocho lecturas cortas y las cuarenta referencias detrás de los cálculos. Se puede aprender agroclimatología aquí antes de cargar un solo dato.</p>
+    <ul class="cap-contenido">
+      <li><b>1.1</b>Lo que se ve al abrir la app</li>
+      <li><b>1.2</b>Cómo funciona: los diez pasos</li>
+      <li><b>1.3</b>El laboratorio de tiempo térmico</li>
+      <li><b>1.4</b>El laboratorio de agua</li>
+      <li><b>1.5</b>Qué incluye y para qué sistema de producción</li>
+      <li><b>1.6</b>Los veinte métodos y los cinco de ETo, lado a lado</li>
+      <li><b>1.7</b>La teoría, en lenguaje claro</li>
+      <li><b>1.8</b>Cómo citar y las referencias</li>
+    </ul>
+  </div>
+
+  <!-- 1.1 -->
+  <h2 id="s1-1"><span class="num">1.1</span>Lo que se ve al abrir la app</h2>
+  <p class="lead">Al abrir <span class="ruta">index.html</span> aparece el Bloque 1 con una pregunta —<i>¿Cuánto calor, cuánta agua y para cuándo?</i>— que resume lo que el programa contesta, y una ilustración con las tres cosas que la planta cuenta: la temperatura diaria oscilando sobre la temperatura base, la curva de grados-día acumulados con sus etapas y la cubeta del agua del suelo entre la capacidad de campo, el agua fácilmente aprovechable y el punto de marchitez. Debajo, dos botones: <span class="ui">Empezar con mi estación →</span>, que lleva al Bloque 2, y <span class="ui">Probar los laboratorios</span>, que baja a la sección siguiente.</p>
+  <p>Cinco sellos bajo los botones resumen las promesas del programa: funciona completo en el navegador, los datos no salen de la computadora, español e inglés, ecuaciones de FAO-56 verificadas con sus ejemplos resueltos y figuras editables hasta 900 ppp. Cada una se explica en algún capítulo de este manual; la de las ecuaciones se comprueba abriendo <span class="ruta">tests/index.html</span>.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El Bloque 1 no necesita datos</div>
+    <p>Es el único bloque que funciona sin serie. Los laboratorios generan el año de clima de uno de los seis sitios de práctica y calculan sobre él con las mismas funciones que después usarán con tu estación. Por eso es el lugar para entender un método antes de aplicarlo: se mueve un control y se ve qué cambia.</p>
+  </div>
+
+  <!-- 1.2 -->
+  <h2 id="s1-2"><span class="num">1.2</span>Cómo funciona: los diez pasos</h2>
+  <figure>
+    <div class="marco"><img src="../img/b1-flujo.png" alt="La franja «Cómo funciona» de la portada: siete pasos, de cargar la serie a decidir y publicar"></div>
+    <figcaption><b>Figura 1.1.</b> La ruta de un estudio en siete pasos: cargar, describir el clima, contar el calor, medir la demanda, balancear el agua, fechar las etapas y decidir y publicar. Son los diez bloques agrupados por lo que resuelven.</figcaption>
+  </figure>
+  <p>Debajo de la franja, nueve tarjetas —una por bloque, del 2 al 10— dicen qué hace cada uno y llevan a él con un clic. Cada tarjeta tiene su etiqueta (<i>datos, clima, calor, agua, suelo, riego, fenología, riesgo, informe</i>) y una ilustración propia. La misma lista, con la pregunta que cada bloque contesta, está en la sección I.2 de la introducción.</p>
+
+  <!-- 1.3 -->
+  <h2 id="s1-3"><span class="num">1.3</span>El laboratorio de tiempo térmico</h2>
+  <p>El primer laboratorio responde la pregunta central del programa con un año sintético: <b>sembrando tal cultivo en tal fecha, ¿le alcanza el calor para madurar antes de la primera helada?</b> Se elige un sitio de práctica, un cultivo del catálogo, el método de cálculo y el corte del umbral superior; tres deslizadores fijan la fecha de siembra, la temperatura base y el umbral superior. Al cambiar cualquiera de ellos la app vuelve a generar el año, acumula los grados-día día por día y fecha cada etapa.</p>
+  <figure>
+    <div class="marco"><img src="../img/b1-lab-calor.png" alt="El laboratorio de tiempo térmico: controles, seis recuadros, el veredicto, las cinco etapas fechadas y tres figuras"></div>
+    <figcaption><b>Figura 1.2.</b> El laboratorio de tiempo térmico con el maíz en el Valle templado, sembrado el 15 de abril con base 10 °C y umbral 30 °C. Los seis recuadros, el veredicto, las cinco etapas y las tres figuras se rehacen al mover cualquier control.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Recuadro</th><th>Qué dice</th><th style="width:1.55in">En el ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>°C·d requeridos</b></td><td>La suma térmica hasta la última etapa del catálogo (la madurez fisiológica), en grados-día.</td><td>1,450 °C·d</td></tr>
+      <tr><td><b>Días a madurez</b></td><td>Cuántos días tarda el año sintético en juntar esa suma desde la siembra, y en qué fecha cae.</td><td>221 días · 22 nov</td></tr>
+      <tr><td><b>°C·d por día</b></td><td>El promedio de la temporada: la velocidad a la que ese sitio «paga» el calor.</td><td>6.6</td></tr>
+      <tr><td><b>°C·d disponibles</b></td><td>Los que se acumulan desde la siembra hasta la primera helada del otoño: el techo del sitio para esa fecha.</td><td>1,333</td></tr>
+      <tr><td><b>Margen térmico</b></td><td>Disponibles menos requeridos. Negativo quiere decir que el frío llega antes de la madurez.</td><td>−117 (faltan)</td></tr>
+      <tr><td><b>Días con helada</b></td><td>Los días con Tmin ≤ 0 °C dentro del ciclo.</td><td>2</td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el veredicto del laboratorio</div>
+    <p style="font-style:italic">«Madura en 221 días (22 de noviembre de 2025), pero el ciclo atraviesa 2 días con helada: el calor alcanza, el frío no perdona. Mueve la siembra hasta que la etapa sensible quede fuera de la helada.»</p>
+    <p>A 2 250 m el maíz de 1,450 °C·d es marginal: junta el calor, pero tarde. Las etapas lo dicen: emergencia el 23 de abril, seis hojas el 22 de mayo, floración el 26 de julio, grano lechoso el 20 de agosto y madurez el 22 de noviembre, ya con heladas encima. Mover el deslizador de la fecha hacia marzo, o bajar la meta con un cultivar precoz, cambia el veredicto en el acto. Ese es el uso del laboratorio: ver la sensibilidad antes de tomar la decisión con la serie real en los Bloques 4, 8 y 9.</p>
+  </div>
+  <h3>Las tres figuras</h3>
+  <ul>
+    <li><b>Temperatura diaria y °C·d de cada día.</b> Las máximas y mínimas del año, la línea de la base y la del umbral superior, y las barras ámbar con los grados-día que aporta cada día. Se ve cómo las barras se apagan cuando la mínima cae y cómo el umbral superior recorta los días de más calor.</li>
+    <li><b>Grados-día acumulados y etapas.</b> La curva de la suma desde la siembra; cada línea punteada es una etapa del catálogo y el punto, el día en que la curva la alcanza. La línea vertical marca la primera helada.</li>
+    <li><b>Climograma del sitio.</b> El diagrama de Walter–Lieth del sitio elegido (10 °C = 20 mm): azul donde llueve más de 2T (húmedo), rojo donde llueve menos (seco) y una franja celeste bajo el eje en los meses con helada. Es el mismo climograma que el Bloque 3 dibuja con la serie real.</li>
+  </ul>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · por qué hay seis métodos</div>
+    <p>Todos calculan lo mismo —el área del día por encima de la base— pero suponen una forma distinta de la temperatura a lo largo de las 24 horas. El <b>promedio</b> usa (Tmax + Tmin)/2 − base; el <b>promedio acotado</b> del maíz acota primero Tmax a 30 y Tmin a 10; el <b>triángulo</b> y el <b>seno</b> integran una onda triangular o senoidal entre la mínima y la máxima, y sus versiones <b>dobles</b> usan la mínima del día siguiente para la segunda mitad. El corte del umbral superior —horizontal, vertical, intermedio o ninguno— decide qué pasa con las horas más calientes que el umbral. El Bloque 4 tiene una tarjeta entera para ver cuánto cambia el resultado de un método a otro.</p>
+  </div>
+
+  <!-- 1.4 -->
+  <h2 id="s1-4"><span class="num">1.4</span>El laboratorio de agua</h2>
+  <p>La pestaña <span class="ui">Agua</span> del mismo bloque hace, sobre el mismo año sintético, el balance hídrico completo del Bloque 6 y el calendario de riego del Bloque 7. Se eligen el sitio, el cultivo, el suelo, el método de ETo (Hargreaves o Penman–Monteith) y si hay riego (<span class="ui">Temporal (sin riego)</span> o <span class="ui">Automático al agotar el AFA</span>); los deslizadores mueven la fecha de siembra, el umbral de riego, la eficiencia y el agotamiento inicial del suelo.</p>
+  <figure>
+    <div class="marco"><img src="../img/b1-lab-agua.png" alt="El laboratorio de agua: controles, ocho recuadros, el veredicto y dos figuras: la demanda y el agua en la zona radical"></div>
+    <figcaption><b>Figura 1.3.</b> El laboratorio de agua con el maíz en temporal, en suelo franco, con ETo de Hargreaves. Arriba, ETo, ETc, lluvia efectiva, riego, percolación, días con estrés y déficit; abajo, la demanda día por día y el agua en la zona radical entre el agua fácilmente aprovechable y el agua disponible total.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · un año en temporal en el Valle templado</div>
+    <p>ETo de 631 mm en los 140 días del ciclo; ETc de 513 mm con un Kc medio de 1.17 ya corregido al clima; lluvia efectiva de 534 mm de los 536 caídos; 21 mm de percolación; 17 días con estrés con Ks medio de 0.98 (<i>estrés leve</i>) y un déficit de 7 mm, el 1 % de la demanda. El veredicto: <i>«En temporal el suelo alcanza: la lluvia efectiva cubre la ETc casi todo el ciclo y el estrés es despreciable.»</i> Cambiar el sitio a la Costa cálida seca, o el suelo a arena, muestra al instante el otro extremo.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Los laboratorios usan un año, no un registro</div>
+    <p>El año sintético del laboratorio es uno solo, generado con semilla fija. Sirve para entender la mecánica, no para decidir: un año no tiene probabilidad. La decisión se toma en los bloques 4 a 9, donde la serie real se recorre año por año y cada resultado lleva su mediana y sus percentiles.</p>
+  </div>
+
+  <!-- 1.5 -->
+  <h2 id="s1-5"><span class="num">1.5</span>Qué incluye y para qué sistema de producción</h2>
+  <figure class="media" style="width:66%;margin-left:auto;margin-right:auto">
+    <div class="marco"><img src="../img/b1-incluye.png" alt="La sección «Qué incluye» con las nueve tarjetas de los bloques y la franja de los seis sistemas de producción"></div>
+    <figcaption><b>Figura 1.4.</b> Las nueve tarjetas de los bloques 2 a 10, cada una con su ilustración y su etiqueta, y debajo la franja de los seis sistemas de producción a los que el programa está dirigido.</figcaption>
+  </figure>
+  <p>La franja <span class="ui">Para el sistema de producción que manejas</span> traduce los bloques a seis situaciones reales. Cada tarjeta plantea la pregunta típica de ese sistema y dice qué bloques la contestan:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Sistema</th><th>La pregunta típica</th><th style="width:1.25in">Bloques</th></tr></thead>
+    <tbody>
+      <tr><td><b>Agricultura de temporal</b></td><td>¿Cabe el ciclo entre la primera lluvia y la primera helada?</td><td>3, 4, 6, 9</td></tr>
+      <tr><td><b>Cultivos de riego</b></td><td>¿Cuándo y cuánto regar con la demanda real del cultivo?</td><td>5, 6, 7</td></tr>
+      <tr><td><b>Hortalizas y agricultura protegida</b></td><td>Fechar cosechas y programar trasplantes escalonados</td><td>4, 8</td></tr>
+      <tr><td><b>Frutales caducifolios</b></td><td>¿Acumula el invierno el frío que el cultivar necesita?</td><td>8, 9</td></tr>
+      <tr><td><b>Perennes tropicales</b></td><td>Café, aguacate, cítricos: balance hídrico y estrés</td><td>5, 6, 7</td></tr>
+      <tr><td><b>Forrajes y pastizales</b></td><td>Cortes por tiempo térmico y demanda de agua entre cortes</td><td>4, 6</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 1.6 -->
+  <h2 id="s1-6"><span class="num">1.6</span>Los veinte métodos y los cinco de ETo, lado a lado</h2>
+  <p>La galería <span class="ui">Métodos que cubre</span> es el inventario del motor: veinte tarjetas, cada una con una ilustración, una línea que dice qué hace y la fuente, y el bloque donde se usa. El filtro de arriba las agrupa en cinco familias.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b1-metodos.png" alt="La galería de métodos filtrada a la familia de tiempo térmico: cinco tarjetas con su ilustración, su fuente y su bloque"></div>
+    <figcaption><b>Figura 1.5.</b> La galería filtrada a <span class="ui">Tiempo térmico</span>: el promedio, el seno simple y doble, el triángulo simple y doble, los tres cortes del umbral superior y las unidades calor de Ontario, todos del Bloque 4.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.35in">Familia</th><th>Métodos</th><th style="width:0.8in">Bloques</th></tr></thead>
+    <tbody>
+      <tr><td><b>Tiempo térmico</b></td><td>Grados-día por promedio; seno simple y doble; triángulo simple y doble; cortes horizontal, vertical e intermedio; unidades calor de Ontario (CHU)</td><td>4, 8</td></tr>
+      <tr><td><b>Evapotranspiración</b></td><td>Penman–Monteith FAO-56; Hargreaves–Samani; Priestley–Taylor; Thornthwaite mensual (y Turc, en el Bloque 5)</td><td>3, 5</td></tr>
+      <tr><td><b>Balance y riego</b></td><td>Coeficiente de cultivo Kc en cuatro etapas corregido al clima; balance de Thornthwaite–Mather; balance diario de la zona radical (FAO-56, cap. 8); calendarización del riego</td><td>3, 6, 7</td></tr>
+      <tr><td><b>Fenología y frío</b></td><td>Fotoperiodo con crepúsculo civil; horas frío y unidades Utah; modelo dinámico (porciones de frío)</td><td>8, 9</td></tr>
+      <tr><td><b>Clima y riesgo</b></td><td>Climograma de Walter–Lieth; índices de aridez (PNUMA, De Martonne, Lang, Thornthwaite); probabilidad de helada; ventana de siembra</td><td>3, 9</td></tr>
+    </tbody>
+  </table>
+  <h3>Los métodos de ETo, lado a lado</h3>
+  <figure>
+    <div class="marco"><img src="../img/b1-comparar.png" alt="La tabla que compara los cinco métodos de evapotranspiración: datos que necesita, escala de tiempo, base física, dónde falla, cuándo usarlo y en qué bloque está"></div>
+    <figcaption><b>Figura 1.6.</b> Los cinco métodos de ETo en seis renglones: qué datos piden, a qué escala de tiempo valen, en qué se basan, dónde fallan, cuándo usarlos y en qué bloque de la app están.</figcaption>
+  </figure>
+  <p>La tabla es la respuesta corta a la pregunta más frecuente del Bloque 5. Penman–Monteith necesita temperatura, humedad, viento y radiación o insolación, vale a escala horaria, diaria y mensual y solo falla si los datos son malos: es el estándar y se usa siempre que se pueda. Hargreaves–Samani pide solo temperatura y latitud, es empírico y calibrado contra lisímetros, sobreestima en sitios húmedos y costeros y subestima en los áridos con viento: se usa cuando solo hay temperatura, calibrándolo contra Penman–Monteith. Priestley–Taylor ignora el viento y la humedad y sirve en climas húmedos sin advección; Thornthwaite es mensual y de la temperatura media, útil para el balance climático del Bloque 3; Turc vale de la escala diaria a la decenal.</p>
+
+  <!-- 1.7 -->
+  <h2 id="s1-7"><span class="num">1.7</span>La teoría, en lenguaje claro</h2>
+  <p>Ocho lecturas plegables, de tres o cuatro párrafos cada una, con una figura propia. Son la base conceptual de los capítulos que siguen; cada capítulo repite lo indispensable, pero quien lea las ocho de corrido tendrá el mapa completo.</p>
+  <figure>
+    <div class="marco"><img src="../img/b1-teoria.png" alt="La sección de teoría con la primera lectura abierta: «La planta no cuenta días: cuenta calor», con su figura"></div>
+    <figcaption><b>Figura 1.7.</b> La primera lectura abierta. Cada una se pliega y despliega con un clic; la etiqueta de la derecha dice a qué bloque corresponde.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.5in">Lectura</th><th>De qué trata</th><th style="width:0.7in">Bloque</th></tr></thead>
+    <tbody>
+      <tr><td><b>La planta no cuenta días: cuenta calor</b></td><td>El desarrollo avanza casi linealmente con la temperatura entre una base y un óptimo; las tres decisiones que esconde la fórmula simple (la base, el umbral y la forma del día)</td><td>4</td></tr>
+      <tr><td><b>ETo: la demanda de la atmósfera, y por qué Penman–Monteith</b></td><td>Evaporar un milímetro cuesta 2.45 MJ/m²; de dónde sale esa energía; qué hacer cuando falta una variable</td><td>5</td></tr>
+      <tr><td><b>Del pasto al cultivo: Kc y ETc</b></td><td>El cultivo no es pasto; el Kc en cuatro etapas y su corrección al clima con la ecuación 62 de FAO-56</td><td>6</td></tr>
+      <tr><td><b>El suelo como cubeta: balance hídrico y calendario de riego</b></td><td>Capacidad de campo, punto de marchitez, ADT y AFA; el balance diario del agotamiento; la regla de riego</td><td>6, 7</td></tr>
+      <tr><td><b>Fechar la fenología: BBCH, tiempo térmico y calibración</b></td><td>La escala BBCH; las dos partes de un modelo de tiempo térmico; por qué calibrar con fechas propias</td><td>8</td></tr>
+      <tr><td><b>El frío que los frutales necesitan</b></td><td>Horas frío, unidades Utah y porciones de frío; la reconstrucción horaria de Linvill cuando solo hay máxima y mínima</td><td>8</td></tr>
+      <tr><td><b>Leer un climograma y decidir la ventana de siembra</b></td><td>Las convenciones de Walter–Lieth; cómo se cruzan calor, agua y helada en una sola probabilidad</td><td>3, 9</td></tr>
+      <tr><td><b>Qué pregunta responde cada bloque</b></td><td>El resumen de la ruta, bloque por bloque</td><td>todos</td></tr>
+    </tbody>
+  </table>
+  <p>Al final de la sección está la <b>guía de interpretación del Bloque 1</b>: las dieciséis fichas de ayuda que reúnen las ideas de todo el programa —grados-día, temperatura base, métodos y cortes, ETo y sus métodos, Kc, ADT y AFA, Ks, agotamiento, lluvia efectiva, frío, fotoperiodo, climograma, aridez, helada y estación de crecimiento— con sus escalas. Las mismas fichas aparecen luego, una a una, junto a cada número de los bloques.</p>
+
+  <!-- 1.8 -->
+  <h2 id="s1-8"><span class="num">1.8</span>Cómo citar y las referencias</h2>
+  <figure>
+    <div class="marco"><img src="../img/b1-citar.png" alt="La sección «Cómo citar» con la cita del programa y el botón de copiar, y el filtro de las referencias por familia"></div>
+    <figcaption><b>Figura 1.8.</b> La cita del programa, lista para copiar, y el filtro de las cuarenta referencias por familia: evapotranspiración, tiempo térmico, frío y fenología, balance y riego, clima y riesgo.</figcaption>
+  </figure>
+  <div class="cita">Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión 1.0.1) [software].</div>
+  <p>El botón <span class="ui">Copiar</span> la lleva al portapapeles. La misma cita cierra el informe del Bloque 10, y el archivo <span class="ruta">CITATION.cff</span> de la carpeta del programa la trae en el formato que leen los repositorios. Cuando la versión se archive con un identificador de objeto digital, la cita lo incluirá.</p>
+  <p>Las <b>referencias detrás de los cálculos</b> son cuarenta: los documentos de la FAO (24, 25, 33, 46 y 56), los artículos originales de cada método de grados-día y de frío, la monografía BBCH, las fuentes de los índices climáticos y de la clasificación de Köppen–Geiger. El apéndice E de este manual las reproduce completas, por familia; el informe del Bloque 10 cita solo las de los métodos que el estudio usó.</p>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · qué hacer en el Bloque 1</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> es la primera vez que abres el programa</td><td><b>entonces</b> pasa diez minutos en los dos laboratorios moviendo un control a la vez: la fecha de siembra, la base, el suelo, la ETo.</td></tr>
+      <tr><td><b>Si</b> no sabes qué método de grados-día usar</td><td><b>entonces</b> lee la primera lectura de teoría y compara en el laboratorio el promedio, el acotado y el seno para tu cultivo; el Bloque 4 lo cuantifica con la serie real.</td></tr>
+      <tr><td><b>Si</b> tu estación solo tiene temperatura</td><td><b>entonces</b> mira la tabla de los métodos de ETo: Hargreaves calibrado contra Penman–Monteith es el camino, y el Bloque 5 lo hace solo.</td></tr>
+      <tr><td><b>Si</b> ya tienes la serie</td><td><b>entonces</b> <span class="ui">Empezar con mi estación →</span> y sigue el capítulo 2.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Nada de lo que se haga en el Bloque 1 afecta al estudio: los laboratorios no guardan estado ni entran en el informe.</p>
+  </div>
+</section>
+
+</body>
+</html>

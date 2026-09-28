@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b7" data-pestana="B7" data-orden="7" style="--acento: var(--b7)">
+  <div class="cap-apertura">
+    <div class="cap-num">7</div>
+    <div class="cap-etiqueta">Bloque 7 · Riego</div>
+    <h1>Calendarización del riego</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Cuándo y cuánto regar. Sobre el mismo balance del Bloque 6, este bloque aplica la regla de riego que elijas —al agotar el agua fácilmente aprovechable, con déficit controlado, a intervalo fijo o con lámina fija— en cada año del registro, y entrega el calendario del año, las láminas netas y brutas según la eficiencia del sistema, la comparación de cuatro estrategias, el riego por mes, la capacidad de diseño que el sistema necesita y el ahorro frente a regar por costumbre.</p>
+    <ul class="cap-contenido">
+      <li><b>7.1</b>Cuándo y cuánto</li>
+      <li><b>7.2</b>Sistema y regla de riego</li>
+      <li><b>7.3</b>El calendario, año por año</li>
+      <li><b>7.4</b>Cuatro estrategias, lado a lado</li>
+      <li><b>7.5</b>Por mes, diseño y ahorro</li>
+      <li><b>7.6</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 7.1 -->
+  <h2 id="s7-1"><span class="num">7.1</span>Cuándo y cuánto</h2>
+  <p class="lead">Un calendario de riego contesta dos preguntas con el balance de la cubeta: <b>cuándo</b> —el día en que el agotamiento llega al límite que la regla fija— y <b>cuánto</b> —la lámina que devuelve el suelo a capacidad de campo, o una lámina fija—. La lámina <b>neta</b> es la que llega a la zona radical; la <b>bruta</b>, la que el sistema tiene que aplicar para que llegue esa, y depende de su eficiencia: 60 % en gravedad, 75 % en aspersión, 90 % en goteo.</p>
+  <div class="formula">bruta = neta / eficiencia   ·   1 mm sobre 1 ha = 10 m³</div>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · las cuatro reglas</div>
+    <p><b>Al agotar el AFA</b> (FAO-56, capítulo 8): se riega el día en que el agotamiento alcanza el agua fácilmente aprovechable, justo antes de que empiece el estrés, y se rellena a capacidad de campo. Es la regla de referencia: máximo rendimiento con el mínimo de agua que lo consigue. <b>Déficit controlado</b>: se deja pasar el AFA hasta un múltiplo (130 % por omisión) antes de regar; se acepta algo de estrés a cambio de menos riegos y menos percolación. <b>Intervalo fijo</b>: se riega cada N días, rellenando; es la regla de un módulo de riego con turnos. <b>Lámina fija</b>: se aplica siempre la misma lámina cuando el agotamiento la iguala; es la regla de un sistema que solo sabe dar una dosis. Todas se pueden restringir con días sin riego tras la siembra y antes de la cosecha y con el intervalo mínimo que el sistema permite.</p>
+  </div>
+
+  <!-- 7.2 -->
+  <h2 id="s7-2"><span class="num">7.2</span>Sistema y regla de riego</h2>
+  <figure>
+    <div class="marco"><img src="../img/b7-regla.png" alt="La tarjeta 1 del Bloque 7: sistema, eficiencia, regla, lámina, días sin riego, intervalo mínimo, capacidad del sistema y la línea que recuerda el cultivo y el suelo heredados del Bloque 6"></div>
+    <figcaption><b>Figura 7.1.</b> La regla del ejemplo: aspersión al 75 %, riego al agotar el AFA rellenando a capacidad de campo, diez días sin riego antes de la cosecha. La línea de arriba recuerda lo que se hereda del Bloque 6: maíz del 15 de mayo, 140 días, suelo de 140 mm/m con raíz a 1.2 m, ADT máxima de 168 mm y AFA de 92 mm.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Control</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Sistema</b> y <b>Eficiencia de aplicación</b></td><td>Gravedad (60 %), aspersión (75 %), pivote central y microaspersión (85 %), goteo (90 %) o <span class="ui">— Otra eficiencia —</span> para escribirla. Solo afecta la lámina bruta.</td></tr>
+      <tr><td><b>Regla</b></td><td><span class="ui">Al agotar el AFA (FAO-56)</span>, <span class="ui">Déficit controlado (más allá del AFA)</span> con su múltiplo, <span class="ui">Intervalo fijo</span> con sus días, o <span class="ui">Lámina fija</span>.</td></tr>
+      <tr><td><b>Lámina de cada riego</b></td><td><span class="ui">Rellenar a capacidad de campo</span> o <span class="ui">Lámina neta fija</span> en mm.</td></tr>
+      <tr><td><b>Días sin riego antes de la cosecha</b> / <b>tras la siembra</b></td><td>Para secar el grano al final, o porque la siembra se hizo en húmedo. 10 y 0 por omisión.</td></tr>
+      <tr><td><b>Intervalo mínimo del sistema (días)</b></td><td>El turno más corto que el sistema permite; un riego que la regla pida antes se pospone.</td></tr>
+      <tr><td><b>Capacidad del sistema (mm/día), opcional</b></td><td>Si se escribe, el calendario dice cuántas horas dura cada riego y si la capacidad alcanza para el pico.</td></tr>
+      <tr><td><span class="ui">Suelo a capacidad de campo al sembrar</span></td><td>Anula el agotamiento inicial del Bloque 6: un riego de presiembra.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · la eficiencia que se declara</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> la eficiencia es menor de 60 %</td><td><b>entonces</b> es gravedad mal nivelada: antes que calendarizar, nivelar.</td></tr>
+      <tr><td><b>Si</b> está entre 60 y 75 %</td><td><b>entonces</b> es gravedad bien manejada o aspersión con viento.</td></tr>
+      <tr><td><b>Si</b> está entre 75 y 88 %</td><td><b>entonces</b> aspersión, pivote o microaspersión.</td></tr>
+      <tr><td><b>Si</b> pasa de 88 %</td><td><b>entonces</b> goteo bien mantenido.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Escala de la ficha <i>Eficiencia de aplicación</i> (Brouwer et al. 1989). La eficiencia no cambia el rendimiento del balance: cambia cuánta agua hay que bombear.</p>
+  </div>
+
+  <!-- 7.3 -->
+  <h2 id="s7-3"><span class="num">7.3</span>El calendario, año por año</h2>
+  <figure>
+    <div class="marco"><img src="../img/b7-calendario.png" alt="Los seis recuadros del Bloque 7, el veredicto, el selector del año y el calendario del año mediano: riegos brutos, lluvia, agotamiento y agua fácilmente aprovechable"></div>
+    <figcaption><b>Figura 7.2.</b> El calendario del maíz del Bajío regado al agotar el AFA. Arriba, las medianas de veinte años y la capacidad de diseño; abajo, el año mediano (2015): la línea del agotamiento baja hacia la punteada del AFA, el riego bruto la devuelve a cero y la lluvia hace el resto.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Recuadro</th><th>Qué dice</th><th style="width:1.9in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>Riegos por temporada</b></td><td>La mediana entre años y el rango.</td><td>1 · de 0 a 3</td></tr>
+      <tr><td><b>Lámina neta</b></td><td>La suma de las láminas netas de la temporada; con el P80, el año seco.</td><td>95 mm · P80 172</td></tr>
+      <tr><td><b>Lámina bruta</b></td><td>La neta entre la eficiencia, con el P80 en mm y en m³/ha.</td><td>127 mm · P80 229 = 2,292 m³/ha</td></tr>
+      <tr><td><b>Rendimiento relativo</b></td><td>El que deja la regla, con su clase, el P20 y los días con estrés.</td><td>100 % · P20 100 % · 0 días</td></tr>
+      <tr><td><b>Percolación</b></td><td>Lluvia sobre suelo lleno y riego de más.</td><td>73 mm</td></tr>
+      <tr><td><b>Capacidad de diseño</b></td><td>La ETc máxima de la media estación (P90 de los días entre años) entre la eficiencia.</td><td>7.9 mm/día = 79 m³/ha/día</td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el veredicto del riego en el Bajío</div>
+    <p style="font-style:italic">«Con Maíz (grano) sembrado el 15 de mayo y regando al agotar el agua fácilmente aprovechable, hacen falta 1 riegos y 127 mm brutos en el año mediano (229 mm en el seco), que dejan el rendimiento en 100 %. Se pierden 73 mm por percolación: parte es lluvia que cayó sobre un suelo recién regado, inevitable sin pronóstico.»</p>
+    <p>En el Bajío el maíz de temporal se queda en 87 %; un solo riego de auxilio de 114 mm brutos —en 2015, el 18 de julio, a los 65 días, en pleno desarrollo, con la cubeta a 86 mm de agotamiento y un AFA de 85— lo lleva al 100 %. En el año seco hacen falta dos riegos y 229 mm brutos. Es el argumento cuantitativo del riego complementario: poca agua en el momento exacto.</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b7-tabla.png" alt="La figura del agua en la zona radical del año y la tabla de los riegos del año: fecha, día del ciclo, etapa, días desde el anterior, agotamiento, AFA, lámina neta, bruta y metros cúbicos por hectárea"></div>
+    <figcaption><b>Figura 7.3.</b> El agua en la zona radical del año visto y su tabla de riegos: cada riego con su fecha, su día del ciclo, la etapa, el agotamiento al que se llegó, el AFA de ese día y las láminas neta y bruta en mm y en m³/ha. Se descarga con <span class="ui">⤓ Calendario del año (.csv)</span>; todos los años, con <span class="ui">⤓ Todos los años (.csv)</span>.</figcaption>
+  </figure>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Las fechas son las de ese año</div>
+    <p>La app lo advierte bajo la tabla: <i>«Las fechas son las de ese año; en la práctica el calendario se sigue con el balance al día, no con las fechas fijas.»</i> El calendario histórico dice cuántos riegos y de cuánto esperar, y en qué etapa suelen caer; el día concreto del riego del año que viene lo decide el balance corrido con la lluvia y la ETo de ese año, que es exactamente lo que este bloque hace con cada año del registro.</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b7-anios.png" alt="La figura del riego bruto y el rendimiento relativo de cada año del registro"></div>
+    <figcaption><b>Figura 7.4.</b> Los veinte años: la lámina bruta que pidió cada uno y el rendimiento que dejó. Los años que en temporal perdían 30 o 40 % (2008, 2009, 2010) son los que piden dos o tres riegos.</figcaption>
+  </figure>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>Cuatro estrategias, lado a lado</h2>
+  <p>La tarjeta 3 corre las mismas veinte temporadas con cada regla —y con el temporal como referencia— usando los valores de déficit, intervalo y lámina escritos arriba:</p>
+  <figure>
+    <div class="marco"><img src="../img/b7-estrategias.png" alt="La tabla de las cinco estrategias y la figura del agua aplicada contra el rendimiento por estrategia"></div>
+    <figcaption><b>Figura 7.5.</b> Las estrategias en el Bajío: riegos, láminas neta y bruta, la bruta del año seco, el rendimiento relativo con su P20, la percolación y el déficit. A la derecha, el agua aplicada contra el rendimiento: la esquina superior izquierda es donde se quiere estar.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Estrategia</th><th class="c">Riegos</th><th class="c">Neta</th><th class="c">Bruta</th><th class="c">Bruta año seco</th><th class="c">Rend. relativo</th><th class="c">P20</th><th class="c">Percolación</th><th class="c">Déficit</th></tr></thead>
+    <tbody>
+      <tr><td>Temporal (sin riego)</td><td class="c">0</td><td class="c">0</td><td class="c">0</td><td class="c">0</td><td class="c">87 %</td><td class="c">77 %</td><td class="c">46</td><td class="c">52</td></tr>
+      <tr><td>Al agotar el AFA, rellenando</td><td class="c">1</td><td class="c">95</td><td class="c">127</td><td class="c">229</td><td class="c">100 %</td><td class="c">100 %</td><td class="c">73</td><td class="c">0</td></tr>
+      <tr><td>Déficit controlado (130 % del AFA)</td><td class="c">1</td><td class="c">117</td><td class="c">156</td><td class="c">161</td><td class="c">97 %</td><td class="c">96 %</td><td class="c">51</td><td class="c">11</td></tr>
+      <tr><td>Cada 7 días, rellenando</td><td class="c">18</td><td class="c">230</td><td class="c">307</td><td class="c">358</td><td class="c">100 %</td><td class="c">100 %</td><td class="c">168</td><td class="c">0</td></tr>
+      <tr><td>Lámina fija de 30 mm</td><td class="c">6</td><td class="c">180</td><td class="c">240</td><td class="c">320</td><td class="c">100 %</td><td class="c">100 %</td><td class="c">122</td><td class="c">0</td></tr>
+    </tbody>
+  </table>
+  <p>La app lo lee: <i>«Regar al agotar el AFA sube el rendimiento relativo de 87 % (temporal) a 100 % con 127 mm brutos: cada 100 mm brutos compran 10 % de rendimiento.»</i> Y sobre el déficit controlado, que aquí no ahorra: al esperar hasta el 130 % del AFA riega más tarde y rellena una cubeta más vacía, así que aplica 29 mm más que la regla de referencia y pierde 3 % de rendimiento. El intervalo fijo de siete días riega dieciocho veces y percola 168 mm; la lámina fija de 30 mm, seis veces con 122 mm percolados. Lo que apliquen de más percola, lo que apliquen de menos se paga en estrés.</p>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · qué estrategia recomendar</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el sistema puede regar cualquier día</td><td><b>entonces</b> al agotar el AFA: es la que menos agua usa para el máximo rendimiento.</td></tr>
+      <tr><td><b>Si</b> el agua es el recurso escaso y el cultivo lo tolera</td><td><b>entonces</b> déficit controlado, solo si la tabla muestra que de verdad ahorra (con lluvias de verano, a veces no).</td></tr>
+      <tr><td><b>Si</b> el riego es por turnos de un módulo</td><td><b>entonces</b> intervalo fijo con el turno real, y acepta la percolación que la tabla muestra.</td></tr>
+      <tr><td><b>Si</b> el sistema solo da una dosis</td><td><b>entonces</b> lámina fija, con la lámina ajustada al AFA de la media estación.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Compara siempre la columna del año seco: es la que dimensiona la fuente de agua.</p>
+  </div>
+
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>Por mes, diseño y ahorro</h2>
+  <figure>
+    <div class="marco"><img src="../img/b7-diseno.png" alt="La tarjeta 4 del Bloque 7: el riego bruto por mes, los tres párrafos de diseño y el ahorro frente a regar por costumbre"></div>
+    <figcaption><b>Figura 7.6.</b> El riego por mes (mediana, año seco, máximo y años con riego), la capacidad y la lámina de diseño, y el ahorro frente a la costumbre de regar cada diez días con 40 mm.</figcaption>
+  </figure>
+  <h3>Por mes</h3>
+  <p>El riego del Bajío se concentra en agosto: 118 mm brutos en el año mediano, 126 en el seco, y riego en el 60 % de los años. Julio pide riego en el 35 % de los años (112 mm en el seco); mayo, junio y septiembre, en menos de uno de cada cinco. Es la canícula: la pausa de las lluvias de agosto coincide con la media estación del maíz.</p>
+  <h3>Diseño</h3>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · los tres números del diseño</div>
+    <p style="font-style:italic">«ETc máxima de la media estación: 5.95 mm/día (P90 de los días entre años; máximo absoluto 6.79). El sistema debe poder aplicar 7.9 mm/día brutos = 79 m³/ha/día con 75 % de eficiencia. Lámina bruta de la temporada para planear: 229 mm (P80, cuatro de cada cinco años bastan) = 2,292 m³/ha; el año mediano pide 127 mm y el peor del registro 368 mm. Riego más grande del registro: 105 mm netos en una sola aplicación; 2 riegos en el año seco.»</p>
+    <p>La <b>capacidad</b> dimensiona la bomba y la red: debe reponer el día más exigente de la media estación, no el promedio. La <b>lámina de planeación</b> dimensiona la fuente —el pozo, la presa, la concesión— para que cuatro de cada cinco años alcance. Y el <b>riego más grande</b> dice si el sistema puede aplicar esa lámina de una vez o si hay que partirla.</p>
+  </div>
+  <h3>Ahorro</h3>
+  <p>La última tarjeta compara con la costumbre —cada 10 días con 40 mm brutos, editables— y en el Bajío dice: <i>«Regando por costumbre cada 10 días con 40 mm brutos se aplican 520 mm en 13 riegos, para un rendimiento relativo de 100 % y 335 mm percolados. El calendario por balance aplica 127 mm en 1 riegos, con rendimiento de 100 %: ahorra 393 mm (76 %) sin perder rendimiento.»</i> Es el número que convence a un productor: el mismo rendimiento con la cuarta parte del agua y de las horas de bombeo.</p>
+
+  <!-- 7.6 -->
+  <h2 id="s7-6"><span class="num">7.6</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>Hace falta el balance del Bloque 6</i></td><td>El riego se calcula sobre el balance; abre el Bloque 6 (que se calcula solo) y vuelve.</td></tr>
+      <tr><td><i>Cultivo …, siembra el …, suelo de … mm/m con raíz hasta … m (ADT máxima, AFA con p). Todo eso se cambia en los Bloques 5 y 6</i></td><td>La línea que recuerda lo heredado. Si el AFA te parece pequeño o grande, el suelo y la p se editan en el Bloque 6.</td></tr>
+      <tr><td><i>El déficit controlado no ahorra aquí: aplica X más…</i></td><td>Con lluvias de verano, esperar más para regar puede obligar a rellenar una cubeta más vacía. La regla de referencia es la que conviene.</td></tr>
+      <tr><td><i>Las fechas son las de ese año; en la práctica el calendario se sigue con el balance al día</i></td><td>No entregues el calendario de un año como calendario fijo: entrega la regla, las láminas y las etapas en que caen.</td></tr>
+      <tr><td><i>… la capacidad escrita no alcanza para el pico</i></td><td>Con una capacidad del sistema menor que la de diseño, el riego del pico tarda más de 24 horas: hay que partir la parcela en secciones o aumentar el gasto.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

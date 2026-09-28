@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b3" data-pestana="B3" data-orden="3" style="--acento: var(--b3)">
+  <div class="cap-apertura">
+    <div class="cap-num">3</div>
+    <div class="cap-etiqueta">Bloque 3 · Clima del sitio</div>
+    <h1>El clima del sitio</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Antes de sembrar nada hay que saber dónde se está. Este bloque convierte los años de la serie en la descripción climática del sitio: las normales mensuales, el climograma de Walter–Lieth, cuándo empiezan y terminan las lluvias, cuándo hiela y con qué probabilidad, los índices de aridez y de humedad, el balance climático de Thornthwaite–Mather y la clasificación de Köppen–Geiger. Todo se calcula con los criterios que elijas y se escribe en un párrafo que va tal cual al informe.</p>
+    <ul class="cap-contenido">
+      <li><b>3.1</b>Qué es una normal y de qué años sale</li>
+      <li><b>3.2</b>Con qué años y con qué criterios</li>
+      <li><b>3.3</b>El clima en una página: el climograma</li>
+      <li><b>3.4</b>Las normales mensuales</li>
+      <li><b>3.5</b>El régimen de lluvias</li>
+      <li><b>3.6</b>Las heladas</li>
+      <li><b>3.7</b>Índices, balance climático y clasificación</li>
+      <li><b>3.8</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 3.1 -->
+  <h2 id="s3-1"><span class="num">3.1</span>Qué es una normal y de qué años sale</h2>
+  <p class="lead">Una <b>normal climática</b> es el promedio de una variable, mes por mes, sobre un periodo largo: la temperatura media de julio, la lluvia de septiembre. La Organización Meteorológica Mundial pide treinta años; en la práctica agrícola se aceptan diez, y con menos se trabaja sabiendo que es una estimación. Todo lo que este bloque calcula —el climograma, los índices, la clasificación— sale de esas doce parejas de temperatura y lluvia, y por eso la primera decisión es de qué años se sacan.</p>
+  <p>La app aplica una regla por mes: un mes de un año entra en la normal solo si tiene al menos el <b>80 % de sus días</b> con dato. Así, un año con un hueco de tres semanas en marzo aporta once meses y no contamina el duodécimo. Las heladas y la temporada de lluvias, que son cuentas por año y no por mes, usan cada temporada completa del registro.</p>
+
+  <!-- 3.2 -->
+  <h2 id="s3-2"><span class="num">3.2</span>Con qué años y con qué criterios</h2>
+  <figure>
+    <div class="marco"><img src="../img/b3-criterios.png" alt="La tarjeta 1 del Bloque 3: qué años usar, el umbral de helada, el inicio de la temporada de lluvias, la racha seca que la interrumpe y el almacenamiento del balance"></div>
+    <figcaption><b>Figura 3.1.</b> Los criterios del bloque: los años que entran, el umbral de helada, los milímetros que abren la temporada de lluvias, la racha seca que la desmiente y la capacidad de almacenamiento del balance climático.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Control</th><th>Opciones y para qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>Años</b></td><td><span class="ui">Solo los años completos (≥ 90 %)</span>, el valor por omisión; <span class="ui">Los últimos 30 años completos</span>, para acercarse a la normal de la OMM cuando la serie es larga; o <span class="ui">Todos, mes por mes</span>, que aprovecha cada mes con 80 % de días aunque el año esté incompleto.</td></tr>
+      <tr><td><b>Umbral de helada</b></td><td><span class="ui">0 °C (meteorológica)</span>; <span class="ui">2 °C</span> para el daño en superficie en cultivos sensibles (las hojas se enfrían por debajo del aire en noche despejada); <span class="ui">−2 °C</span> para cultivos tolerantes; <span class="ui">−4 °C</span> para helada severa. Los Bloques 4 y 9 heredan este umbral.</td></tr>
+      <tr><td><b>Inicio de la temporada</b></td><td>Los milímetros (20 por omisión) que deben caer en tres días para declarar el inicio de las lluvias, y la racha seca (10 días) que, si aparece en el mes siguiente, desmiente ese inicio. Es la definición agronómica de Stern, Dennett y Garbutt (1981).</td></tr>
+      <tr><td><b>Almacenamiento</b></td><td>La capacidad de la cubeta del balance climático de Thornthwaite–Mather, en mm (100 por omisión; 150 en suelos profundos, 50 en delgados).</td></tr>
+      <tr><td><span class="ui">↻ Recalcular</span></td><td>Rehace el bloque con los criterios escritos.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3.3 -->
+  <h2 id="s3-3"><span class="num">3.3</span>El clima en una página: el climograma</h2>
+  <p>La tarjeta 2 empieza con un párrafo que la app redacta con los resultados. Es el mismo que abre la sección de clima del informe, y conviene leerlo antes que nada porque resume el bloque:</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el párrafo del Bajío</div>
+    <p style="font-style:italic">«Bajío semiárido (1 800 m), a 1800 m de altitud, tiene un clima BSh (estepario cálido, semiárido) según Köppen–Geiger: temperatura media anual de 18.5 °C con oscilación de 9.0 °C entre el mes más frío (noviembre) y el más cálido (mayo), y 546 mm de lluvia anual concentrada en julio. Según el índice de aridez del PNUMA (0.64) es un clima subhúmedo seco; el índice de humedad de Thornthwaite (−36) lo clasifica como semiárido. Las lluvias empiezan en la mediana el 6 jun (entre el 16 may y el 26 jun en el 60 % central de los años) y terminan hacia el 19 oct; el 84 % del año cae en el semestre cálido. Hiela en 2 de 20 temporadas, con 0.1 días de helada al año en promedio y una mínima absoluta de −1.6 °C.»</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b3-resumen.png" alt="El párrafo del clima y los ocho recuadros de la tarjeta 2: temperatura media, precipitación, índice de aridez, Köppen–Geiger, periodo libre de heladas, temporada de lluvias, meses húmedos y secos, periodo de crecimiento"></div>
+    <figcaption><b>Figura 3.2.</b> El párrafo y los ocho recuadros que lo sostienen. Cada cifra lleva su etiqueta de escala: <i>subhúmedo seco</i> para el índice de aridez, <i>concentración estacional</i> para las lluvias.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Recuadro</th><th>Qué dice</th><th style="width:1.7in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>Temperatura media anual</b></td><td>La media de las doce medias mensuales, con el mes más frío y el más cálido.</td><td>18.5 °C, de 13.9 (nov) a 23.0 (may)</td></tr>
+      <tr><td><b>Precipitación anual</b></td><td>La suma de las normales mensuales, con el coeficiente de variación entre años y los percentiles 20 y 80 del total anual.</td><td>546 mm · CV 10 % · P20 495 · P80 593</td></tr>
+      <tr><td><b>Índice de aridez P/ETP</b></td><td>Lluvia entre evapotranspiración potencial de Thornthwaite, con la clase del PNUMA.</td><td>0.64, <i>subhúmedo seco</i> · ETP 854 mm</td></tr>
+      <tr><td><b>Köppen–Geiger</b></td><td>La clase y su nombre.</td><td>BSh, estepario cálido</td></tr>
+      <tr><td><b>Periodo libre de heladas</b></td><td>Días entre la última helada de primavera y la primera de otoño, en promedio, con el mínimo y el P20.</td><td>358 días · mín. 288</td></tr>
+      <tr><td><b>Temporada de lluvias</b></td><td>Inicio y fin medianos y duración.</td><td>6 jun – 19 oct · 137 días</td></tr>
+      <tr><td><b>Meses húmedos / secos</b></td><td>Los meses con P &gt; 2T contra los de P &lt; 2T, el criterio de Gaussen que dibuja el climograma.</td><td>5 / 7</td></tr>
+      <tr><td><b>Periodo de crecimiento (FAO)</b></td><td>Meses con P &gt; 0.5 ETP, el criterio de las zonas agroecológicas, y cuántos tienen T &gt; 10 °C.</td><td>5 meses; 12 con T &gt; 10 °C</td></tr>
+    </tbody>
+  </table>
+  <figure>
+    <div class="marco"><img src="../img/b3-climo.png" alt="El climograma de Walter–Lieth del Bajío: la curva de temperatura en rojo, la de lluvia en azul, el área húmeda rayada en azul donde la lluvia supera a la temperatura y el área seca en rojo"></div>
+    <figcaption><b>Figura 3.3.</b> El climograma de Walter–Lieth del Bajío. Con la escala 10 °C = 20 mm, donde la curva azul de la lluvia va por encima de la roja de la temperatura el mes es húmedo; donde va por debajo, seco. Los meses con helada llevan una franja bajo el eje.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · las convenciones de Walter y Lieth</div>
+    <p>El climograma pone la temperatura media mensual y la lluvia mensual en el mismo eje con la relación <b>10 °C = 20 mm</b>. Esa relación no es arbitraria: con ella, el mes en que la lluvia queda por debajo de la temperatura es un mes en que la evaporación potencial supera a la lluvia (P &lt; 2T), es decir, un mes <b>seco</b>; el contrario es <b>húmedo</b>. Por encima de 100 mm la escala se comprime a 1:10 y el área se pinta de azul sólido: es el periodo <b>perhúmedo</b>. Debajo del eje se marcan los meses con mínima absoluta bajo cero. Con un vistazo se ve la duración de la temporada de lluvias, la sequía intraestival si la hay y los meses de riesgo de helada. La app lo dibuja con las normales calculadas y lo exporta como cualquier figura.</p>
+  </div>
+
+  <!-- 3.4 -->
+  <h2 id="s3-4"><span class="num">3.4</span>Las normales mensuales</h2>
+  <figure>
+    <div class="marco"><img src="../img/b3-normales.png" alt="La figura de temperaturas y lluvia por mes y la tabla de normales mensuales del Bajío"></div>
+    <figcaption><b>Figura 3.4.</b> Las normales del Bajío: la figura con la banda entre la máxima y la mínima, la media y las barras de lluvia con su P20–P80, y la tabla con las trece columnas, que se descarga con <span class="ui">⤓ Normales (.csv)</span>.</figcaption>
+  </figure>
+  <p>La tabla trae, para cada mes, la <b>Tmax</b>, la <b>Tmedia</b> y la <b>Tmin</b> promedio, la <b>máxima y la mínima absolutas</b> del registro, la <b>lluvia</b> media con sus <b>P20 y P80</b> entre años, los <b>días con lluvia</b> (≥ 1 mm), los <b>días con helada</b>, la <b>humedad relativa</b> y el <b>viento</b> a 2 m cuando la serie los trae, y cuántos años aportaron a la temperatura y a la lluvia. La última fila es el año: medias para las temperaturas, sumas para la lluvia y los días.</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · leer la tabla del Bajío</div>
+    <p>Mayo es el mes más cálido (23.0 °C de media, 29.9 de máxima) y también el más seco antes de las lluvias: 43 mm, pero con un P20 de 18 y un P80 de 65, la mayor incertidumbre relativa del año. Julio es el más lluvioso (111 mm, entre 93 y 137 en el 60 % central de los años). De noviembre a marzo llueve menos de 20 mm al mes y la humedad relativa baja a 37 % en marzo: es el invierno seco del clima BS. La mínima absoluta del registro, −1.6 °C, cayó en octubre.</p>
+  </div>
+
+  <!-- 3.5 -->
+  <h2 id="s3-5"><span class="num">3.5</span>El régimen de lluvias</h2>
+  <figure class="media">
+    <div class="marco"><img src="../img/b3-lluvias.png" alt="Los seis recuadros del régimen de lluvias y el calendario de cada año con las heladas y la temporada de lluvias"></div>
+    <figcaption><b>Figura 3.5.</b> El régimen de lluvias del Bajío y el calendario de sus veinte años: la barra azul es la temporada de lluvias de cada año, la línea punteada el mes más cálido, y el verde los días sin helada.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Recuadro</th><th>Qué dice</th><th style="width:1.6in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>Índice de concentración (PCI)</b></td><td>El índice de Oliver (1980): 100 Σp²/(Σp)². Menos de 10 es uniforme; de 10 a 15, moderadamente estacional; de 15 a 20, estacional; más de 20, fuertemente estacional.</td><td>15.3, <i>estacional</i></td></tr>
+      <tr><td><b>Lluvia del semestre cálido</b></td><td>La fracción de la lluvia anual que cae de abril a septiembre en el hemisferio norte (de octubre a marzo en el sur).</td><td>84 %</td></tr>
+      <tr><td><b>Días con lluvia ≥ 1 mm</b></td><td>Al año, y la lámina media de cada día lluvioso.</td><td>75 · 7.3 mm</td></tr>
+      <tr><td><b>Inicio de la temporada</b></td><td>La mediana entre años del primer día, contado desde el mes más seco, en que caen 20 mm en tres días sin que le siga una racha seca de 10 días en el mes siguiente; con su P20 y su P80.</td><td>6 jun (16 may – 26 jun)</td></tr>
+      <tr><td><b>Fin de la temporada</b></td><td>El primer día, al menos 60 días después del inicio, a partir del cual caen menos de 10 mm en 30 días.</td><td>19 oct (1 oct – 11 nov)</td></tr>
+      <tr><td><b>Duración</b></td><td>Días entre inicio y fin, mediana y 60 % central.</td><td>137 días (115–166)</td></tr>
+    </tbody>
+  </table>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>El inicio de las lluvias es una probabilidad, no una fecha</div>
+    <p>En el Bajío la temporada empieza el 6 de junio en la mediana, pero el 20 % de los años empieza antes del 16 de mayo y otro 20 % después del 26 de junio: cuarenta días de diferencia entre un año temprano y uno tardío. Quien siembra en seco esperando la lluvia del 6 de junio se equivoca uno de cada cinco años por más de tres semanas. El calendario de la figura 3.5 muestra esa dispersión año por año, y el Bloque 9 la convierte en la probabilidad de que el agua alcance para cada fecha de siembra.</p>
+  </div>
+
+  <!-- 3.6 -->
+  <h2 id="s3-6"><span class="num">3.6</span>Las heladas</h2>
+  <p>En el Bajío casi no hiela: 2 de 20 temporadas, 0.1 días al año, −1.6 °C de mínima absoluta. Para enseñar la tarjeta de heladas conviene otro sitio de práctica, el <b>Valle templado (2 250 m)</b>, donde hiela en 16 de 20 inviernos. Las cifras de esta sección son de ese ejemplo.</p>
+  <figure>
+    <div class="marco"><img src="../img/b3-heladas.png" alt="Los cinco recuadros de heladas del Valle templado, la curva de probabilidad de helada a lo largo del año y la tabla de fechas según el riesgo aceptado"></div>
+    <figcaption><b>Figura 3.6.</b> Las heladas del Valle templado: temporadas con helada, días por año, última de primavera, primera de otoño y periodo libre; la probabilidad de helada a lo largo del año, partida en el mes más cálido; y las fechas de siembra y cosecha según el riesgo que se acepte.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Recuadro</th><th>Qué dice</th><th style="width:1.7in">En el Valle templado</th></tr></thead>
+    <tbody>
+      <tr><td><b>Temporadas con helada</b></td><td>Cuántas de las temporadas del registro tuvieron al menos un día con Tmin ≤ umbral.</td><td>16 / 20</td></tr>
+      <tr><td><b>Días de helada por año</b></td><td>El promedio, con la mínima absoluta del registro y su clase.</td><td>2.9 · −2.4 °C, <i>helada moderada</i></td></tr>
+      <tr><td><b>Última helada de primavera</b></td><td>La fecha promedio de la última helada antes del mes más cálido, y la más tardía del registro.</td><td>30 ene · la más tardía 5 feb</td></tr>
+      <tr><td><b>Primera helada de otoño</b></td><td>La fecha promedio de la primera helada después del mes más cálido, y la más temprana.</td><td>21 oct · la más temprana 18 ago</td></tr>
+      <tr><td><b>Periodo libre de heladas</b></td><td>Los días entre ambas, en promedio, con el más corto y el P20.</td><td>304 días · el más corto 229 · P20 259</td></tr>
+    </tbody>
+  </table>
+  <h3>La probabilidad y las fechas según el riesgo</h3>
+  <p>Cada temporada se parte en el mes más cálido: lo que hiela antes es helada de primavera, lo que hiela después es de otoño. Con las últimas heladas de primavera de cada año se construye la curva de la probabilidad de que <i>todavía</i> hiele después de una fecha; con las primeras de otoño, la de que <i>ya</i> haya helado antes de una fecha. La tabla lee esas curvas al 50, 20 y 10 % de riesgo:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.3in">Riesgo aceptado</th><th>Sembrar después del</th><th>Cosechar antes del</th><th>Días entre ambas</th></tr></thead>
+    <tbody>
+      <tr><td>50 %</td><td>1 ene</td><td>26 oct</td><td>298</td></tr>
+      <tr><td>20 %</td><td>1 ene</td><td>4 oct</td><td>276</td></tr>
+      <tr><td>10 %</td><td>1 ene</td><td>11 sep</td><td>253</td></tr>
+    </tbody>
+  </table>
+  <p>En el Valle templado las heladas son de invierno —diciembre concentra 1.3 días y el 50 % de los años, octubre y noviembre 0.6 días—, así que la primavera queda libre desde enero y lo que manda es el otoño: quien acepte fallar uno de cada cinco años cosecha antes del 4 de octubre; quien solo acepte uno de cada diez, antes del 11 de septiembre. Esas fechas son <b>frecuencias empíricas</b>: con 20 años, el 10 % es dos años, y la app lo recuerda en la ficha de ayuda.</p>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · leer la tabla de heladas</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> hiela en menos de una de cada cinco temporadas</td><td><b>entonces</b> las fechas al 20 y 10 % coinciden con los extremos del año y no dicen nada: el informe omite la tabla y habla de heladas ocasionales.</td></tr>
+      <tr><td><b>Si</b> el cultivo es sensible (hortalizas, frijol, maíz en floración)</td><td><b>entonces</b> usa el umbral de 2 °C y el riesgo del 10 %.</td></tr>
+      <tr><td><b>Si</b> el cultivo tolera (trigo, cebada, avena en macollo)</td><td><b>entonces</b> el umbral de −2 °C y el 20 % bastan.</td></tr>
+      <tr><td><b>Si</b> la serie tiene menos de 10 temporadas</td><td><b>entonces</b> los porcentajes son gruesos; reporta el periodo libre más corto del registro en lugar del P20.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">El Bloque 9 lleva estas curvas a cada etapa del cultivo: no importa que hiele, importa que hiele en la floración.</p>
+  </div>
+
+  <!-- 3.7 -->
+  <h2 id="s3-7"><span class="num">3.7</span>Índices, balance climático y clasificación</h2>
+  <figure>
+    <div class="marco"><img src="../img/b3-indices.png" alt="La tabla de índices del Bajío y la figura del balance hídrico climático de Thornthwaite–Mather"></div>
+    <figcaption><b>Figura 3.7.</b> Los índices del Bajío, con su valor, su clase y cómo se obtuvo cada uno, y el balance climático de Thornthwaite–Mather: la ETP, la lluvia, la evapotranspiración real y el déficit mes por mes.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Índice</th><th>Cómo se obtiene</th><th style="width:1.7in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>Köppen–Geiger</b> (Peel et al. 2007)</td><td>Con las normales de temperatura y lluvia y el hemisferio: el umbral de aridez de los climas B sale de la temperatura media y de en qué mitad del año llueve; los grupos A, C y D, de la temperatura del mes más frío; la letra de la lluvia, del mes más seco.</td><td>BSh: umbral de aridez 650 mm contra 546 mm; mes más seco 3 mm</td></tr>
+      <tr><td><b>Cociente P/T</b> (García)</td><td>Lluvia anual entre temperatura media anual. En los grupos A y C da el subtipo de humedad (w0, w1, w2); en los B separa BS0, BS1 y BW.</td><td>29.5 → BS1</td></tr>
+      <tr><td><b>Índice de aridez del PNUMA</b></td><td>P/ETP con la ETP de Thornthwaite. Clases en 0.05, 0.20, 0.50 y 0.65.</td><td>0.64, <i>subhúmedo seco</i></td></tr>
+      <tr><td><b>De Martonne</b></td><td>P/(T + 10). Clases en 5, 10, 20, 30 y 60.</td><td>19.2, <i>mediterráneo / semihúmedo</i></td></tr>
+      <tr><td><b>Factor de lluvia de Lang</b></td><td>P/T. Clases en 20, 40, 60, 100 y 160.</td><td>29.5, <i>árido</i></td></tr>
+      <tr><td><b>Índice de humedad de Thornthwaite (1955)</b></td><td>100 (P − ETP)/ETP. Clases en 100, 80, 60, 40, 20, 0, −33.3 y −66.7.</td><td>−36.0, <i>semiárido</i></td></tr>
+      <tr><td><b>Balance de Thornthwaite–Mather</b></td><td>Mes a mes, la lluvia llena una cubeta de la capacidad elegida y la ETP la vacía; lo que la ETP no consigue es déficit y lo que rebosa es excedente.</td><td>déficit 308 mm, excedente 0; ETR 546 de 854 mm de ETP</td></tr>
+      <tr><td><b>Periodo de crecimiento</b> (FAO)</td><td>Meses con P &gt; 0.5 ETP; de ellos, los húmedos tienen P &gt; ETP; la temperatura lo corta si baja de 6.5 °C.</td><td>5 meses, 5 húmedos</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Cuatro índices, cuatro respuestas</div>
+    <p>El mismo sitio es <i>subhúmedo seco</i> para el PNUMA, <i>semihúmedo</i> para De Martonne, <i>árido</i> para Lang y <i>semiárido</i> para Thornthwaite. No es una contradicción: cada índice divide el continuo en clases distintas y con umbrales pensados para regiones distintas. El que se cita en la literatura agroclimática actual es el del PNUMA, porque compara la lluvia con una demanda de evaporación y no solo con la temperatura; los otros se dan para que el estudio se pueda comparar con trabajos antiguos.</p>
+  </div>
+  <p>Las dos últimas figuras del bloque son el <b>balance hídrico climático</b> —ETP, lluvia, evapotranspiración real, déficit y excedente por mes— y el <b>agua almacenada en el suelo</b> a lo largo del año según ese balance. Son el antecedente mensual del balance diario del Bloque 6: dicen, a grandes rasgos, en qué meses el clima deja agua en el suelo y en cuáles la agota.</p>
+
+  <!-- 3.8 -->
+  <h2 id="s3-8"><span class="num">3.8</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>No hay suficientes meses completos para las normales: cada mes necesita al menos un año con 80 % de sus días</i></td><td>Error: con los años elegidos algún mes se quedó sin dato. Revisa el calendario de disponibilidad del Bloque 2 o cambia a <span class="ui">Todos, mes por mes</span>.</td></tr>
+      <tr><td><i>Normales calculadas con N años: una estimación, no una normal climática</i></td><td>Aviso con menos de 10 años. Se puede seguir, diciéndolo en el informe.</td></tr>
+      <tr><td><i>Primero hace falta una serie</i></td><td>El bloque no tiene qué calcular: vuelve al Bloque 2.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

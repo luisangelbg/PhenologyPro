@@ -1,0 +1,29 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "PhenologyPro",
+  "description": "A browser-based platform for agroclimatology and crop phenology: degree-days, FAO-56 Penman-Monteith and Hargreaves evapotranspiration, crop coefficients, daily root-zone water balance, irrigation scheduling, BBCH stages by thermal time, winter chill (chill hours, Utah, Dynamic model), photoperiod, Walter-Lieth climographs and frost risk. No installation, no third-party libraries, Spanish and English.",
+  "version": "1.0.1",
+  "dateCreated": "2026-09-25",
+  "datePublished": "2026-09-27",
+  "codeRepository": "https://github.com/luisangelbg/PhenologyPro",
+  "url": "https://luisangelbg.github.io/PhenologyPro/",
+  "license": "https://spdx.org/licenses/GPL-3.0-or-later",
+  "programmingLanguage": ["JavaScript", "HTML", "CSS"],
+  "runtimePlatform": "Web browser",
+  "operatingSystem": "Any",
+  "applicationCategory": "Agrometeorology",
+  "keywords": ["agroclimatology", "phenology", "degree-days", "evapotranspiration", "FAO-56", "water balance", "irrigation scheduling", "winter chill", "climograph"],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Luis Ángel",
+      "familyName": "Barrera-Guzmán",
+      "email": "lbarrerag@chapingo.mx",
+      "@id": "https://orcid.org/0000-0001-8057-2583"
+    }
+  ],
+  "softwareRequirements": ["A modern web browser (Chrome, Edge, Firefox or Safari)"],
+  "readme": "README.md",
+  "developmentStatus": "active"
+}

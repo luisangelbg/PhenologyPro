@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b5" data-pestana="B5" data-orden="5" style="--acento: var(--b5)">
+  <div class="cap-apertura">
+    <div class="cap-num">5</div>
+    <div class="cap-etiqueta">Bloque 5 · Evapotranspiración</div>
+    <h1>Evapotranspiración de referencia</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Cuánta agua pide la atmósfera del sitio, día por día, medida como la evapotranspiración de un pasto bien regado. Penman–Monteith FAO-56 con lo que la estación mida —estimando lo que falte exactamente como manda FAO-56 y contando los días en que lo hizo—, cuatro métodos simples para comparar, la calibración local de Hargreaves y la decisión de qué ETo alimentará el balance hídrico y el riego.</p>
+    <ul class="cap-contenido">
+      <li><b>5.1</b>La demanda de la atmósfera</li>
+      <li><b>5.2</b>Cómo se estima lo que falta</li>
+      <li><b>5.3</b>La ETo del sitio, por cinco métodos</li>
+      <li><b>5.4</b>De dónde sale la ETo</li>
+      <li><b>5.5</b>Hargreaves calibrado contra Penman–Monteith</li>
+      <li><b>5.6</b>Qué ETo usarán los bloques siguientes</li>
+      <li><b>5.7</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 5.1 -->
+  <h2 id="s5-1"><span class="num">5.1</span>La demanda de la atmósfera</h2>
+  <p class="lead">Evaporar un milímetro de agua sobre un metro cuadrado cuesta 2.45 megajulios. Esa energía la pone el sol, y el aire seco y el viento se la llevan en forma de vapor. La <b>evapotranspiración de referencia</b> (ETo) es cuánta agua perdería por día una superficie de pasto de 12 cm, bien regada, con albedo 0.23 y resistencia de superficie fija, bajo el clima del sitio: no depende del cultivo ni del suelo, solo del clima, y por eso sirve como vara para todos los cultivos.</p>
+  <p>La ecuación de <b>Penman–Monteith</b> en la forma de FAO-56 (ecuación 6) la calcula sumando dos términos: uno de <b>radiación</b>, que depende de la radiación neta y de la pendiente de la curva de presión de vapor, y uno <b>aerodinámico</b>, que depende del viento y del déficit de presión de vapor. Es el método que la FAO fijó como estándar en 1998 después de comparar todos los demás contra lisímetros, y el que la app usa por omisión.</p>
+  <div class="formula">ETo = [0.408 Δ (Rn − G) + γ · 900/(T + 273) · u₂ (es − ea)] / [Δ + γ (1 + 0.34 u₂)]   (FAO-56, ec. 6)</div>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · los cuatro métodos simples</div>
+    <p><b>Hargreaves–Samani (1985)</b>: ETo = 0.0023 · Ra · (T + 17.8) · √(Tmax − Tmin); solo temperatura y radiación extraterrestre, que sale de la latitud y la fecha. La amplitud térmica hace de sustituto de la nubosidad y de la humedad. <b>Priestley–Taylor (1972)</b>: solo el término de radiación de Penman–Monteith multiplicado por α = 1.26; vale en climas húmedos sin advección. <b>Turc (1961)</b>: de la temperatura media y la radiación solar, con corrección por humedad baja. <b>Thornthwaite (1948)</b>: mensual, de la temperatura media y la latitud; es la ETP con que se hacen el balance climático y los índices del Bloque 3. Ninguno sustituye a Penman–Monteith cuando se puede calcular; todos sirven para comparar y para el sitio destino que solo tenga temperatura.</p>
+  </div>
+
+  <!-- 5.2 -->
+  <h2 id="s5-2"><span class="num">5.2</span>Cómo se estima lo que falta</h2>
+  <p>Casi ninguna estación agrícola mide radiación; muchas no miden humedad ni viento. FAO-56 no dice «entonces usa otro método»: dice cómo estimar cada variable faltante (capítulo 3, «Missing climatic data») y recomienda seguir con Penman–Monteith. La tarjeta 1 trae los coeficientes de esas estimaciones, precargados con los valores del sitio y de FAO-56.</p>
+  <figure>
+    <div class="marco"><img src="../img/b5-estima.png" alt="La tarjeta 1 del Bloque 5: kRs, la corrección del punto de rocío, el viento por omisión, los coeficientes de Ångström, el albedo, el alfa de Priestley–Taylor y los coeficientes de Hargreaves"></div>
+    <figcaption><b>Figura 5.1.</b> Los coeficientes con que se estima lo que la estación no mide, y los de los métodos simples. <span class="ui">Valores de FAO-56</span> los devuelve a los del documento; la línea de arriba recuerda la presión y la constante psicrométrica que salen de la altitud.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Control</th><th>Qué estima y cómo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Radiación sin medir: kRs</b></td><td>Rs = kRs · √(Tmax − Tmin) · Ra (ecuación 50). <span class="ui">Interior, 0.16</span> o <span class="ui">Costera, 0.19</span>; viene del sitio del Bloque 2.</td></tr>
+      <tr><td><b>Humedad sin medir: Tdew = Tmin −</b></td><td>El punto de rocío se toma igual a la mínima (ecuación 48) o, en climas áridos, 2 o 3 °C por debajo, como sugiere la nota de FAO-56. De ahí sale la presión de vapor real ea.</td></tr>
+      <tr><td><b>Viento sin medir (m/s a 2 m)</b></td><td>El valor que se usa los días sin viento: 2 m/s es la media mundial que propone FAO-56.</td></tr>
+      <tr><td><b>Ångström as / bs</b></td><td>Cuando la estación da horas de sol y no radiación: Rs = (as + bs · n/N) · Ra (ecuación 35), con 0.25 y 0.50 por omisión.</td></tr>
+      <tr><td><b>Albedo de la referencia</b></td><td>0.23 para el pasto de referencia; no conviene tocarlo.</td></tr>
+      <tr><td><b>α de Priestley–Taylor</b></td><td>1.26 por omisión; sube en sitios advectivos.</td></tr>
+      <tr><td><b>Hargreaves: coeficiente y exponente</b></td><td>0.0023 y 0.5 en la fórmula original; algunos autores los ajustan por región. La calibración de la tarjeta 4 hace ese ajuste con datos.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>La frase que va al informe</div>
+    <p>Bajo los recuadros de la tarjeta 2 la app escribe, para el estudio del Bajío: <i>«Penman–Monteith se calculó en 7,305 días (0 sin temperatura); la radiación se estimó de la amplitud térmica con kRs = 0.16 en 100 % de los días (ec. 50). El informe repetirá esta frase tal cual.»</i> Cuenta los días en que se estimó cada variable —humedad, radiación, viento— y con qué coeficiente. Es la honestidad mínima de un estudio de ETo: quien lo lea sabe qué se midió y qué se supuso.</p>
+  </div>
+
+  <!-- 5.3 -->
+  <h2 id="s5-3"><span class="num">5.3</span>La ETo del sitio, por cinco métodos</h2>
+  <figure>
+    <div class="marco"><img src="../img/b5-eto.png" alt="Los cinco recuadros de la ETo del Bajío, la frase de estimación y la figura de la ETo mensual por cinco métodos con la banda P20–P80 de Penman–Monteith"></div>
+    <figcaption><b>Figura 5.2.</b> La ETo del Bajío: 1548 mm al año por Penman–Monteith, 4.24 mm/día en promedio con máximo en abril, el 37 % aerodinámico; y la figura con los cinco métodos mes a mes sobre la banda P20–P80 de Penman–Monteith.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Recuadro</th><th>Qué dice</th><th style="width:1.7in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>ETo anual (Penman–Monteith)</b></td><td>La media de los totales de los años completos (≥ 90 % de días).</td><td>1548 mm · 20 años</td></tr>
+      <tr><td><b>ETo media diaria</b></td><td>El promedio de todos los días, con su clase, y el mes de máximo.</td><td>4.24 mm, <i>alta</i> · abril 5.74</td></tr>
+      <tr><td><b>Término aerodinámico</b></td><td>La fracción de la ETo que ponen el viento y el aire seco; el resto es radiación.</td><td>37 %</td></tr>
+      <tr><td><b>Datos estimados</b></td><td>El porcentaje de días en que se estimó la humedad, la radiación y el viento.</td><td>0 % · 100 % · 0 %</td></tr>
+      <tr><td><b>Hargreaves contra PM</b></td><td>El factor k = PM/HS, el RMSE diario y el R² de la calibración de la tarjeta 4.</td><td>0.986, <i>aceptable</i> · 0.40 mm/día · 0.87</td></tr>
+    </tbody>
+  </table>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · la escala de la ETo diaria</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> la ETo diaria media es menor de 2 mm</td><td><b>entonces</b> es baja: clima fresco o húmedo, invierno.</td></tr>
+      <tr><td><b>Si</b> está entre 2 y 4</td><td><b>entonces</b> es moderada: templado, primavera y otoño.</td></tr>
+      <tr><td><b>Si</b> está entre 4 y 6</td><td><b>entonces</b> es alta: verano templado, trópico húmedo, el Bajío.</td></tr>
+      <tr><td><b>Si</b> está entre 6 y 8</td><td><b>entonces</b> es muy alta: cálido y seco.</td></tr>
+      <tr><td><b>Si</b> pasa de 8</td><td><b>entonces</b> es extrema: desierto con viento.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Los máximos diarios de abril y mayo (7.2 y 7.4 mm) son los que un sistema de riego debe poder reponer; la tabla mensual los trae.</p>
+  </div>
+  <h3>La tabla mensual</h3>
+  <figure>
+    <div class="marco"><img src="../img/b5-tabla.png" alt="La tabla mensual de ETo del Bajío: Penman–Monteith por día y por mes, P20, P80, P90 diario, máximo diario, Hargreaves, Priestley–Taylor, Turc y Thornthwaite"></div>
+    <figcaption><b>Figura 5.3.</b> La tabla mensual, que se descarga con <span class="ui">⤓ Mensual (.csv)</span>. La diaria con todos los términos —Ra, Rs, Rn, es, ea, u₂ y la ETo de cada método— sale con <span class="ui">⤓ Diaria con todos los términos (.csv)</span>.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · leer la tabla del Bajío</div>
+    <p>Abril y mayo son los meses de mayor demanda: 5.74 y 5.68 mm/día por Penman–Monteith (172 y 176 mm al mes), con un P90 diario de 6.4 y máximos de 7.2 y 7.4. Hargreaves los sigue de cerca (5.44 y 5.57) pero se pasa en el verano lluvioso: en julio da 5.06 contra 4.51, porque la amplitud térmica no baja tanto como la radiación cuando hay nubes. Priestley–Taylor subestima la primavera seca y ventosa (4.88 en abril) y Thornthwaite, que solo ve la temperatura, se queda en 2.34 mm/día de promedio anual: sirve para el balance climático, no para regar.</p>
+  </div>
+
+  <!-- 5.4 -->
+  <h2 id="s5-4"><span class="num">5.4</span>De dónde sale la ETo</h2>
+  <figure>
+    <div class="marco"><img src="../img/b5-terminos.png" alt="Las figuras de los dos términos de Penman–Monteith por mes y del balance de radiación del sitio"></div>
+    <figcaption><b>Figura 5.4.</b> A la izquierda, los dos términos de Penman–Monteith mes a mes: la radiación domina todo el año y el término aerodinámico crece en la primavera seca. A la derecha, el presupuesto de radiación: la extraterrestre, la que llega a la superficie, la de cielo despejado y la neta.</figcaption>
+  </figure>
+  <p>La tarjeta 3 abre la caja negra. <b>Los dos términos</b> dicen si la ETo del sitio la manda el sol o el aire: en el Bajío el 37 % es aerodinámico, un clima <i>equilibrado</i> según la escala de la ficha; en la Costa cálida seca pasa del 45 % (<i>advectivo</i>) y ahí Priestley–Taylor y Turc, que no ven el viento, subestiman. <b>El balance de radiación</b> muestra Ra, Rs, Rso y Rn a lo largo del año: cuando Rs está estimada de la amplitud térmica se ve suavizada respecto a una medida, y ese es el precio de no medir radiación.</p>
+  <figure>
+    <div class="marco"><img src="../img/b5-registro.png" alt="Todo el registro diario de ETo por Penman–Monteith y por Hargreaves, veinte años"></div>
+    <figcaption><b>Figura 5.5.</b> Los veinte años de ETo diaria por Penman–Monteith y por Hargreaves. La estacionalidad se repite; las diferencias entre métodos se concentran en el verano lluvioso.</figcaption>
+  </figure>
+
+  <!-- 5.5 -->
+  <h2 id="s5-5"><span class="num">5.5</span>Hargreaves calibrado contra Penman–Monteith</h2>
+  <p>La tarjeta 4 compara, día por día, cada método simple contra Penman–Monteith y ofrece dos correcciones: un <b>factor k</b> = PM/método que corrige el promedio con un solo número, y una <b>regresión</b> ETo(PM) = a + b · ETo(método) que corrige también la pendiente. Para cada una da el RMSE que queda después de aplicarla.</p>
+  <figure>
+    <div class="marco"><img src="../img/b5-calib.png" alt="La tabla de calibración de Hargreaves, Priestley–Taylor y Turc contra Penman–Monteith y la dispersión día por día de Hargreaves contra Penman–Monteith"></div>
+    <figcaption><b>Figura 5.6.</b> La calibración en el Bajío y la nube de puntos de Hargreaves contra Penman–Monteith, con la recta 1:1, la del factor k y la de la regresión.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.35in">Método</th><th class="c">k</th><th class="c">Sesgo</th><th class="c">RMSE</th><th class="c">R²</th><th class="c">a</th><th class="c">b</th><th class="c">RMSE con k</th><th class="c">con regresión</th></tr></thead>
+    <tbody>
+      <tr><td>Hargreaves–Samani</td><td class="c">0.986</td><td class="c">0.06 (1.4 %)</td><td class="c">0.40 <i>muy bueno</i></td><td class="c">0.866</td><td class="c">0.136</td><td class="c">0.955</td><td class="c">0.39</td><td class="c">0.39</td></tr>
+      <tr><td>Priestley–Taylor</td><td class="c">1.049</td><td class="c">−0.20 (−4.7 %)</td><td class="c">0.72 <i>aceptable</i></td><td class="c">0.637</td><td class="c">1.094</td><td class="c">0.778</td><td class="c">0.71</td><td class="c">0.64</td></tr>
+      <tr><td>Turc</td><td class="c">1.058</td><td class="c">−0.23 (−5.5 %)</td><td class="c">0.38 <i>muy bueno</i></td><td class="c">0.922</td><td class="c">0.351</td><td class="c">0.971</td><td class="c">0.31</td><td class="c">0.30</td></tr>
+    </tbody>
+  </table>
+  <p>El cuadro de <b>k mensual</b> enseña la estacionalidad del sesgo: Hargreaves va por debajo de Penman–Monteith de noviembre a mayo (k de 1.02 a 1.07) y por encima en la temporada de lluvias (0.88 a 0.93 de julio a septiembre, marcados <i>calibrar</i>). Un solo factor anual lo esconde; por eso la app da los doce.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Una calibración entre dos estimaciones</div>
+    <p>La app lo advierte en ámbar: <i>«Atención: Penman–Monteith lleva variables estimadas (radiación), así que la calibración compara dos estimaciones; vale como orden de magnitud y para ver la estacionalidad del sesgo, no como calibración definitiva.»</i> Cuando la radiación de Penman–Monteith se estimó de la amplitud térmica, las dos ETo comparten el mismo ingrediente, y el acuerdo es en parte circular. La calibración real exige una estación con radiación y humedad medidas; con ella, la misma tarjeta dice <i>«esta calibración es la real del sitio»</i>.</p>
+  </div>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · qué tan bueno es el método simple</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el RMSE diario es menor de 0.5 mm/día</td><td><b>entonces</b> es muy bueno: sirve día a día.</td></tr>
+      <tr><td><b>Si</b> está entre 0.5 y 1.0</td><td><b>entonces</b> es aceptable: útil a escala semanal.</td></tr>
+      <tr><td><b>Si</b> está entre 1.0 y 1.5</td><td><b>entonces</b> es pobre: solo para totales mensuales.</td></tr>
+      <tr><td><b>Si</b> pasa de 1.5</td><td><b>entonces</b> es malo: no lo uses sin corregir.</td></tr>
+      <tr><td><b>Si</b> el factor k se aparta más de 10 % de 1</td><td><b>entonces</b> calibra; si más de 20 %, no uses el método sin corregir.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Las fichas <i>Calibración local</i> y <i>Penman–Monteith contra Hargreaves</i> traen estas escalas (Hargreaves y Allen 2003; FAO-56, anexo 6).</p>
+  </div>
+
+  <!-- 5.6 -->
+  <h2 id="s5-6"><span class="num">5.6</span>Qué ETo usarán los bloques siguientes</h2>
+  <figure>
+    <div class="marco"><img src="../img/b5-usar.png" alt="La tarjeta 5 del Bloque 5: el selector del método que usarán los bloques del agua y la frase que resume el elegido"></div>
+    <figcaption><b>Figura 5.7.</b> La decisión: <span class="ui">Penman–Monteith FAO-56</span>, <span class="ui">Hargreaves–Samani</span>, <span class="ui">Hargreaves × factor k</span>, <span class="ui">Hargreaves corregido por regresión</span>, <span class="ui">Priestley–Taylor</span> o <span class="ui">Turc</span>. Los Bloques 6 y 7 leen la serie diaria del método elegido.</figcaption>
+  </figure>
+  <p>Con el Bajío la app dice: <i>«Los Bloques 6 y 7 usarán Penman–Monteith FAO-56: 4.24 mm/día en promedio, 1548 mm al año.»</i> Penman–Monteith es el estándar aunque lleve variables estimadas: FAO-56 lo recomienda por encima de cambiar de método. Las alternativas están para dos casos: comparar, y el estudio cuyo sitio destino solo tendrá temperatura, donde conviene calibrar Hargreaves aquí y llevarse el factor.</p>
+
+  <!-- 5.7 -->
+  <h2 id="s5-7"><span class="num">5.7</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>Penman–Monteith se calculó en N días…; la humedad / la radiación / el viento se estimó en X % de los días</i></td><td>La frase de los datos estimados. No es un problema: es lo que el informe dirá. Si un porcentaje te sorprende, revisa los papeles de las columnas en el Bloque 2.</td></tr>
+      <tr><td><i>Atención: Penman–Monteith lleva variables estimadas, así que la calibración compara dos estimaciones</i></td><td>La calibración de Hargreaves es orientativa; no la reportes como calibración local definitiva.</td></tr>
+      <tr><td><i>Penman–Monteith se calculó con todas las variables medidas, así que esta calibración es la real del sitio</i></td><td>Lo contrario: la estación mide todo y el factor k y la regresión valen para la región.</td></tr>
+      <tr><td><i>Los Bloques 6 y 7 usarán…</i></td><td>Confirma el método elegido; al cambiarlo, el balance y el riego se rehacen al abrirlos.</td></tr>
+      <tr><td><i>Primero hace falta una serie</i></td><td>Vuelve al Bloque 2.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

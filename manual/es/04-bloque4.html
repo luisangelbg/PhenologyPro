@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b4" data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+  <div class="cap-apertura">
+    <div class="cap-num">4</div>
+    <div class="cap-etiqueta">Bloque 4 · Grados-día</div>
+    <h1>Grados-día y tiempo térmico</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">El reloj del cultivo no marca días sino calor. Este bloque acumula los grados-día desde la fecha de siembra que elijas, en cada uno de los años del registro, con el método y los umbrales con que se publicó el requerimiento del cultivo; dice cuántos días tarda la meta y en qué fracción de los años se alcanza; dibuja el calendario térmico del sitio; prueba todas las fechas de siembra del año; y mide cuánto cambia el resultado de un método a otro, para que nunca se mezclen.</p>
+    <ul class="cap-contenido">
+      <li><b>4.1</b>La planta no cuenta días</li>
+      <li><b>4.2</b>Cultivo, método y fecha</li>
+      <li><b>4.3</b>Desde esa fecha, cada año</li>
+      <li><b>4.4</b>El calendario térmico del sitio</li>
+      <li><b>4.5</b>Lo que ofrece cada fecha de siembra</li>
+      <li><b>4.6</b>Cuánto importa el método</li>
+      <li><b>4.7</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 4.1 -->
+  <h2 id="s4-1"><span class="num">4.1</span>La planta no cuenta días</h2>
+  <p class="lead">Entre una temperatura <b>base</b> por debajo de la cual no crece y un <b>umbral superior</b> por encima del cual deja de acelerar, el desarrollo de una planta avanza casi en proporción a la temperatura. Sumar, día tras día, lo que la temperatura excede de la base da los <b>grados-día</b> (°C·d): una moneda con la que cada etapa tiene un precio fijo —tantos °C·d para emerger, tantos para florecer— que el sitio paga más rápido en mayo que en noviembre.</p>
+  <div class="formula">°C·d del día = máx(0, T − base), con T acotada al umbral superior según el corte elegido; acumulados = Σ °C·d desde la siembra</div>
+  <p>La fórmula simple esconde tres decisiones, y las tres cambian el número: <b>qué base</b> (10 °C para el maíz, 0 o 4.5 para el trigo, 12–13 para el algodón), <b>qué hacer arriba del umbral</b> (nada, acotar, recortar) y <b>qué forma darle al día</b> (el promedio de los extremos, un triángulo, una senoide). Un requerimiento térmico publicado vale con el método con que se midió. Por eso el catálogo de la app guarda, junto al requerimiento de cada cultivo, el método y los umbrales con que se publicó, y por eso la última tarjeta de este bloque muestra cuánto se separan los métodos entre sí.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · los seis métodos y los cuatro cortes</div>
+    <p><b>Promedio</b>: (Tmax + Tmin)/2 − base, el más usado (McMaster y Wilhelm 1997). <b>Promedio acotado</b>: antes de promediar, Tmax se acota a 30 °C y Tmin a 10 °C; es el método con que se publican los requerimientos del maíz en Estados Unidos. <b>Triángulo simple</b> y <b>seno simple</b>: integran una onda triangular o senoidal entre la mínima y la máxima del día (Lindsey y Newman 1956; Baskerville y Emin 1969; Allen 1976). <b>Triángulo doble</b> y <b>seno doble</b>: la primera mitad del día sube de la mínima a la máxima y la segunda baja hacia la mínima del día siguiente. Los <b>cortes</b> deciden qué pasa con la parte del día por encima del umbral superior: <i>horizontal</i> la cuenta como si estuviera en el umbral; <i>intermedio</i> la descuenta; <i>vertical</i> no cuenta nada de ese tiempo; <i>sin corte</i> la deja pasar. Las <b>unidades calor de Ontario</b> (CHU) son otra escala: día y noche por separado, con una parábola de día, usadas para el maíz en Canadá (Brown 1975).</p>
+  </div>
+
+  <!-- 4.2 -->
+  <h2 id="s4-2"><span class="num">4.2</span>Cultivo, método y fecha</h2>
+  <figure>
+    <div class="marco"><img src="../img/b4-params.png" alt="La tarjeta 1 del Bloque 4: cultivo, método, corte superior, temperatura base, umbral superior, fecha de siembra, meta térmica y temporada"></div>
+    <figcaption><b>Figura 4.1.</b> Los parámetros del maíz de grano en el Bajío: promedio acotado con corte horizontal, base 10 °C, umbral 30 °C, siembra el 15 de abril, meta de 1,450 °C·d y temporada de 140 días. Elegir un cultivo carga sus valores; después cada número se puede cambiar.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Control</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cultivo</b></td><td>Uno de los 19 del catálogo. Carga la base, el umbral, el método con que se publicó el requerimiento y los °C·d hasta la madurez, que son <b>orientativos</b> y se calibran en el Bloque 8.</td></tr>
+      <tr><td><b>Método</b> y <b>Corte superior</b></td><td>Los seis métodos y las CHU; los cuatro cortes. Con las CHU no hay base ni corte que elegir.</td></tr>
+      <tr><td><b>Temperatura base</b> y <b>Umbral superior</b></td><td>En °C. El umbral se puede dejar vacío para no acotar.</td></tr>
+      <tr><td><b>Fecha de siembra</b></td><td>Día y mes. Se aplica a todos los años del registro.</td></tr>
+      <tr><td><b>Meta térmica</b></td><td>Los °C·d a madurez que se persiguen; la app cuenta los días hasta alcanzarlos.</td></tr>
+      <tr><td><b>Temporada (días)</b></td><td>La ventana en la que se suman los °C·d disponibles (140 por omisión para el maíz). Es también el horizonte del mapa de fechas de siembra.</td></tr>
+      <tr><td><span class="ui">Detener la acumulación en la primera helada (umbral del Bloque 3)</span></td><td>Si se marca, la acumulación de cada año se corta al primer día con Tmin bajo el umbral de helada elegido en el Bloque 3; los años cortados no llegan a la meta por frío, no por falta de calor.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 4.3 -->
+  <h2 id="s4-3"><span class="num">4.3</span>Desde esa fecha, cada año</h2>
+  <p>La tarjeta 2 siembra el cultivo el 15 de abril de cada uno de los veinte años, acumula y resume. Los recuadros dan el resultado y el párrafo de abajo lo lee:</p>
+  <figure>
+    <div class="marco"><img src="../img/b4-anios.png" alt="Los recuadros de la tarjeta 2 del Bloque 4 y la figura con la acumulación de cada año desde la siembra, la mediana y la banda P20–P80"></div>
+    <figcaption><b>Figura 4.2.</b> Los veinte años del Bajío sembrados el 15 de abril: cada línea fina es un año, la gruesa la mediana y la banda el 60 % central. La línea horizontal es la meta de 1,450 °C·d; donde la mediana la cruza está el día 127.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Recuadro</th><th>Qué dice</th><th style="width:1.9in">En el Bajío</th></tr></thead>
+    <tbody>
+      <tr><td><b>°C·d por año</b></td><td>El total de un año calendario con esa base y ese método: el tamaño del «presupuesto térmico» del sitio.</td><td>3,244</td></tr>
+      <tr><td><b>Mes más cálido</b></td><td>El mes que más °C·d aporta por día.</td><td>mayo · 12.5 °C·d/día</td></tr>
+      <tr><td><b>Días a la meta</b></td><td>La mediana entre años, el P20 y el P80, y cuántos años entran en la cuenta.</td><td>127 · P20 123 · P80 133 · 20 años</td></tr>
+      <tr><td><b>Años que la alcanzan</b></td><td>La fracción de años en que la meta se alcanzó dentro de la ventana revisada (la temporada más sesenta días).</td><td>100 %</td></tr>
+      <tr><td><b>°C·d en la temporada</b></td><td>Los que se juntan en los días de temporada declarados, con el coeficiente de variación entre años.</td><td>1,553 en 140 días · CV 3 %</td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el párrafo de la tarjeta</div>
+    <p style="font-style:italic">«Sembrando el 15 de abril, Maíz (grano) junta sus 1,450 °C·d en 127 días en el año mediano, pero entre 123 y 133 en el 60 % central de los años: una variación manejable. Todos los años la alcanzaron.»</p>
+    <p>El cuadro por año, plegado bajo la figura, da el detalle: los °C·d a los 30, 60, 90 y 120 días, el total de la temporada, los días a la meta, la fecha en que se alcanzó y los días sin dato. En 2013, el año más cálido, la meta cayó el 12 de agosto a los 119 días; en 2017, el más fresco, el 31 de agosto a los 138. Diecinueve días de diferencia entre el año más rápido y el más lento: eso es lo que el calendario de siembra debe absorber.</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b4-tabla.png" alt="El cuadro por año del Bloque 4: °C·d a los 30, 60, 90 y 120 días, total de la temporada, días a la meta, fecha de la meta y días sin dato"></div>
+    <figcaption><b>Figura 4.3.</b> El cuadro por año, que se descarga con <span class="ui">⤓ Por año (.csv)</span>.</figcaption>
+  </figure>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · la variabilidad del tiempo térmico</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el CV de los °C·d de la temporada es menor de 5 %</td><td><b>entonces</b> el sitio es muy estable (trópico de altura, costa): planea con la mediana.</td></tr>
+      <tr><td><b>Si</b> está entre 5 y 10 %</td><td><b>entonces</b> es estable; la mediana sirve y el P20 es el margen.</td></tr>
+      <tr><td><b>Si</b> está entre 10 y 20 %</td><td><b>entonces</b> es variable: planea con el P20, no con la media.</td></tr>
+      <tr><td><b>Si</b> pasa de 20 %</td><td><b>entonces</b> es muy variable (clima continental o serie corta); revisa la serie antes de decidir.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">La ficha <span class="ui">?</span> de <i>°C·d en la temporada</i> trae esta escala. En el Bajío el CV es de 3 %.</p>
+  </div>
+
+  <!-- 4.4 -->
+  <h2 id="s4-4"><span class="num">4.4</span>El calendario térmico del sitio</h2>
+  <figure>
+    <div class="marco"><img src="../img/b4-calendario.png" alt="Las dos figuras del calendario térmico: °C·d por día de cada mes con su P20–P80 y el total del mes, y los °C·d de cada año del registro"></div>
+    <figcaption><b>Figura 4.4.</b> El calendario térmico del Bajío. A la izquierda, cuántos °C·d aporta un día de cada mes, con la barra de error del 60 % central y el total del mes encima; a la derecha, los °C·d de cada año del registro contra la media.</figcaption>
+  </figure>
+  <p>El calendario térmico es la velocidad del reloj del cultivo en cada época del año: en el Bajío, un día de mayo vale 12.5 °C·d y uno de noviembre 5.6, así que la misma etapa tarda más del doble en invierno que en primavera. El cuadro plegado bajo la figura da el valor por día de cada mes con su P20 y P80 y el total del mes: mayo 386, junio 359, abril 360, noviembre 169. La figura de la derecha dice si el registro tiene tendencia o rachas: los años por encima de la media van en un color y los de abajo en otro. Cuando se ve una racha reciente, conviene preguntarse si el clima está cambiando; el Bloque 9 lo prueba con escenarios.</p>
+
+  <!-- 4.5 -->
+  <h2 id="s4-5"><span class="num">4.5</span>Lo que ofrece cada fecha de siembra</h2>
+  <p>La tarjeta 4 «siembra» el cultivo cada cinco días del año, en todos los años del registro, y responde tres preguntas para cada fecha: cuántos °C·d junta en la temporada, cuántos días tarda en llegar a la meta y en qué fracción de los años lo logra.</p>
+  <figure>
+    <div class="marco"><img src="../img/b4-mapa.png" alt="Las dos figuras del mapa por fecha de siembra: °C·d disponibles en la temporada con la línea del requerimiento y las fechas que lo alcanzan en cuatro de cinco años, y días a la meta con el porcentaje de años que la alcanzan"></div>
+    <figcaption><b>Figura 4.5.</b> El mapa del maíz en el Bajío. A la izquierda, los °C·d disponibles en 140 días según la fecha de siembra (mediana y P20–P80) contra el requerimiento de 1,450; los puntos verdes marcan las fechas que lo alcanzan en al menos cuatro de cada cinco años. A la derecha, los días a la meta y, en el eje derecho, el porcentaje de años que la alcanzan; la línea punteada es la mejor fecha.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · la mejor fecha térmica</div>
+    <p style="font-style:italic">«La fecha que madura más rápido con al menos 80 % de los años alcanzando la meta es el 22 mar (122 días en la mediana, 100 % de los años). El Bloque 9 cruzará este mapa con las heladas y el agua para dar la ventana de siembra completa.»</p>
+    <p>El cuadro cada diez días lo detalla: sembrando el 1 de enero solo el 15 % de los años junta 1,450 °C·d en la temporada; el 31 de enero, el 95 %; del 10 de febrero al 11 de abril, el 100 %, con la meta entre 122 y 129 días; el 1 de mayo baja al 60 % y desde ahí la temporada de 140 días ya no alcanza. Es la lectura <b>solo térmica</b>: dice que el Bajío puede madurar maíz sembrado en marzo, no que haya agua para hacerlo. Esa es la razón del Bloque 9.</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b4-mapa-tabla.png" alt="El cuadro por fecha de siembra cada diez días: °C·d en la temporada con P20 y P80, días a la meta y su intervalo, y la fracción de años que la alcanzan"></div>
+    <figcaption><b>Figura 4.6.</b> El cuadro por fecha de siembra, cada diez días; el completo, cada cinco, se descarga con <span class="ui">⤓ Mapa completo (.csv)</span>. La marca de la última columna dice si la fecha alcanza la meta en al menos 80 % de los años (✓), entre 60 y 80 (~) o menos (✗).</figcaption>
+  </figure>
+
+  <!-- 4.6 -->
+  <h2 id="s4-6"><span class="num">4.6</span>Cuánto importa el método</h2>
+  <figure>
+    <div class="marco"><img src="../img/b4-metodos.png" alt="La figura y la tabla que comparan seis métodos y cuatro cortes en la misma temporada del año 2016"></div>
+    <figcaption><b>Figura 4.7.</b> La misma temporada de 140 días del año 2016 con seis métodos y cuatro cortes. Las diferencias son la razón de no mezclar nunca un requerimiento publicado con un método distinto del suyo.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Método</th><th class="c">Sin corte</th><th class="c">Horizontal</th><th class="c">Intermedio</th><th class="c">Vertical</th></tr></thead>
+    <tbody>
+      <tr><td>Promedio</td><td class="c">1,654</td><td class="c">1,654</td><td class="c">1,654</td><td class="c">1,654</td></tr>
+      <tr><td>Promedio acotado (maíz)</td><td class="c">—</td><td class="c"><b>1,611</b></td><td class="c">—</td><td class="c">—</td></tr>
+      <tr><td>Triángulo simple</td><td class="c">1,654</td><td class="c">1,645</td><td class="c">1,636</td><td class="c">1,525</td></tr>
+      <tr><td>Seno simple</td><td class="c">1,655</td><td class="c">1,638</td><td class="c">1,620</td><td class="c">1,439</td></tr>
+      <tr><td>Triángulo doble</td><td class="c">1,653</td><td class="c">1,644</td><td class="c">1,635</td><td class="c">1,524</td></tr>
+      <tr><td>Seno doble</td><td class="c">1,653</td><td class="c">1,636</td><td class="c">1,619</td><td class="c">1,438</td></tr>
+    </tbody>
+  </table>
+  <p>La app lo resume: <i>«Entre el método más bajo y el más alto hay 216 °C·d (15 %): esa es la razón de usar siempre el método con que se publicó el requerimiento. Las unidades calor de Ontario de la misma temporada: 3,613 CHU. Tu elección actual da 1,611.»</i> En el Bajío el promedio no siente el corte porque la media diaria casi nunca pasa de 30 °C, pero el seno y el triángulo sí, porque integran las horas de la tarde que sí lo pasan: con corte vertical pierden más de 200 °C·d. Un requerimiento de 1,450 medido con seno y corte vertical no es el mismo número que 1,450 medidos con promedio acotado.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>El requerimiento manda sobre el método, no al revés</div>
+    <p>Elige el método por la fuente del requerimiento, no por gusto. Si el número viene de un boletín de Iowa o de Ontario, es promedio acotado o CHU; si viene de un artículo de entomología o de horticultura, casi siempre es seno simple con corte horizontal; si viene de tu propia parcela (Bloque 8), es el que hayas usado para calibrar. La app guarda el método en el registro de cálculo y lo escribe en los métodos del informe.</p>
+  </div>
+
+  <!-- 4.7 -->
+  <h2 id="s4-7"><span class="num">4.7</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>En N % de los años la meta no se alcanzó en la ventana revisada</i></td><td>La temporada más sesenta días no bastó en esos años. Alarga la temporada, baja la meta con un cultivar precoz o mueve la fecha.</td></tr>
+      <tr><td><i>Ninguna fecha alcanza la meta en al menos 80 % de los años dentro de la temporada elegida</i></td><td>El mapa no encontró una fecha segura. Alarga la temporada, revisa la meta o considera un cultivar más precoz.</td></tr>
+      <tr><td><i>Temporada de N días del año A… Entre el método más bajo y el más alto hay X °C·d</i></td><td>No es un aviso sino la lectura de la tarjeta 5: si la diferencia pasa del 10 %, el método con que se publicó el requerimiento importa de verdad.</td></tr>
+      <tr><td><i>Primero hace falta una serie</i></td><td>Vuelve al Bloque 2.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

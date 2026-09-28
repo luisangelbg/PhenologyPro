@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b10" data-pestana="B10" data-orden="10" style="--acento: var(--b10)">
+  <div class="cap-apertura">
+    <div class="cap-num">10</div>
+    <div class="cap-etiqueta">Bloque 10 · Informe</div>
+    <h1>Figuras, informe y paquete</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Todo lo que se calculó, listo para salir de la app: cada figura del estudio en PNG, JPG o SVG hasta 900 ppp con el estilo que se elija; un informe de un solo archivo que se abre en cualquier navegador y se imprime a PDF, con los métodos redactados a partir de lo que realmente se corrió; y un .zip con el informe, las figuras, los cuadros, los parámetros y el proyecto que lo reproduce. Es lo que se entrega con la tesis, el artículo o el dictamen.</p>
+    <ul class="cap-contenido">
+      <li><b>10.1</b>Lo que sale de la app</li>
+      <li><b>10.2</b>El estado del estudio</li>
+      <li><b>10.3</b>El catálogo de figuras y el estudio de figuras</li>
+      <li><b>10.4</b>El informe</li>
+      <li><b>10.5</b>El paquete reproducible</li>
+      <li><b>10.6</b>Antes de entregar</li>
+    </ul>
+  </div>
+
+  <!-- 10.1 -->
+  <h2 id="s10-1"><span class="num">10.1</span>Lo que sale de la app</h2>
+  <p class="lead">Un estudio agroclimático se defiende con tres cosas: las figuras, el texto de métodos y la posibilidad de que otro lo repita. El Bloque 10 produce las tres desde lo que los bloques anteriores dejaron en memoria; no calcula nada nuevo. Por eso su primera tarjeta es un inventario de lo que existe, y por eso todo lo que exporta lleva la versión del programa y los parámetros con que se obtuvo.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Tres formas de sacar una figura</div>
+    <p>Desde su bloque, con el botón ⤓ que aparece en la esquina de cada figura al pasar el cursor; desde el catálogo de este bloque, una a una o todas las seleccionadas; o dentro del paquete .zip. Las tres usan el mismo motor y el mismo estilo, y las tres resuelven los colores del tema antes de escribir el archivo: la figura exportada ya no depende de la app.</p>
+  </div>
+
+  <!-- 10.2 -->
+  <h2 id="s10-2"><span class="num">10.2</span>El estado del estudio</h2>
+  <figure class="media">
+    <div class="marco"><img src="../img/b10-estado.png" alt="La tarjeta 1 del Bloque 10: el resumen del estado del estudio y los ocho bloques con su estado y su botón"></div>
+    <figcaption><b>Figura 10.1.</b> El estado del estudio del Bajío: 8 de 8 bloques calculados y 42 figuras dibujadas. Cada bloque dice si está calculado y ofrece el botón para ir a verlo o a calcularlo.</figcaption>
+  </figure>
+  <p>Un bloque se calcula al visitarlo. El que no se ha visitado desde la última carga de la serie aparece <i>sin calcular</i> y no entra en el informe: la app lo dice —<i>«Los bloques sin calcular no aparecen en el informe: visita cada uno (se calcula solo al abrirlo) y vuelve aquí»</i>— y con los ocho listos cambia a <i>«El estudio está completo: exporta las figuras, revisa el informe y descarga el paquete»</i>. Si se cambió un parámetro aguas arriba, los bloques de abajo se recalculan al abrirlos: antes de exportar conviene recorrer del 3 al 9 y comprobar que cada uno muestra lo que se quiere.</p>
+
+  <!-- 10.3 -->
+  <h2 id="s10-3"><span class="num">10.3</span>El catálogo de figuras y el estudio de figuras</h2>
+  <figure>
+    <div class="marco"><img src="../img/b10-catalogo.png" alt="La tarjeta 2 del Bloque 10: los controles de formato, resolución, tema y fondo, los botones de exportación y el catálogo de figuras con miniaturas agrupadas por bloque"></div>
+    <figcaption><b>Figura 10.2.</b> El catálogo: formato, resolución, tema y fondo arriba; los botones de exportar, marcar y desmarcar; y las miniaturas de las 42 figuras agrupadas por bloque, cada una con su casilla y su botón ⤓.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Control</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Formato</b></td><td><span class="ui">PNG</span>, <span class="ui">JPG</span> o <span class="ui">SVG</span>.</td></tr>
+      <tr><td><b>Resolución</b></td><td><span class="ui">150 ppp · pantalla</span>, <span class="ui">300 ppp · impresión</span>, <span class="ui">600 ppp · revista</span>, <span class="ui">900 ppp · cartel</span>. No aplica al SVG, que no tiene resolución.</td></tr>
+      <tr><td><b>Tema</b> y <b>Fondo</b></td><td>Claro, oscuro o el de la pantalla; fondo según el estilo, blanco, tarjeta o transparente.</td></tr>
+      <tr><td><span class="ui">Con título dentro de la figura</span></td><td>Escribe el título de la figura dentro de la imagen exportada.</td></tr>
+      <tr><td><span class="ui">Estudio de figuras</span></td><td>Abre el panel del estilo (el mismo del botón de la paleta de la barra superior).</td></tr>
+      <tr><td><span class="ui">⤓ Exportar las seleccionadas</span></td><td>Descarga las figuras marcadas, una por una hasta seis; con más, en un solo .zip, porque el navegador bloquea muchas descargas seguidas.</td></tr>
+      <tr><td><span class="ui">Todas las seleccionadas en un .zip</span></td><td>Siempre en un .zip, con el formato y la resolución elegidos.</td></tr>
+      <tr><td><span class="ui">Marcar todas</span> / <span class="ui">Ninguna</span> / <span class="ui">solo estas</span></td><td>La selección; <i>solo estas</i>, junto al nombre de cada bloque, deja marcadas solo las de ese bloque.</td></tr>
+    </tbody>
+  </table>
+  <h3>El estudio de figuras</h3>
+  <p>El botón de la paleta abre un panel con nueve paletas —entre ellas la de <b>Okabe–Ito</b>, segura para daltónicos, y una en <b>grises</b> para imprimir en blanco y negro—, siete tipografías, las escalas de grosor y tamaño de letra y el fondo. Cambia <b>todas</b> las figuras de la app a la vez, en pantalla y en lo que se exporta, porque cada figura está dibujada con las variables de color del tema y el estilo es una sola regla que las redefine. El estilo activo se guarda en el registro de cálculo del informe.</p>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · formato y resolución</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> la figura se va a editar o es la versión final vectorial</td><td><b>entonces</b> SVG: se abre en Inkscape, Illustrator o PowerPoint y no se pixela nunca.</td></tr>
+      <tr><td><b>Si</b> va a una tesis o a una impresión de oficina</td><td><b>entonces</b> PNG a 300 ppp.</td></tr>
+      <tr><td><b>Si</b> va a una revista</td><td><b>entonces</b> PNG a 600 ppp (o el TIFF que pidan, convertido sin pérdida desde el PNG).</td></tr>
+      <tr><td><b>Si</b> va a un cartel de 90 cm</td><td><b>entonces</b> 900 ppp, y cuenta con archivos de decenas de MB.</td></tr>
+      <tr><td><b>Si</b> el destino exige JPG</td><td><b>entonces</b> JPG, sabiendo que comprime con pérdida y no tiene transparencia.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Las fichas <i>PNG, JPG o SVG</i> y <i>Resolución</i> traen las escalas. Una figura de 700 × 320 unidades sale a 2917 × 1333 píxeles a 300 ppp y a 8750 × 4000 a 900.</p>
+  </div>
+
+  <!-- 10.4 -->
+  <h2 id="s10-4"><span class="num">10.4</span>El informe</h2>
+  <figure class="media" style="width:72%;margin-left:auto;margin-right:auto">
+    <div class="marco"><img src="../img/b10-informe.png" alt="La tarjeta 3 del Bloque 10: título, autoría, las casillas de las secciones, el anexo, los botones de vista previa, descarga e impresión, y la vista previa del informe"></div>
+    <figcaption><b>Figura 10.3.</b> El informe: el título (por omisión, «Estudio agroclimático de» y el nombre del sitio), la autoría, las ocho secciones que se pueden incluir o dejar fuera, la casilla del anexo y la vista previa.</figcaption>
+  </figure>
+  <p>El informe es un solo archivo <code>.html</code>, sin dependencias, que se abre en cualquier navegador y se imprime a PDF con <span class="ui">Imprimir a PDF</span> o desde el propio navegador. Con el estudio del Bajío completo pesa 683 kB y trae doce secciones, veinte figuras y quince cuadros:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Sección</th><th>Qué contiene</th></tr></thead>
+    <tbody>
+      <tr><td><b>Resumen</b></td><td>Una línea por bloque con el resultado: el clima, las heladas, la ETo, la madurez, el temporal, el riego, la ventana de siembra, el frío.</td></tr>
+      <tr><td><b>1 · Sitio y datos</b></td><td>El sitio, el periodo, los años completos, la cobertura de cada variable, la frase del control de calidad y el calendario de disponibilidad.</td></tr>
+      <tr><td><b>2 · El clima del sitio</b></td><td>El párrafo del clima, el climograma, las normales, las heladas (con la tabla de fechas solo si hiela en al menos una de cinco temporadas), los índices.</td></tr>
+      <tr><td><b>3 a 8</b></td><td>Una sección por bloque calculado —grados-día, ETo, balance, riego, fenología, riesgos— con sus cuadros y sus figuras incrustadas como SVG con los colores ya resueltos. Las secciones se numeran en el orden en que existen.</td></tr>
+      <tr><td><b>Métodos</b></td><td>Redactados a partir de lo que se corrió: el control de calidad, los criterios de las normales, el método y el corte de los grados-día, la frase de la ETo con los días estimados, el balance de FAO-56 y la función de FAO-33, la regla de riego, el frío con Linvill, el riesgo y los escenarios. Lo que no se usó no aparece.</td></tr>
+      <tr><td><b>Referencias</b></td><td>Solo las de los métodos que el estudio usó, y la cita del programa al final.</td></tr>
+      <tr><td><b>Cómo citar</b></td><td>La cita del programa con su versión.</td></tr>
+      <tr><td><b>Anexo. Registro de cálculo</b></td><td>Todos los parámetros de cada bloque, en texto plano, para que el estudio se pueda repetir.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Los métodos no son una plantilla</div>
+    <p>La sección de métodos se arma con lo que realmente se corrió. Si la humedad se estimó del punto de rocío en el 40 % de los días, lo dice con ese porcentaje; si el balance usó el número de curva, lo cita; si los requerimientos térmicos no se calibraron, los llama orientativos; si se excluyó una sección, su método y sus referencias desaparecen. Léela antes de copiarla al artículo y añade lo que la app no puede saber: la fuente de los datos, el cultivar, el suelo medido, la razón de cada elección. Y si después de generar el informe se cambia un parámetro, la frase vieja queda desactualizada: genera de nuevo.</p>
+  </div>
+
+  <!-- 10.5 -->
+  <h2 id="s10-5"><span class="num">10.5</span>El paquete reproducible</h2>
+  <figure>
+    <div class="marco"><img src="../img/b10-paquete.png" alt="La tarjeta 4 del Bloque 10: la lista del contenido del paquete, las casillas de las figuras y el botón para construir y descargar el .zip"></div>
+    <figcaption><b>Figura 10.4.</b> El paquete: lo que contiene, si lleva las figuras seleccionadas y si además las lleva en SVG, y el botón que lo construye. El estado de abajo dice cuántos archivos y cuántos megabytes salieron.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Archivo</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td><code>LEEME.txt</code></td><td>Qué contiene el paquete y cómo reproducir el estudio en tres pasos.</td></tr>
+      <tr><td><code>informe.html</code></td><td>El informe con las secciones marcadas arriba.</td></tr>
+      <tr><td><code>proyecto.json</code></td><td>La serie limpia y el sitio, tal como salieron del Bloque 2. Se abre en el Bloque 2 de cualquier copia de la app.</td></tr>
+      <tr><td><code>parametros.json</code></td><td>El registro de cálculo: los parámetros de cada bloque, la versión del programa y el estilo de figuras.</td></tr>
+      <tr><td><code>cuadros/*.csv</code></td><td>Los cuadros del estudio: la serie limpia, las normales, los grados-día por año y por fecha de siembra, la ETo mensual y diaria con todos sus términos, el balance por año, el riego por año y el calendario del año mediano, las fechas fenológicas por año, el frío por invierno y la ventana de siembra. Doce con el estudio completo.</td></tr>
+      <tr><td><code>figuras/*</code></td><td>Las figuras seleccionadas en el catálogo, en el formato y la resolución elegidos y, si se marcó, también en SVG.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el paquete del Bajío</div>
+    <p>Con las 42 figuras en PNG a 150 ppp y en SVG: <i>«Paquete listo · 100 archivos · 3.1 MB.»</i> A 300 ppp las figuras pesan unas cuatro veces más; a 900, treinta y seis. El paquete lo escribe la propia app, byte a byte, según la especificación pública del formato .zip, comprimiendo con el motor del navegador: no hay ninguna biblioteca ajena dentro.</p>
+  </div>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · qué hace reproducible un estudio</div>
+    <p>Tres cosas: los <b>datos</b> tal como entraron al cálculo (la serie limpia, no la cruda), los <b>parámetros</b> de cada paso (base, umbrales, Kc, suelo, regla de riego, fechas) y la <b>versión</b> del programa. El paquete guarda las tres: <code>proyecto.json</code>, <code>parametros.json</code> y el número de versión en el informe. Con ellas la misma serie da los mismos cuadros en cualquier computadora, sin conexión, porque todos los cálculos son deterministas (Sandve et al. 2013; Wilkinson et al. 2016).</p>
+  </div>
+
+  <!-- 10.6 -->
+  <h2 id="s10-6"><span class="num">10.6</span>Antes de entregar</h2>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · la revisión final</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el estado dice menos de 8 bloques calculados</td><td><b>entonces</b> visita los que faltan o decide que no van, y dilo en el texto.</td></tr>
+      <tr><td><b>Si</b> cambiaste algo en un bloque después de la vista previa</td><td><b>entonces</b> genera el informe de nuevo antes de descargarlo.</td></tr>
+      <tr><td><b>Si</b> la frase de la ETo dice que se estimó una variable</td><td><b>entonces</b> déjala tal cual en el artículo: es lo que se hizo.</td></tr>
+      <tr><td><b>Si</b> los requerimientos térmicos son del catálogo</td><td><b>entonces</b> el informe los llama orientativos; no los presentes como del cultivar.</td></tr>
+      <tr><td><b>Si</b> la tesis pide figuras a 300 ppp</td><td><b>entonces</b> exporta en PNG a 300 y comprueba el tamaño impreso.</td></tr>
+      <tr><td><b>Si</b> el anexo tiene que ser reproducible</td><td><b>entonces</b> entrega el .zip completo, con el <code>proyecto.json</code> dentro.</td></tr>
+      <tr><td><b>Si</b> vas a publicar</td><td><b>entonces</b> copia la cita de la herramienta que el propio informe trae al final.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Con esto se cierran los diez bloques. Lo que sigue en el manual son los apéndices: los archivos que la app lee y escribe, las reglas de decisión reunidas, el glosario, qué hacer cuando algo no sale, las referencias y la licencia.</p>
+  </div>
+</section>
+
+</body>
+</html>

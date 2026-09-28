@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "PhenologyPro: a browser-based platform for agroclimatology and crop phenology"
+abstract: >-
+  PhenologyPro is a self-contained web application that carries the daily series of a weather station
+  through a whole agroclimatic study in the browser, with no installation and no server-side computation.
+  It describes the climate of the site (normals, Walter–Lieth climograph, frost-free period, aridity
+  indices), accumulates thermal time by six degree-day methods with three upper-threshold cut-offs, computes
+  reference evapotranspiration by FAO-56 Penman–Monteith with the prescribed procedures for missing data and
+  by Hargreaves–Samani, Priestley–Taylor, Thornthwaite and Turc, builds the crop coefficient curve corrected
+  to the local climate, runs the Thornthwaite–Mather monthly balance and the FAO-56 daily root-zone balance,
+  schedules irrigation, dates the BBCH stages of a crop and calibrates their thermal requirements, counts
+  winter chill by chill hours, Utah units and the Dynamic model, and estimates frost and heat risk and the
+  sowing window. Every equation is cited to its source and checked against the worked examples of FAO-56.
+type: software
+authors:
+  - given-names: "Luis Ángel"
+    family-names: "Barrera-Guzmán"
+    email: lbarrerag@chapingo.mx
+    orcid: "https://orcid.org/0000-0001-8057-2583"
+version: "1.0.1"
+date-released: "2026-09-27"
+repository-code: "https://github.com/luisangelbg/PhenologyPro"
+url: "https://luisangelbg.github.io/PhenologyPro/"
+# Cuando se deposite en Zenodo, agregar aqui el DOI de concepto:
+#   doi: 10.5281/zenodo.XXXXXXX
+license: GPL-3.0-or-later
+keywords:
+  - agroclimatology
+  - phenology
+  - degree-days
+  - thermal time
+  - evapotranspiration
+  - Penman-Monteith
+  - FAO-56
+  - water balance
+  - irrigation scheduling
+  - crop coefficient
+  - winter chill
+  - climograph
+  - frost risk

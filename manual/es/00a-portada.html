@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../manual.css">
+<style>
+  .cover { background: #ffffff; }
+  .cover text { font-kerning: normal; }
+</style>
+</head>
+<body>
+
+<section class="page cover" aria-label="Portada">
+  <svg id="cover" viewBox="0 0 850 1100" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Portada del manual de PhenologyPro: al centro, el año agroclimático de un sitio —la temperatura y la lluvia mes a mes como en un climograma, y sobre ellas la curva del tiempo térmico de un cultivo con sus etapas fechadas—; a los lados, maíz, trigo, frijol, jitomate, manzano y café, cada uno con su nombre científico; abajo, cuatro viñetas del programa: los grados-día de un día por el método del seno, los dos términos de Penman–Monteith, el agua de la zona radical con sus riegos y la ventana de siembra."></svg>
+</section>
+
+<script>
+/* The cover is drawn once, deterministically (fixed seed), as vector graphics:
+   it prints sharp at any size and every illustration is original. */
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('cover');
+  const el = (tag, attrs, parent, text) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) if (attrs[k] != null) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    (parent || svg).appendChild(n);
+    return n;
+  };
+  const rng = (seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; })(20260927);
+
+  const W = 850, H = 1100;
+  const INK = '#16557a', GRIS = '#5a6b7a', BLANCO = '#ffffff';
+  const AZUL = '#1f6f9f', AMBAR = '#d8901c', LLUVIA = '#2f5fc4', HOJA = '#4f8f3a', CALOR = '#d9552c', ROSA = '#c0406a', TIERRA = '#8a6a4a', VIOLETA = '#7b5ea7', TURQ = '#3aa39a', HIELO = '#6fb7e0', SOL = '#f0a92a';
+  const f1 = v => (+v).toFixed(2);
+  const poly = pts => 'M' + pts.map(([x, y]) => f1(x) + ' ' + f1(y)).join('L');
+  const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+  /* a smooth curve through points (Catmull–Rom → cubic Bézier) */
+  function smooth(pts) {
+    if (pts.length < 3) return poly(pts);
+    let d = `M${f1(pts[0][0])} ${f1(pts[0][1])}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += `C${f1(c1[0])} ${f1(c1[1])} ${f1(c2[0])} ${f1(c2[1])} ${f1(p2[0])} ${f1(p2[1])}`;
+    }
+    return d;
+  }
+
+  const defs = el('defs');
+  const G = {};
+  function grad(id, stops, attrs, linear) {
+    const g = el(linear ? 'linearGradient' : 'radialGradient', Object.assign({ id }, attrs || {}), defs);
+    stops.forEach(([o, c, a]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': a == null ? 1 : a }, g));
+    G[id] = `url(#${id})`;
+  }
+  grad('halo', [[0, '#eaf1f7', 1], [0.62, '#f4f7fa', 1], [1, '#ffffff', 0]]);
+  grad('lluvia', [[0, LLUVIA, 0.55], [1, LLUVIA, 0.12]], { x1: 0, y1: 0, x2: 0, y2: 1 }, true);
+  grad('calor', [[0, CALOR, 0.28], [1, CALOR, 0]], { x1: 0, y1: 0, x2: 0, y2: 1 }, true);
+
+  el('rect', { x: 0, y: 0, width: W, height: H, fill: BLANCO });
+
+  /* ---------------------------------------------------------------- the colours of the ten blocks (plus preliminaries and appendices) */
+  const BLOQUES = ['#16557a', '#1f6f9f', '#5f6b86', '#3aa39a', '#d9552c', '#d8901c', '#2f5fc4', '#4f8f3a', '#7b5ea7', '#c0406a', '#8a6a4a', '#111111'];
+  BLOQUES.forEach((c, i) => {
+    el('rect', { x: f1(i * W / BLOQUES.length), y: 0, width: f1(W / BLOQUES.length + 0.5), height: 9, fill: c });
+    el('rect', { x: f1(i * W / BLOQUES.length), y: H - 5, width: f1(W / BLOQUES.length + 0.5), height: 5, fill: c });
+  });
+
+  /* ---------------------------------------------------------------- title */
+  const tb = el('g', { 'text-anchor': 'middle' });
+  const t1 = el('text', { x: W / 2, y: 132, fill: INK, 'font-family': 'Cormorant, serif', 'font-size': 100, 'font-weight': 700, 'letter-spacing': 0.4 }, tb);
+  el('tspan', {}, t1, 'Phenology');
+  el('tspan', { fill: AZUL, 'font-style': 'italic', 'font-weight': 600 }, t1, 'Pro');
+  el('text', { x: W / 2, y: 210, fill: INK, 'font-family': 'Cormorant, serif', 'font-size': 50, 'font-weight': 600, 'letter-spacing': 0.8 }, tb, 'Manual de usuario');
+  el('text', { x: W / 2, y: 254, fill: AZUL, 'font-family': 'Cormorant, serif', 'font-size': 46, 'font-style': 'italic', 'font-weight': 500, 'letter-spacing': 0.6 }, tb, 'User Manual');
+  el('path', { d: 'M288 280 L 390 280 M 460 280 L 562 280', stroke: GRIS, 'stroke-width': 0.9 }, tb);
+  [AZUL, AMBAR, HOJA, CALOR, LLUVIA].forEach((c, i) => el('circle', { cx: 405 + i * 10, cy: 280, r: 3.2, fill: c }, tb));
+  el('text', { x: W / 2, y: 305, fill: GRIS, 'font-family': 'Jost, sans-serif', 'font-size': 11.5, 'font-weight': 400, 'letter-spacing': 3.2 }, tb,
+    'AGROCLIMATOLOGÍA Y FENOLOGÍA DE CULTIVOS · AGROCLIMATOLOGY AND CROP PHENOLOGY');
+
+  /* ================================================================= the agroclimatic year of a site
+     The centrepiece is what the whole app is about: a year of temperature and rain, and a crop
+     that reads them. The bars are the rain of each month; the warm curve is the mean temperature;
+     the rising curve is the thermal time of a maize sown with the rains, with its stages marked
+     where the accumulation crosses each requirement. */
+  const CX = 425, CY = 585;
+  el('circle', { cx: CX, cy: CY, r: 212, fill: G.halo });
+  el('circle', { cx: CX, cy: CY, r: 180, fill: 'none', stroke: '#cfdde8', 'stroke-width': 0.9, 'stroke-dasharray': '1.5 5', 'stroke-linecap': 'round' });
+
+  const X0 = 262, X1 = 588, EJE = 660, TOP = 470;
+  const mx = m => X0 + (m + 0.5) * (X1 - X0) / 12;
+  /* a highland semi-arid site: warm dry spring, summer rains, mild dry winter */
+  const T = [13.9, 15.6, 18.2, 20.6, 23.0, 22.1, 20.4, 20.0, 19.3, 17.6, 15.4, 14.0];
+  const P = [12, 6, 6, 12, 35, 105, 135, 120, 92, 36, 8, 5];
+  const sy = t => EJE - (t - 8) * 9.2;          /* 10 °C = 18.4 px */
+  const py = p => EJE - p * 0.92;               /* 20 mm = 18.4 px, the Walter–Lieth convention */
+  /* rain bars */
+  P.forEach((p, m) => {
+    const bw = (X1 - X0) / 12 - 6;
+    el('rect', { x: f1(mx(m) - bw / 2), y: f1(py(p)), width: f1(bw), height: f1(EJE - py(p)), rx: 2, fill: G.lluvia });
+  });
+  /* the humid season, where the rain curve is above the temperature curve, hatched softly */
+  const tpts = T.map((t, m) => [mx(m), sy(t)]);
+  const ppts = P.map((p, m) => [mx(m), py(p)]);
+  el('path', { d: smooth(ppts), fill: 'none', stroke: LLUVIA, 'stroke-width': 1.8, 'stroke-linecap': 'round' });
+  el('path', { d: smooth(tpts) + `L${f1(mx(11))} ${EJE}L${f1(mx(0))} ${EJE}Z`, fill: G.calor });
+  el('path', { d: smooth(tpts), fill: 'none', stroke: CALOR, 'stroke-width': 2.2, 'stroke-linecap': 'round' });
+  /* axis and months */
+  el('path', { d: `M${X0} ${EJE}L${X1} ${EJE}`, stroke: INK, 'stroke-width': 1 });
+  'EFMAMJJASOND'.split('').forEach((c, m) => el('text', { x: mx(m), y: EJE + 15, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 9.5, fill: GRIS }, null, c));
+  /* thermal time of a maize sown in mid-May: accumulates faster in the warm months */
+  const base = 10, cap = 30;
+  const dd = T.map(t => Math.max(0, Math.min(cap, t) - base) * 30);
+  const cum = []; let acc = 0;
+  for (let m = 4; m < 12; m++) { acc += dd[m]; cum.push([mx(m), acc]); }
+  const meta = 1450;
+  const ty = g => TOP + 150 - g / meta * 150;
+  const cpts = [[mx(4) - 12, ty(0)]].concat(cum.map(([x, g]) => [x, ty(Math.min(g, meta * 1.12))]));
+  el('path', { d: smooth(cpts), fill: 'none', stroke: AMBAR, 'stroke-width': 2.6, 'stroke-linecap': 'round' });
+  /* stages where the accumulation crosses each requirement */
+  const stages = [[75, 'emergencia', VIOLETA], [750, 'floración', ROSA], [1450, 'madurez', TIERRA]];
+  stages.forEach(([req, name, col]) => {
+    /* linear interpolation along the cumulative curve */
+    let x = null;
+    for (let i = 1; i < cpts.length; i++) {
+      const g0 = i === 1 ? 0 : cum[i - 2][1], g1 = cum[i - 1][1];
+      if (g1 >= req && g0 < req) { x = cpts[i - 1][0] + (req - g0) / (g1 - g0) * (cpts[i][0] - cpts[i - 1][0]); break; }
+    }
+    if (x == null) return;
+    const y = ty(req);
+    el('line', { x1: f1(x), y1: f1(y), x2: f1(x), y2: EJE, stroke: col, 'stroke-width': 1, 'stroke-dasharray': '3 3' });
+    el('circle', { cx: f1(x), cy: f1(y), r: 5.2, fill: BLANCO, stroke: col, 'stroke-width': 2.2 });
+    el('text', { x: f1(x), y: f1(y - 11), 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 9.5, 'font-weight': 500, fill: col }, null, name);
+  });
+  el('text', { x: f1(mx(4) - 14), y: f1(ty(0) + 14), 'font-family': 'Jost, sans-serif', 'font-size': 9.5, fill: AMBAR, 'font-weight': 500 }, null, 'siembra');
+  /* legend under the axis */
+  const lg = el('g', { 'font-family': 'Jost, sans-serif', 'font-size': 9.5, fill: GRIS });
+  const L0 = 300, LY = EJE + 38;
+  el('line', { x1: L0, y1: LY, x2: L0 + 18, y2: LY, stroke: CALOR, 'stroke-width': 2.2 }, lg); el('text', { x: L0 + 24, y: LY + 3.5 }, lg, 'temperatura media');
+  el('rect', { x: L0 + 118, y: LY - 6, width: 12, height: 12, rx: 2, fill: G.lluvia }, lg); el('text', { x: L0 + 136, y: LY + 3.5 }, lg, 'lluvia');
+  el('line', { x1: L0 + 178, y1: LY, x2: L0 + 196, y2: LY, stroke: AMBAR, 'stroke-width': 2.6 }, lg); el('text', { x: L0 + 202, y: LY + 3.5 }, lg, 'grados-día acumulados');
+
+  /* ================================================================= crops at the sides
+     Six crops drawn with simple shapes, each with its scientific name. */
+  function maize(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 L0 -96', stroke: HOJA, 'stroke-width': 3.2, 'stroke-linecap': 'round' }, g);
+    [[-1, -22], [1, -38], [-1, -56], [1, -72]].forEach(([d, yy]) => el('path', { d: `M0 ${yy} q ${d * 26} -8 ${d * 34} -30 q ${-d * 8} 26 ${-d * 34} 30 Z`, fill: mix(HOJA, '#ffffff', 0.1 + Math.abs(yy) / 400) }, g));
+    el('ellipse', { cx: 12, cy: -48, rx: 6, ry: 16, fill: AMBAR, transform: 'rotate(-12 12 -48)' }, g);
+    el('path', { d: 'M8 -60 q 6 -10 10 -14', stroke: TIERRA, 'stroke-width': 1.6, fill: 'none' }, g);
+    el('path', { d: 'M-4 -96 l -4 -14 M0 -96 l 0 -16 M4 -96 l 4 -14', stroke: AMBAR, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, g);
+  }
+  function wheat(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 Q -6 -50 0 -96', stroke: AMBAR, 'stroke-width': 2.2, fill: 'none', 'stroke-linecap': 'round' }, g);
+    for (let i = 0; i < 9; i++) { const yy = -60 - i * 4.4; const d = i % 2 ? 1 : -1; el('ellipse', { cx: d * 5, cy: yy, rx: 3.4, ry: 6.5, fill: mix(AMBAR, SOL, 0.35), transform: `rotate(${d * 28} ${d * 5} ${yy})` }, g); el('line', { x1: d * 6, y1: yy - 5, x2: d * 11, y2: yy - 16, stroke: AMBAR, 'stroke-width': 0.9 }, g); }
+    el('path', { d: 'M0 -20 q 22 -6 30 -28 q -18 4 -30 28 Z', fill: HOJA }, g);
+  }
+  function bean(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 C 14 -30 -12 -50 4 -86', stroke: HOJA, 'stroke-width': 2.4, fill: 'none', 'stroke-linecap': 'round' }, g);
+    [[-6, -30, -1], [8, -50, 1], [-4, -70, -1]].forEach(([xx, yy, d]) => { for (let k = -1; k <= 1; k++) el('path', { d: `M${xx} ${yy} q ${d * 14 + k * 5} ${-10 + k * 6} ${d * 22} ${-2 + k * 12} q ${-d * 8} 8 ${-d * 22} ${2 - k * 12} Z`, fill: mix(HOJA, '#ffffff', 0.15) }, g); });
+    el('path', { d: 'M6 -44 q 10 12 6 30 q -4 -8 -6 -30 Z', fill: mix(HOJA, AMBAR, 0.25) }, g);
+    el('path', { d: 'M2 -58 q 8 14 5 30', stroke: mix(HOJA, AMBAR, 0.5), 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round' }, g);
+  }
+  function tomato(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 L0 -90', stroke: HOJA, 'stroke-width': 2.4, 'stroke-linecap': 'round' }, g);
+    el('line', { x1: -10, y1: 0, x2: -10, y2: -92, stroke: TIERRA, 'stroke-width': 1.4 }, g);
+    [[-1, -30], [1, -52], [-1, -74]].forEach(([d, yy]) => el('path', { d: `M0 ${yy} q ${d * 12} -6 ${d * 22} -2 q ${-d * 6} 8 ${-d * 22} 2 Z`, fill: HOJA }, g));
+    [[8, -40, 7], [12, -58, 6], [6, -64, 5]].forEach(([cx, cy, r]) => { el('circle', { cx, cy, r, fill: r > 5 ? CALOR : mix(CALOR, HOJA, 0.5) }, g); el('path', { d: `M${cx - 3} ${cy - r + 1} l 3 -3 l 3 3`, stroke: HOJA, 'stroke-width': 1.2, fill: 'none' }, g); });
+  }
+  function apple(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 L0 -40 M0 -40 l -16 -20 M0 -40 l 16 -22 M0 -46 l -4 -30', stroke: TIERRA, 'stroke-width': 3, 'stroke-linecap': 'round', fill: 'none' }, g);
+    el('circle', { cx: 0, cy: -72, r: 30, fill: mix(HOJA, '#ffffff', 0.08) }, g);
+    el('circle', { cx: -18, cy: -58, r: 16, fill: mix(HOJA, '#ffffff', 0.18) }, g);
+    el('circle', { cx: 19, cy: -60, r: 15, fill: mix(HOJA, '#ffffff', 0.18) }, g);
+    [[-10, -78], [12, -70], [2, -56], [-20, -52]].forEach(([cx, cy]) => el('circle', { cx, cy, r: 4.2, fill: ROSA }, g));
+    /* a snowflake: the winter chill it needs */
+    const fl = el('g', { transform: 'translate(-34 -100)', stroke: HIELO, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, g);
+    for (let k = 0; k < 3; k++) el('line', { x1: -6, y1: 0, x2: 6, y2: 0, transform: `rotate(${k * 60})` }, fl);
+  }
+  function coffee(x, y, s) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${s})` });
+    el('path', { d: 'M0 0 L0 -92', stroke: TIERRA, 'stroke-width': 2.6, 'stroke-linecap': 'round' }, g);
+    [[-1, -26], [1, -40], [-1, -54], [1, -68], [-1, -82]].forEach(([d, yy], i) => {
+      el('path', { d: `M0 ${yy} L ${d * (30 - i * 3)} ${yy - 8}`, stroke: TIERRA, 'stroke-width': 1.4 }, g);
+      for (let k = 1; k <= 3; k++) { const xx = d * k * (9 - i); el('ellipse', { cx: xx, cy: yy - k * 2.6 - 3, rx: 3.2, ry: 6, fill: mix(HOJA, INK, 0.25), transform: `rotate(${d * 30} ${xx} ${yy - k * 2.6 - 3})` }, g); if (k < 3) el('circle', { cx: xx + d * 3, cy: yy - k * 2.6 + 3, r: 2.2, fill: CALOR }, g); }
+    });
+  }
+  const NOMBRE = (x, y, common, sci) => { el('text', { x, y, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 10, 'font-weight': 500, fill: INK }, null, common); el('text', { x, y: y + 13, 'text-anchor': 'middle', 'font-family': 'Cormorant, serif', 'font-style': 'italic', 'font-size': 12, fill: GRIS }, null, sci); };
+  maize(96, 500, 1);    NOMBRE(96, 528, 'maíz', 'Zea mays');
+  wheat(96, 660, 1);    NOMBRE(96, 688, 'trigo', 'Triticum aestivum');
+  bean(100, 820, 1);    NOMBRE(96, 848, 'frijol', 'Phaseolus vulgaris');
+  tomato(754, 500, 1);  NOMBRE(754, 528, 'jitomate', 'Solanum lycopersicum');
+  apple(754, 660, 1);   NOMBRE(754, 688, 'manzano', 'Malus domestica');
+  coffee(754, 820, 1);  NOMBRE(754, 848, 'café', 'Coffea arabica');
+
+  /* ================================================================= four vignettes of the program */
+  const VY = 900, VW = 150, VH = 96, VG = 20, VX0 = (W - 4 * VW - 3 * VG) / 2;
+  function vignette(i, title) {
+    const x = VX0 + i * (VW + VG);
+    el('rect', { x, y: VY, width: VW, height: VH, rx: 8, fill: '#f7f9fb', stroke: '#dbe4ec' });
+    el('text', { x: x + VW / 2, y: VY + VH + 16, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 9.5, 'font-weight': 500, fill: INK, 'letter-spacing': 0.4 }, null, title);
+    return el('g', { transform: `translate(${x} ${VY})` });
+  }
+  /* 1 · the sine method: a day's temperature wave and the area above the base */
+  (function () {
+    const g = vignette(0, 'grados-día de un día');
+    const b = 70, pts = [];
+    for (let h = 0; h <= 24; h += 0.5) pts.push([14 + h * 122 / 24, b - 26 * Math.sin((h - 9) / 24 * 2 * Math.PI) - 4]);
+    const above = pts.filter(p => p[1] < b);
+    if (above.length) el('path', { d: poly(above) + `L${f1(above[above.length - 1][0])} ${b}L${f1(above[0][0])} ${b}Z`, fill: mix(CALOR, '#ffffff', 0.62) }, g);
+    el('line', { x1: 14, y1: b, x2: 136, y2: b, stroke: INK, 'stroke-width': 1, 'stroke-dasharray': '3 2' }, g);
+    el('text', { x: 138, y: b + 3, 'font-family': 'Jost, sans-serif', 'font-size': 7.5, fill: GRIS }, g, 'base');
+    el('path', { d: smooth(pts), fill: 'none', stroke: CALOR, 'stroke-width': 1.8 }, g);
+    el('text', { x: 75, y: 20, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 8, fill: GRIS }, g, 'seno entre Tmin y Tmax');
+  })();
+  /* 2 · Penman–Monteith: the radiation term and the aerodynamic term, month by month */
+  (function () {
+    const g = vignette(1, 'los dos términos de la ETo');
+    const rad = [2.4, 2.9, 3.5, 3.8, 3.7, 3.2, 2.9, 2.9, 2.7, 2.6, 2.3, 2.2], aer = [0.9, 1.1, 1.4, 1.6, 1.5, 1.0, 0.7, 0.7, 0.7, 0.9, 1.0, 0.9];
+    const bx = m => 14 + m * 10.2, sc = 12;
+    rad.forEach((r, m) => { el('rect', { x: bx(m), y: 84 - r * sc, width: 7, height: r * sc, fill: SOL }, g); el('rect', { x: bx(m), y: 84 - (r + aer[m]) * sc, width: 7, height: aer[m] * sc, fill: TURQ }, g); });
+    el('line', { x1: 12, y1: 84, x2: 138, y2: 84, stroke: INK, 'stroke-width': 1 }, g);
+    el('rect', { x: 40, y: 12, width: 8, height: 8, fill: SOL }, g); el('text', { x: 52, y: 19, 'font-family': 'Jost, sans-serif', 'font-size': 7.5, fill: GRIS }, g, 'radiación');
+    el('rect', { x: 92, y: 12, width: 8, height: 8, fill: TURQ }, g); el('text', { x: 104, y: 19, 'font-family': 'Jost, sans-serif', 'font-size': 7.5, fill: GRIS }, g, 'viento');
+  })();
+  /* 3 · the root zone: depletion, the readily available water and the irrigations */
+  (function () {
+    const g = vignette(2, 'agua en la zona radical');
+    const top = 22, taw = 60, raw = 30;
+    el('rect', { x: 14, y: top, width: 122, height: taw, fill: '#eef3f7' }, g);
+    el('line', { x1: 14, y1: top + raw, x2: 136, y2: top + raw, stroke: AMBAR, 'stroke-width': 1, 'stroke-dasharray': '3 2' }, g);
+    el('line', { x1: 14, y1: top + taw, x2: 136, y2: top + taw, stroke: CALOR, 'stroke-width': 1 }, g);
+    el('text', { x: 138, y: top + raw + 3, 'font-family': 'Jost, sans-serif', 'font-size': 7, fill: AMBAR }, g, 'AFA');
+    el('text', { x: 138, y: top + taw + 3, 'font-family': 'Jost, sans-serif', 'font-size': 7, fill: CALOR }, g, 'ADT');
+    const pts = []; let d = 4, x = 14;
+    while (x < 134) { pts.push([x, top + d]); d += 1.9 + rng() * 1.2; x += 3; if (d >= raw - 0.5) { pts.push([x, top + d]); el('line', { x1: x, y1: top + d, x2: x, y2: top + 1, stroke: LLUVIA, 'stroke-width': 2 }, g); d = 1; pts.push([x, top + d]); } }
+    el('path', { d: poly(pts), fill: 'none', stroke: INK, 'stroke-width': 1.5 }, g);
+    el('text', { x: 75, y: 14, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 7.5, fill: GRIS }, g, 'riega al agotar el AFA');
+  })();
+  /* 4 · the sowing window: four criteria and their conjunction through the year */
+  (function () {
+    const g = vignette(3, 'ventana de siembra');
+    const xs = d => 14 + d * 122 / 365;
+    const curve = (fn, col, dash) => { const pts = []; for (let d = 0; d <= 365; d += 5) pts.push([xs(d), 82 - fn(d) * 56]); el('path', { d: smooth(pts), fill: 'none', stroke: col, 'stroke-width': dash ? 1 : 1.9, 'stroke-dasharray': dash || null }, g); };
+    const bump = (d, c, w) => Math.exp(-Math.pow((d - c) / w, 2));
+    const heat = d => 1 - 0.7 * bump(d, 60, 45), frost = d => 1 - 0.9 * bump(d, 270, 55), water = d => 0.25 + 0.75 * bump(d, 150, 55), mature = d => 1 - 0.8 * bump(d, 320, 70);
+    curve(heat, CALOR, '3 2'); curve(frost, HIELO, '3 2'); curve(water, LLUVIA, '3 2'); curve(mature, AMBAR, '3 2');
+    const all = d => Math.min(heat(d), frost(d), water(d), mature(d));
+    const band = []; for (let d = 0; d <= 365; d += 5) if (all(d) >= 0.8) band.push(d);
+    if (band.length) el('rect', { x: xs(band[0]), y: 24, width: xs(band[band.length - 1]) - xs(band[0]), height: 60, fill: mix(HOJA, '#ffffff', 0.75) }, g);
+    curve(all, HOJA);
+    el('line', { x1: 14, y1: 82 - 0.8 * 56, x2: 136, y2: 82 - 0.8 * 56, stroke: GRIS, 'stroke-width': 0.8, 'stroke-dasharray': '2 2' }, g);
+    el('text', { x: 138, y: 82 - 0.8 * 56 + 3, 'font-family': 'Jost, sans-serif', 'font-size': 7, fill: GRIS }, g, '80 %');
+    el('line', { x1: 14, y1: 84, x2: 136, y2: 84, stroke: INK, 'stroke-width': 1 }, g);
+    el('text', { x: 75, y: 14, 'text-anchor': 'middle', 'font-family': 'Jost, sans-serif', 'font-size': 7.5, fill: GRIS }, g, 'calor · helada · agua · madurez');
+  })();
+
+  /* ---------------------------------------------------------------- author and edition */
+  const foot = el('g', { 'text-anchor': 'middle', 'font-family': 'Cormorant, serif' });
+  el('text', { x: W / 2, y: 1052, 'font-size': 19, 'font-weight': 600, fill: INK, 'letter-spacing': 0.5 }, foot, 'Luis Ángel Barrera-Guzmán');
+  el('text', { x: W / 2, y: 1074, 'font-family': 'Jost, sans-serif', 'font-size': 9.5, fill: GRIS, 'letter-spacing': 2.4 }, foot, 'PRIMERA EDICIÓN · 2026 · VERSIÓN 1.0');
+})();
+</script>
+</body>
+</html>

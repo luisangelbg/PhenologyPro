@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b2" data-pestana="B2" data-orden="2" style="--acento: var(--b2)">
+  <div class="cap-apertura">
+    <div class="cap-num">2</div>
+    <div class="cap-etiqueta">Bloque 2 · Datos climáticos</div>
+    <h1>Datos climáticos del sitio</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Todo lo que la app calcula sale de una sola cosa: la serie diaria de una estación. Este bloque la trae —pegada, desde un archivo o de ejemplo—, reconoce qué columna es cada variable, la revisa con reglas físicas, rellena lo que se puede rellenar y dice sin rodeos qué bloques van a funcionar con lo que hay. Al final la guarda como proyecto, para que el estudio se pueda reproducir.</p>
+    <ul class="cap-contenido">
+      <li><b>2.1</b>De la estación a la serie</li>
+      <li><b>2.2</b>El sitio</li>
+      <li><b>2.3</b>La serie diaria: cuatro formas de traerla</li>
+      <li><b>2.4</b>Qué columna es cada cosa</li>
+      <li><b>2.5</b>El control de calidad</li>
+      <li><b>2.6</b>Lo que estos datos permiten</li>
+      <li><b>2.7</b>La serie limpia y el proyecto</li>
+      <li><b>2.8</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 2.1 -->
+  <h2 id="s2-1"><span class="num">2.1</span>De la estación a la serie</h2>
+  <p class="lead">Una estación agroclimática entrega, en el mejor de los casos, una fila por día con la temperatura máxima y mínima, la lluvia y quizá la humedad, el viento, las horas de sol o la radiación. En el peor, entrega solo las temperaturas, con huecos, con algún valor imposible y con un formato de fecha distinto en cada archivo. El Bloque 2 está hecho para el segundo caso y saca provecho del primero.</p>
+  <p>El bloque se recorre en cinco tarjetas: el sitio, la serie, los papeles de las columnas, el control de calidad y la serie limpia. Solo las dos primeras piden algo; las demás se llenan solas y se leen. Lo que sale de aquí —la serie limpia con sus marcas y el sitio— es lo único que los demás bloques usan: ninguno vuelve a tocar el archivo original.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Con Tmax y Tmin ya se puede hacer casi todo</div>
+    <p>Grados-día, fenología, heladas, climograma, Hargreaves, Penman–Monteith con estimaciones, balance hídrico, riego y frío invernal funcionan con solo la temperatura máxima y mínima diarias (y la lluvia, para todo lo que tenga que ver con el agua). Humedad, viento y radiación mejoran la ETo y quitan estimaciones del informe, pero no son requisito. No hay que esperar a tener «la serie completa» para empezar.</p>
+  </div>
+
+  <!-- 2.2 -->
+  <h2 id="s2-2"><span class="num">2.2</span>El sitio</h2>
+  <p>La primera tarjeta pide lo que la serie no trae: dónde está la estación y en qué clase de clima. De la <b>latitud</b> salen la radiación extraterrestre y la duración del día (FAO-56, ecuaciones 21 y 34); de la <b>altitud</b>, la presión atmosférica y con ella la constante psicrométrica (ecuaciones 7 y 8). Sin esas dos no hay ETo, y por eso son las únicas obligatorias. La longitud solo se cita en el informe.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-sitio.png" alt="La tarjeta 1 del Bloque 2, el sitio: nombre, latitud, longitud, altitud, situación, humedad del clima, altura del anemómetro, notas y los cinco valores derivados"></div>
+    <figcaption><b>Figura 2.1.</b> El sitio del ejemplo: el Bajío semiárido a 20.6° de latitud y 1 800 m. Abajo, lo que la app deriva de esas cifras: la radiación extraterrestre y la duración del día del 21 de junio, la presión, la constante psicrométrica y el coeficiente kRs.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Campo</th><th>Para qué sirve y qué poner</th></tr></thead>
+    <tbody>
+      <tr><td><b>Nombre de la estación o del sitio</b></td><td>Encabeza el informe y da nombre a los archivos que la app exporta.</td></tr>
+      <tr><td><b>Latitud</b></td><td>En grados decimales, negativa al sur del ecuador. Decide la radiación extraterrestre, la duración del día, el fotoperiodo, qué mitad del año es la cálida y en qué mes se parte la temporada de heladas.</td></tr>
+      <tr><td><b>Longitud</b></td><td>Negativa al oeste. No entra en ningún cálculo; si se escribe positiva con una latitud de México la app lo advierte.</td></tr>
+      <tr><td><b>Altitud (m)</b></td><td>Presión atmosférica y constante psicrométrica. Un valor muy alto dispara un aviso por si se escribió en pies.</td></tr>
+      <tr><td><b>Situación</b></td><td><span class="ui">Interior (kRs = 0.16)</span> o <span class="ui">Costera, a menos de ~20 km del mar (kRs = 0.19)</span>. Es el coeficiente con que FAO-56 estima la radiación a partir de la amplitud térmica cuando la estación no la mide (ecuación 50).</td></tr>
+      <tr><td><b>Humedad del clima</b></td><td><span class="ui">Húmedo o subhúmedo (Tdew ≈ Tmin)</span> o <span class="ui">Árido o semiárido (Tdew ≈ Tmin − 2 °C)</span>. Es cómo se estima el punto de rocío, y con él la presión de vapor, cuando no hay humedad medida (ecuación 48 y su nota para climas áridos).</td></tr>
+      <tr><td><b>Altura del anemómetro (m)</b></td><td>2 m en las estaciones agrometeorológicas, 10 m en las sinópticas. La app lleva el viento a 2 m con el perfil logarítmico (ecuación 47).</td></tr>
+      <tr><td><b>Notas</b></td><td>La fuente de los datos, el instrumento, lo que un lector del informe debe saber. Se copian tal cual al informe.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Los ejemplos escriben el sitio por ti</div>
+    <p>Al cargar una serie de ejemplo la tarjeta se llena con su latitud, altitud y situación. Con una serie propia hay que escribirlos: la app no los adivina del archivo. Si el estudio se guarda como proyecto, el sitio viaja dentro.</p>
+  </div>
+
+  <!-- 2.3 -->
+  <h2 id="s2-3"><span class="num">2.3</span>La serie diaria: cuatro formas de traerla</h2>
+  <figure>
+    <div class="marco"><img src="../img/b2-fuentes.png" alt="La tarjeta 2 del Bloque 2: el cuadro para pegar, la plantilla, la zona para soltar un archivo y los seis ejemplos con sus años y la casilla de errores sembrados"></div>
+    <figcaption><b>Figura 2.2.</b> Las cuatro entradas: pegar una tabla, descargar la plantilla para llenarla, soltar o elegir un archivo, o cargar uno de los seis ejemplos con el número de años y, si se quiere, con errores sembrados.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li><b>Pegar.</b> Se copia el bloque de celdas de una hoja de cálculo —con la fila de encabezados— y se pega en el cuadro de texto; <span class="ui">Leer la tabla pegada</span> lo interpreta. Es la forma más rápida y la que funciona con cualquier formato, porque el separador (tabulador, coma, punto y coma o espacios) se detecta solo.</li>
+    <li><b>La plantilla.</b> <span class="ui">⤓ Plantilla .csv</span> descarga un archivo con las columnas que la app entiende (<code>fecha, tmax, tmin, prec, hrmax, hrmin, viento, insolacion</code>) y dos filas de muestra. Se llena en la hoja de cálculo, se guarda como .csv y se abre aquí.</li>
+    <li><b>Un archivo.</b> Se suelta sobre la zona punteada o se elige con el botón. Se aceptan <code>.csv</code>, <code>.txt</code> y <code>.tsv</code>, y también un proyecto <code>.json</code> guardado antes por la app. Los archivos del Servicio Meteorológico Nacional, con su encabezado de varias líneas y la palabra «Nulo» en los faltantes, se leen tal cual.</li>
+    <li><b>Un ejemplo.</b> Seis climas sintéticos, de 1 a 20 años, con la casilla <span class="ui">con errores sembrados</span> para practicar el control de calidad. Al cargarlos, la app avisa que son ficticios y no se citan.</li>
+  </ol>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Un libro de Excel no se lee, y es a propósito</div>
+    <p>Si se elige un <code>.xlsx</code>, la app lo dice: <i>«Los libros de Excel no se leen directamente: guarda la hoja como CSV (texto delimitado por comas) o copia las celdas y pégalas en el cuadro de texto»</i>. Leer un libro de cálculo exigiría incorporar una biblioteca ajena de cientos de miles de líneas para un problema que se resuelve con copiar y pegar. Se prefirió que la app no cargue una sola línea que no sea propia.</p>
+  </div>
+
+  <!-- 2.4 -->
+  <h2 id="s2-4"><span class="num">2.4</span>Qué columna es cada cosa</h2>
+  <p>Leída la tabla, la tarjeta 3 muestra las primeras filas con un selector encima de cada columna: el <b>papel</b> que la app le asignó. Lo adivina por el nombre del encabezado (en español o en inglés, con o sin acentos, con las abreviaturas usuales) y, si el nombre no ayuda, por el contenido. Casi siempre acierta; cuando no, se corrige en el selector.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-papeles.png" alt="La tarjeta 3 del Bloque 2: las primeras filas del ejemplo con el papel de cada columna, el formato de fecha, las unidades y el botón para armar la serie"></div>
+    <figcaption><b>Figura 2.3.</b> Los papeles del ejemplo: fecha, temperatura máxima y mínima, precipitación, humedad relativa media y viento, reconocidos por su nombre. Debajo, el formato de fecha detectado y las unidades.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Papel</th><th>Qué acepta</th></tr></thead>
+    <tbody>
+      <tr><td><b>Fecha</b>, o <b>Año + Mes + Día</b>, o <b>Año + Día del año</b></td><td>Una columna de fecha completa en cualquier orden (año-mes-día, día/mes/año o mes/día/año, detectado o elegido a mano), o la fecha repartida en columnas. Sin fecha no hay serie.</td></tr>
+      <tr><td><b>Temperatura máxima, mínima, media</b></td><td>En °C o °F (se elige). La media se deriva de las extremas cuando no viene, y queda marcada como <i>derivada</i>.</td></tr>
+      <tr><td><b>Precipitación</b></td><td>En mm. Nunca se interpola.</td></tr>
+      <tr><td><b>Humedad relativa máxima, mínima o media</b>, <b>punto de rocío</b></td><td>Cualquiera de ellas sirve para la presión de vapor; FAO-56 prefiere, en ese orden, el rocío, las dos extremas, la máxima sola y la media.</td></tr>
+      <tr><td><b>Viento</b></td><td>En m/s, km/h, km/día o nudos, a la altura escrita en el sitio.</td></tr>
+      <tr><td><b>Insolación</b> (horas de sol) o <b>radiación solar</b></td><td>La radiación en MJ m⁻² d⁻¹, W m⁻² (media diaria), cal cm⁻² d⁻¹ o kJ m⁻² d⁻¹; se convierte al abrir.</td></tr>
+      <tr><td><b>Evaporación de tanque</b></td><td>Se guarda y se exporta, pero no entra en la ETo de FAO-56.</td></tr>
+      <tr><td><b>Ignorar</b></td><td>Cualquier columna que no interese.</td></tr>
+    </tbody>
+  </table>
+  <p>El botón <span class="ui">Armar la serie y revisarla →</span> construye la serie continua: si el archivo saltó fechas, los días que faltan aparecen como huecos; si repitió alguna, la segunda se descarta y se cuenta. La banda de abajo lo resume: <i>«Serie de 1 de enero de 2006 a 31 de diciembre de 2025: 7,305 días de calendario, 7,305 con registro. Fechas leídas como año-mes-día»</i>.</p>
+
+  <!-- 2.5 -->
+  <h2 id="s2-5"><span class="num">2.5</span>El control de calidad</h2>
+  <p>Una serie de estación siempre tiene algo: un 99.9 tecleado, una máxima menor que la mínima, un sensor que se quedó pegado en el mismo valor una semana, un hueco de doce días. El control de calidad aplica cinco reglas, en este orden, y deja cada cambio marcado en la fila para que nada se pierda sin rastro.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-qc.png" alt="La tarjeta 4 del Bloque 2 con el ejemplo con errores sembrados: las cinco opciones, los cinco recuadros y la tabla por variable"></div>
+    <figcaption><b>Figura 2.4.</b> El control de calidad del ejemplo <b>con errores sembrados</b>. Las opciones arriba; los cinco recuadros del resumen; y la tabla por variable con los datos, los faltantes, los rellenados, los huecos y los marcados.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Regla</th><th>Qué hace</th><th style="width:1.35in">Opción</th></tr></thead>
+    <tbody>
+      <tr><td><b>Rango físico</b></td><td>Un valor imposible para la variable (una temperatura de 99.9, una humedad de 130 %) se elimina y queda como faltante.</td><td>siempre</td></tr>
+      <tr><td><b>Tmax &lt; Tmin</b></td><td>Se intercambian, que es el error de captura más común, o se eliminan las dos si se prefiere.</td><td><span class="ui">intercambiar Tmax &lt; Tmin</span></td></tr>
+      <tr><td><b>Pico aislado</b></td><td>Un día que se aparta más de N grados de sus dos vecinos se marca, pero se conserva: puede ser un frente real.</td><td><span class="ui">Pico &gt; 15 °C</span></td></tr>
+      <tr><td><b>Tramo plano</b></td><td>N días o más con exactamente el mismo valor —un sensor pegado— se marcan y se conservan.</td><td><span class="ui">Plano ≥ 7 días</span></td></tr>
+      <tr><td><b>Huecos cortos</b></td><td>En las variables continuas (temperatura, humedad, viento, radiación) los huecos de hasta N días se rellenan por interpolación lineal y quedan marcados como <i>interpolados</i>; los más largos se dejan vacíos. La lluvia nunca se interpola.</td><td><span class="ui">Interpolar huecos de hasta 3 días</span></td></tr>
+      <tr><td><b>Lluvia faltante = 0</b></td><td>Solo si se pide: en muchos registros el observador deja en blanco los días sin lluvia. Se aplica únicamente a días que sí tienen temperaturas.</td><td><span class="ui">lluvia faltante = 0…</span></td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el mismo Bajío, con errores sembrados</div>
+    <p>La serie limpia tenía 100 % de cobertura y 0 incidencias. La versión con errores queda en <b>99.4 %</b> de Tmax y Tmin con 307 valores interpolados, un hueco más largo de 12 días y <b>18 incidencias</b>: 4 valores y 14 huecos largos, además de 303 huecos cortos interpolados. La tabla de incidencias las enumera con fecha: un 99.9 en la máxima del 1 de enero de 2014, <i>fuera de rango físico, eliminado</i>; un 7 de agosto de 2012 con 11.6 &lt; 28.6, <i>intercambiados</i>; un −13.2 en la mínima del 1 de enero de 2015, <i>pico aislado, conservado y marcado</i>; un 24 repetido desde el 1 de enero de 2020, <i>sensor pegado, marcado</i>; y huecos de 12 días en enero de 2010, 2016 y 2022, <i>sin rellenar</i>. Los 20 años siguen siendo útiles para las normales: cada uno conserva más del 90 % de sus días.</p>
+  </div>
+  <h3>Los cinco recuadros y la tabla por variable</h3>
+  <p><b>Periodo</b> y días; <b>años completos</b>, los que tienen al menos 90 % de Tmax, Tmin y lluvia; la cobertura de <b>Tmax y Tmin</b> con los valores interpolados; la de la <b>lluvia</b> con su hueco más largo; y las <b>incidencias</b>. La tabla dice, para cada variable, cuántos días tienen dato, qué porcentaje es, cuántos faltan, cuántos se rellenaron, cuántos huecos hay y cuántos son largos, el hueco más largo y cuántos valores quedaron marcados.</p>
+  <h3>La serie completa y el calendario de disponibilidad</h3>
+  <figure>
+    <div class="marco"><img src="../img/b2-serie.png" alt="Las dos figuras del control de calidad: las temperaturas extremas y la lluvia de todo el registro, y el calendario de disponibilidad por año y mes"></div>
+    <figcaption><b>Figura 2.5.</b> Arriba, todo el registro de un vistazo: máximas, mínimas y lluvia, con las marcas del control de calidad. Abajo, el calendario de disponibilidad: el porcentaje de días con temperatura de cada mes de cada año, que enseña dónde están los huecos largos.</figcaption>
+  </figure>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · cuántos años hacen falta</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> hay menos de 3 años completos</td><td><b>entonces</b> es una anécdota: sirve para practicar, no para normales ni probabilidades de helada.</td></tr>
+      <tr><td><b>Si</b> hay de 3 a 10</td><td><b>entonces</b> es una estimación; la app lo advierte y conviene decirlo en el informe.</td></tr>
+      <tr><td><b>Si</b> hay de 10 a 30</td><td><b>entonces</b> es lo usual en estaciones agrícolas y suficiente para decidir.</td></tr>
+      <tr><td><b>Si</b> hay 30 o más</td><td><b>entonces</b> es una normal climática en el sentido de la OMM.</td></tr>
+      <tr><td><b>Si</b> un hueco pasa de 6 días</td><td><b>entonces</b> no lo interpoles: se pierden los frentes; mejor una estación vecina o dejarlo vacío.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Las fichas <span class="ui">?</span> de <i>Años completos</i> y <i>Rellenados</i> traen estas escalas. Con 5 años, las probabilidades solo pueden valer 0, 20, 40, 60, 80 o 100 %.</p>
+  </div>
+
+  <!-- 2.6 -->
+  <h2 id="s2-6"><span class="num">2.6</span>Lo que estos datos permiten</h2>
+  <p>Al final de la tarjeta 4, seis sellos dicen qué análisis van a funcionar con las variables que la serie trae, y cómo. Es la respuesta a «¿sirven mis datos?» antes de entrar a cualquier bloque.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-permite.png" alt="Los seis sellos de «Lo que estos datos permiten» y el mensaje que explica cómo se calculará Penman–Monteith con lo que hay"></div>
+    <figcaption><b>Figura 2.6.</b> Con temperatura, lluvia, humedad y viento: grados-día, Hargreaves, balance y frío funcionan completos; Penman–Monteith se calcula estimando la radiación; Priestley–Taylor y Turc, que necesitan radiación medida, quedan como comparación.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.3in">Sello</th><th>Qué necesita</th></tr></thead>
+    <tbody>
+      <tr><td><b>Grados-día y fenología</b></td><td>Tmax y Tmin.</td></tr>
+      <tr><td><b>ETo Hargreaves</b></td><td>Tmax y Tmin, y la latitud del sitio.</td></tr>
+      <tr><td><b>ETo Penman–Monteith</b></td><td>Completa con humedad, viento y radiación o insolación; <i>con estimaciones</i> cuando falta alguna. El sello dice cuál falta.</td></tr>
+      <tr><td><b>Balance hídrico y riego</b></td><td>Lluvia y alguna ETo.</td></tr>
+      <tr><td><b>Frío invernal</b></td><td>Tmax y Tmin; las horas se reconstruyen con el método de Linvill.</td></tr>
+      <tr><td><b>Priestley–Taylor y Turc</b></td><td>Radiación medida o insolación; sin ellas se calculan igual con la radiación estimada, pero se marcan como comparación.</td></tr>
+    </tbody>
+  </table>
+  <p>El mensaje azul lo dice con todas sus letras: <i>«Penman–Monteith se calculará igual: FAO-56 indica cómo estimar la humedad a partir de la mínima, la radiación a partir de la amplitud térmica y el viento con 2 m/s, y el informe dirá qué se estimó. Hargreaves queda como comparación»</i>. El Bloque 5 cuenta los días en que se estimó cada variable y redacta la frase que va al informe.</p>
+
+  <!-- 2.7 -->
+  <h2 id="s2-7"><span class="num">2.7</span>La serie limpia y el proyecto</h2>
+  <figure>
+    <div class="marco"><img src="../img/b2-limpia.png" alt="La tarjeta 5 del Bloque 2: la vista previa de la serie limpia con sus colores y los botones de exportar, guardar, cargar y olvidar"></div>
+    <figcaption><b>Figura 2.7.</b> La serie limpia: las primeras 40 filas con el color de cada marca (interpolado, intercambiado, pico, plano, derivado) y las salidas: el .csv limpio, el proyecto .json y el botón para olvidar la serie.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Botón</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Ver todas las filas / solo las primeras</span></td><td>Alterna entre la vista previa de 40 filas y la serie entera.</td></tr>
+      <tr><td><span class="ui">⤓ Serie limpia (.csv)</span></td><td>Descarga la serie tal como la usarán los bloques, con una columna <code>flags</code> que dice qué se hizo en cada fila. Es lo que se entrega como anexo de datos.</td></tr>
+      <tr><td><span class="ui">⤓ Guardar proyecto (.json)</span></td><td>El sitio y la serie limpia en un archivo compacto que la app vuelve a abrir en esta o en cualquier otra computadora. Las marcas del control de calidad viajan dentro: un valor interpolado hoy sigue siendo un valor interpolado mañana.</td></tr>
+      <tr><td><span class="ui">Cargar proyecto</span></td><td>Abre ese archivo (también se puede soltar en la zona de archivos de la tarjeta 2).</td></tr>
+      <tr><td><span class="ui">Olvidar esta serie</span></td><td>Borra la serie del navegador. No toca ningún archivo.</td></tr>
+      <tr><td><span class="ui">Continuar al Bloque 3 →</span></td><td>Lleva al clima del sitio.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Lo que el navegador recuerda</div>
+    <p>Al armar la serie, la app la guarda también en el almacenamiento local del navegador. Al volver a abrir <span class="ruta">index.html</span> aparece el aviso <i>«Se recuperó la serie de la sesión anterior desde el navegador. Carga otra si no es la que quieres»</i>. Si la serie es muy larga para caber ahí, el proyecto .json es el único respaldo.</p>
+  </div>
+
+  <!-- 2.8 -->
+  <h2 id="s2-8"><span class="num">2.8</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>La latitud y la altitud son obligatorias…</i></td><td>Sin ellas no se puede armar la serie. Escríbelas en la tarjeta 1.</td></tr>
+      <tr><td><i>Latitud polar…</i> / <i>Altitud muy alta…</i></td><td>Revisa el signo y las unidades; los métodos de radiación de FAO-56 valen para latitudes menores y la altitud va en metros.</td></tr>
+      <tr><td><i>Una longitud positiva entre 86 y 118 con esa latitud parece México escrito sin el signo negativo</i></td><td>No afecta los cálculos, pero el informe la citará así: corrígela.</td></tr>
+      <tr><td><i>No se encontraron filas con números</i></td><td>La tabla pegada o el archivo no tienen una fila de encabezados seguida de filas numéricas; revisa el separador y que la fecha esté en una columna.</td></tr>
+      <tr><td><i>Falta la fecha: marca una columna como Fecha, o Año + Mes + Día, o Año + Día del año</i></td><td>La app no encontró la fecha por el nombre; elígela en el selector de la columna.</td></tr>
+      <tr><td><i>Sin Tmax y Tmin casi nada se puede calcular</i></td><td>Asigna los papeles de las temperaturas; sin ellas la serie no sirve para grados-día, ETo ni balance.</td></tr>
+      <tr><td><i>Con N años completos las normales y las probabilidades de helada serán una estimación gruesa</i></td><td>Aparece con menos de 10 años completos. La OMM pide 30 y en la práctica se aceptan 10; dilo en el informe.</td></tr>
+      <tr><td><i>Los libros de Excel no se leen directamente</i></td><td>Guarda como .csv o copia y pega las celdas.</td></tr>
+      <tr><td><i>El archivo no es un proyecto de PhenologyPro</i></td><td>Se intentó cargar un .json que no escribió la app.</td></tr>
+      <tr><td><i>Los datos del ejemplo son sintéticos y ficticios</i></td><td>Recordatorio al cargar un ejemplo: sirve para practicar, no para citarse.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Capítulo 9</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .formula { font-family: var(--mono); font-size: 9pt; background: var(--marino-suave); border-radius: 5px; padding: 0.07in 0.12in; margin: 0.08in 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b9" data-pestana="B9" data-orden="9" style="--acento: var(--b9)">
+  <div class="cap-apertura">
+    <div class="cap-num">9</div>
+    <div class="cap-etiqueta">Bloque 9 · Riesgos y escenarios</div>
+    <h1>Riesgos y escenarios</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Qué puede salir mal y cuándo. La helada y el golpe de calor en cada etapa del cultivo, año por año; la ventana de siembra que junta en una sola probabilidad de éxito la madurez, la helada, el calor y el agua de temporal; y qué le pasa al calendario, a la demanda de agua y al frío invernal si el sitio se calienta 1, 2 o 3 °C. Es el bloque donde se toma la decisión, y donde más veces se vuelve a los bloques anteriores.</p>
+    <ul class="cap-contenido">
+      <li><b>9.1</b>Qué puede salir mal y cuándo</li>
+      <li><b>9.2</b>Cultivo, umbrales y criterios</li>
+      <li><b>9.3</b>Helada y golpe de calor por etapa</li>
+      <li><b>9.4</b>La ventana de siembra</li>
+      <li><b>9.5</b>Escenarios: si el sitio se calienta</li>
+      <li><b>9.6</b>Los avisos de este bloque</li>
+    </ul>
+  </div>
+
+  <!-- 9.1 -->
+  <h2 id="s9-1"><span class="num">9.1</span>Qué puede salir mal y cuándo</h2>
+  <p class="lead">No importa que hiele: importa que hiele en la floración. No importa que haga calor: importa que pase de 35 °C cuando el polen del maíz está en el aire. Los Bloques 3 a 8 dieron cada pieza por separado —las heladas del sitio, el calor disponible, el agua del temporal, las fechas de las etapas—; este bloque las pone en el mismo calendario y pregunta, para cada año del registro, si todo salió bien a la vez.</p>
+  <p>Tres herramientas. El <b>riesgo por etapa</b> cuenta, dentro de la ventana de cada etapa de cada año, los días con Tmin bajo el umbral de helada y con Tmax sobre el umbral de calor. La <b>ventana de siembra</b> repite el ejercicio para cada fecha del año y añade el agua: una fecha tiene éxito en un año si el cultivo maduró, la etapa sensible no vio helada ni golpe de calor y el rendimiento en temporal alcanzó el mínimo exigido. Y los <b>escenarios</b> desplazan las temperaturas de toda la serie y rehacen la fenología, el riesgo, la ETo, el balance y el frío, como análisis de sensibilidad.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · el golpe de calor en la etapa sensible</div>
+    <p>Unas horas por encima de un umbral en floración bastan para perder cosecha: el polen del maíz muere y la seda se seca por encima de 35 °C; el trigo aborta flores por encima de 30–32 °C en antesis; el jitomate y el chile no amarran fruto con máximas de 32–33 °C; el frijol pierde flores sobre 32 °C (Hatfield y Prueger 2015; Porter y Gawith 1999). El catálogo trae un umbral por cultivo; es una convención de trabajo, editable, y el daño real depende de la duración y de la humedad del aire. Un día aislado no siempre daña; una racha de tres, casi siempre.</p>
+  </div>
+
+  <!-- 9.2 -->
+  <h2 id="s9-2"><span class="num">9.2</span>Cultivo, umbrales y criterios</h2>
+  <figure>
+    <div class="marco"><img src="../img/b9-params.png" alt="La tarjeta 1 del Bloque 9: cultivo, fecha de siembra, umbral de helada, umbral de golpe de calor, etapa sensible, dónde cuenta la helada, rendimiento relativo mínimo y éxito objetivo"></div>
+    <figcaption><b>Figura 9.1.</b> Los criterios del maíz del Bajío: siembra el 15 de mayo (heredada del Bloque 6), helada a 0 °C (del Bloque 3), golpe de calor a 35 °C (del catálogo), etapa sensible 65, la helada contada en la etapa sensible, rendimiento mínimo del 75 % y éxito objetivo del 80 %.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Control</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cultivo</b> y <b>Fecha de siembra</b></td><td>El cultivo y sus etapas se heredan del Bloque 8 si se calcularon ahí (calibradas o no); si no, del catálogo. La fecha se hereda del Bloque 6.</td></tr>
+      <tr><td><b>Helada: Tmin ≤ (°C)</b></td><td>El umbral del Bloque 3 por omisión; 2 °C para cultivos sensibles.</td></tr>
+      <tr><td><b>Golpe de calor: Tmax ≥ (°C)</b></td><td>El del catálogo para el cultivo (35 para el maíz, 32 para el frijol y el jitomate…).</td></tr>
+      <tr><td><b>Etapa sensible</b></td><td>La etapa en que la helada y el calor cuentan para el éxito: la floración en casi todos los cultivos.</td></tr>
+      <tr><td><b>La helada cuenta en</b></td><td><span class="ui">la etapa sensible</span> o <span class="ui">todo el ciclo</span>. Un cultivo que muere con una helada en cualquier momento (jitomate, frijol) usa la segunda.</td></tr>
+      <tr><td><b>Rendimiento relativo mínimo (%)</b></td><td>El rendimiento en temporal (Bloque 6) por debajo del cual el año cuenta como fallido por agua; 75 % por omisión.</td></tr>
+      <tr><td><b>Éxito objetivo (% de los años)</b></td><td>La fracción de años que una fecha debe cumplir para entrar en la ventana; 80 % por omisión.</td></tr>
+      <tr><td><b>Escenarios</b></td><td>Los incrementos de temperatura (1, 2, 3 °C), el cambio de lluvia en % y si se calcula también el frío invernal.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9.3 -->
+  <h2 id="s9-3"><span class="num">9.3</span>Helada y golpe de calor por etapa</h2>
+  <figure>
+    <div class="marco"><img src="../img/b9-etapas.png" alt="Los cinco recuadros del riesgo por etapa, la figura de años con helada y con calor en cada etapa y la tabla por etapa"></div>
+    <figcaption><b>Figura 9.2.</b> El riesgo por etapa del maíz del Bajío sembrado el 15 de mayo: madura en el 100 % de los años, la helada entra en el ciclo en el 5 % (en la madurez), el golpe de calor en el 25 %, sobre todo en las seis hojas; la etapa sensible ve calor en el 5 % y helada en ninguno.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:0.55in">BBCH</th><th>Etapa</th><th class="c">Días</th><th class="c">Años con helada</th><th class="c">Días de helada</th><th class="c">Mín. absoluta</th><th class="c">Años con calor</th><th class="c">Días de calor</th><th class="c">Máx. absoluta</th></tr></thead>
+    <tbody>
+      <tr><td>09</td><td>Emergencia</td><td class="c">6</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">8.2 °C</td><td class="c">5 %</td><td class="c">0.1</td><td class="c">35.8 °C</td></tr>
+      <tr><td>16</td><td>Seis hojas (V6)</td><td class="c">18</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">10.7 °C</td><td class="c">20 %</td><td class="c">0.3</td><td class="c">35.7 °C</td></tr>
+      <tr><td>65</td><td>Floración (VT/R1) <i>sensible</i></td><td class="c">42</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">7.7 °C</td><td class="c">5 %</td><td class="c">0.1</td><td class="c">36.9 °C</td></tr>
+      <tr><td>75</td><td>Grano lechoso (R3)</td><td class="c">17</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">5.0 °C</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">33.9 °C</td></tr>
+      <tr><td>89</td><td>Madurez fisiológica (R6)</td><td class="c">68</td><td class="c">5 %</td><td class="c">0.1</td><td class="c">0.0 °C</td><td class="c">0 %</td><td class="c">0.0</td><td class="c">32.4 °C</td></tr>
+    </tbody>
+  </table>
+  <p>La app lo resume: <i>«La helada entra en el ciclo en 5 % de los años, sobre todo en la etapa 89 (madurez fisiológica, 5 %). El calor por encima de 35 °C aparece en 25 % de los años, con más frecuencia en 16 (20 %).»</i> Sembrado el 15 de mayo, el maíz del Bajío florece en pleno julio, cuando las lluvias ya bajaron las máximas: el calor de mayo y junio lo alcanza en las seis hojas, donde no daña, y la única helada del ciclo cae en octubre, sobre el grano ya hecho. Es una fecha bien puesta respecto a la temperatura.</p>
+  <figure>
+    <div class="marco"><img src="../img/b9-diario.png" alt="La probabilidad de helada y de golpe de calor cada día del año, con las etapas del cultivo superpuestas"></div>
+    <figcaption><b>Figura 9.3.</b> La probabilidad de helada y de calor de cada día del año, suavizada a ± 3 días, con las etapas de la siembra elegida encima. En el Bajío el calor asoma en mayo y junio y la helada en noviembre; la floración queda entre los dos.</figcaption>
+  </figure>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · años con calor en la etapa sensible</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> menos del 10 % de los años ven un día de calor en la etapa sensible</td><td><b>entonces</b> el riesgo es bajo.</td></tr>
+      <tr><td><b>Si</b> entre 10 y 25 %</td><td><b>entonces</b> moderado: uno de cada cuatro a diez años.</td></tr>
+      <tr><td><b>Si</b> entre 25 y 50 %</td><td><b>entonces</b> alto: cambia la fecha o el cultivar.</td></tr>
+      <tr><td><b>Si</b> más del 50 %</td><td><b>entonces</b> muy alto.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Para la helada vale la misma escala; la ficha <i>Golpe de calor en la etapa sensible</i> la trae.</p>
+  </div>
+
+  <!-- 9.4 -->
+  <h2 id="s9-4"><span class="num">9.4</span>La ventana de siembra</h2>
+  <p>La tarjeta 3 siembra el cultivo cada cinco días del año en cada año del registro y, para cada fecha y cada año, revisa cuatro condiciones: maduró; no hubo helada (en la etapa sensible o en el ciclo, según se eligió); no hubo golpe de calor en la etapa sensible; el rendimiento en temporal alcanzó el mínimo. El <b>éxito</b> de la fecha es la fracción de años en que las cuatro se cumplieron a la vez. No es el producto de las cuatro probabilidades: es la conjunción año por año, que es lo que le pasa a un productor.</p>
+  <figure>
+    <div class="marco"><img src="../img/b9-ventana.png" alt="La figura de la ventana de siembra con las cuatro curvas de cada criterio y la del éxito conjunto, y el párrafo con la ventana recomendada"></div>
+    <figcaption><b>Figura 9.4.</b> La ventana de siembra del maíz del Bajío: la curva de cada criterio a lo largo del año y, en verde, el éxito conjunto; la banda es la ventana con al menos 80 % de éxito. Se ve qué criterio tumba el éxito en cada fecha: el agua antes de mayo y después de julio, la madurez en el otoño.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · la ventana del maíz en el Bajío</div>
+    <p style="font-style:italic">«Ventana con al menos 80 % de éxito en el registro: del 21 may al 25 jun (mejor el 10 jun: 95 %, 180 días). Éxito significa que en ese año el cultivo maduró, no hubo helada en la etapa sensible, no hubo golpe de calor en la etapa sensible y el rendimiento relativo en temporal fue de al menos 75 %.»</p>
+    <p>Los tres bloques decían cosas distintas: el Bloque 4, que térmicamente lo mejor es marzo; el Bloque 6, que para el agua lo mejor es el 31 de mayo; el Bloque 3, que las lluvias empiezan el 6 de junio en la mediana. La ventana los concilia: del 21 de mayo al 25 de junio, con el óptimo el 10 de junio, cuando cuatro de cada cinco años el maíz madura, florece sin calor ni helada y el temporal rinde al menos el 75 %. Fuera de la ventana el éxito cae por el agua (antes) o porque el llenado se mete en el otoño seco y frío (después). El cuadro completo, cada cinco días, se descarga con <span class="ui">⤓ Ventana completa (.csv)</span>.</p>
+  </div>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · la probabilidad de éxito de una fecha</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:44%"><b>Si</b> el éxito es de 80 % o más</td><td><b>entonces</b> es ventana recomendable: falla uno de cada cinco años o menos.</td></tr>
+      <tr><td><b>Si</b> está entre 60 y 80 %</td><td><b>entonces</b> es aceptable con riesgo: conviene seguro o riego.</td></tr>
+      <tr><td><b>Si</b> es menor de 60 %</td><td><b>entonces</b> evitar.</td></tr>
+      <tr><td><b>Si</b> el criterio que tumba el éxito es el agua</td><td><b>entonces</b> el riego lo arregla: rehaz la ventana con el rendimiento mínimo bajo y planea el riego del Bloque 7.</td></tr>
+      <tr><td><b>Si</b> es la helada al final</td><td><b>entonces</b> sembrar antes o un cultivar más precoz.</td></tr>
+      <tr><td><b>Si</b> es el calor en floración</td><td><b>entonces</b> mover la siembra para que florezca fuera del pico.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Con menos de diez años el porcentaje es grueso (con cinco solo hay 0, 20, 40…); y el registro pasado no contiene el clima futuro: mira los escenarios.</p>
+  </div>
+
+  <!-- 9.5 -->
+  <h2 id="s9-5"><span class="num">9.5</span>Escenarios: si el sitio se calienta</h2>
+  <p>La tarjeta 4 desplaza todas las temperaturas de la serie (máxima, mínima y media) en +1, +2 y +3 °C —y, si se pide, escala la lluvia— y repite los cálculos: la fenología, el riesgo por etapa, la ETo por Penman–Monteith, el balance en temporal y el frío invernal. Es el <b>método delta</b>, la forma más simple de análisis de sensibilidad al clima; no es un pronóstico y la app lo dice.</p>
+  <figure>
+    <div class="marco"><img src="../img/b9-escenarios.png" alt="La tabla de los escenarios y la figura de cada indicador respecto al clima actual"></div>
+    <figcaption><b>Figura 9.5.</b> Los escenarios del maíz del Bajío: la tabla con los indicadores de cada uno y la figura con cada indicador como fracción del clima actual.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th>Escenario</th><th class="c">Días a madurez</th><th class="c">Fecha</th><th class="c">Madura</th><th class="c">Días de helada</th><th class="c">Días de calor</th><th class="c">ETo anual</th><th class="c">ETc temporada</th><th class="c">Rend. temporal</th></tr></thead>
+    <tbody>
+      <tr><td>Clima actual</td><td class="c">148</td><td class="c">10 oct</td><td class="c">100 %</td><td class="c">0.1</td><td class="c">0.5</td><td class="c">1548</td><td class="c">497</td><td class="c">87 %</td></tr>
+      <tr><td>+1 °C</td><td class="c">132</td><td class="c">24 sep</td><td class="c">100 %</td><td class="c">0.0</td><td class="c">2.8</td><td class="c">1589</td><td class="c">510</td><td class="c">85 %</td></tr>
+      <tr><td>+2 °C</td><td class="c">120</td><td class="c">12 sep</td><td class="c">100 %</td><td class="c">0.0</td><td class="c">4.8</td><td class="c">1629</td><td class="c">524</td><td class="c">83 %</td></tr>
+      <tr><td>+3 °C</td><td class="c">111</td><td class="c">3 sep</td><td class="c">100 %</td><td class="c">0.0</td><td class="c">9.5</td><td class="c">1670</td><td class="c">537</td><td class="c">80 %</td></tr>
+    </tbody>
+  </table>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · el maíz del Bajío con +3 °C</div>
+    <p style="font-style:italic">«Con +3 °C, Maíz (grano) madura 37 días antes (148 → 111); la ETo anual pasa de 1548 a 1670 mm (8 %); el rendimiento en temporal, de 87 % a 80 %; los días de helada en el ciclo, de 0.1 a 0.0, y los de calor, de 0.5 a 9.5.»</p>
+    <p>La lectura tiene dos capas. La primera es lo que la tabla muestra: el ciclo se acorta cinco semanas, la demanda de agua sube y el temporal rinde menos, y los días de golpe de calor en el ciclo se multiplican por veinte. La segunda es lo que el modelo no ve, y la app lo advierte: un ciclo más corto rinde menos por sí solo, porque tiene menos días de llenado, aunque el tiempo térmico lo dé por maduro. Y el frío invernal —la columna de porciones, cuando el cultivo lo necesita— es lo primero que se pierde con el calentamiento en los sitios de caducifolios.</p>
+  </div>
+  <figure>
+    <div class="marco"><img src="../img/b9-esccal.png" alt="El calendario del cultivo en cada escenario: las etapas del clima actual y de +1, +2 y +3 °C sobre el mismo eje del año"></div>
+    <figcaption><b>Figura 9.6.</b> El calendario del cultivo en cada escenario: la misma siembra, las etapas cada vez más temprano. La floración del clima actual cae el 20 de julio; con +3 °C, a principios de julio, más cerca del pico de calor.</figcaption>
+  </figure>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Sensibilidad, no pronóstico</div>
+    <p>Sumar 2 °C a cada día del registro no es el clima de 2050: el calentamiento real no es uniforme, cambia más las mínimas que las máximas, mueve las lluvias y cambia la variabilidad. Lo que el escenario dice es <b>en qué dirección y cuánto</b> responde cada indicador del estudio a un cambio de temperatura, y cuál de ellos es el frágil. Cítalo así en el informe: como análisis de sensibilidad (IPCC 2021; Hatfield et al. 2011).</p>
+  </div>
+
+  <!-- 9.6 -->
+  <h2 id="s9-6"><span class="num">9.6</span>Los avisos de este bloque</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué significa y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><i>La helada entra en el ciclo en X % de los años, sobre todo en la etapa …; el calor aparece en Y %</i></td><td>El resumen del riesgo por etapa. Mira en qué etapa cae cada uno antes de preocuparte por el total.</td></tr>
+      <tr><td><i>Ventana con al menos X % de éxito: del … al … (mejor el …)</i></td><td>La recomendación. Si es muy estrecha, baja el rendimiento mínimo (con riego) o el objetivo, y di en el informe cuál elegiste.</td></tr>
+      <tr><td><i>Ninguna fecha de siembra alcanza el X % de éxito con todas las condiciones a la vez; la mejor es …</i></td><td>El sitio no da esa seguridad para ese cultivo en temporal. Revisa qué criterio manda en la figura y decide: riego, otro cultivar, otro objetivo.</td></tr>
+      <tr><td><i>Con +3 °C, … madura N días antes…</i></td><td>La lectura del escenario más caliente; es sensibilidad, no pronóstico.</td></tr>
+      <tr><td><i>Las etapas vienen del catálogo / del Bloque 8 (calibradas)</i></td><td>La línea de contexto dice de dónde salieron las etapas; si calibraste en el Bloque 8, aquí se usan las calibradas.</td></tr>
+      <tr><td><i>Primero hace falta una serie</i></td><td>Vuelve al Bloque 2.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

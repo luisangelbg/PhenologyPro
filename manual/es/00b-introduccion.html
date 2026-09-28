@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PhenologyPro · Manual de usuario · Preliminares e introducción</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<!-- reparte el contenido en hojas tamaño carta, con encabezados, números de página e índice -->
+<script src="../paginar.js"></script>
+<style>
+  .bloques-10 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.06in 0.22in; }
+  figure.reducida { width: 78%; margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== CRÉDITOS -->
+<section class="preliminares creditos" id="creditos">
+  <div class="cred-titulo">PhenologyPro</div>
+  <div class="cred-sub">Manual de usuario · Agroclimatología y fenología de cultivos</div>
+
+  <dl>
+    <dt>Autor</dt><dd><b>Luis Ángel Barrera-Guzmán</b><br><span class="small">ORCID 0000-0001-8057-2583</span></dd>
+    <dt>Programa</dt><dd>PhenologyPro, versión 1.0.1 (septiembre de 2026)</dd>
+    <dt>Manual</dt><dd>Primera edición en español, 2026. Describe la versión 1.0 del programa.</dd>
+    <dt>Licencia del programa</dt><dd>Licencia Pública General de GNU, versión 3 o posterior (GPL-3.0-or-later).</dd>
+    <dt>Derechos del manual</dt><dd>© 2026 Luis Ángel Barrera-Guzmán. Todos los derechos reservados.</dd>
+    <dt>Idioma de la interfaz</dt><dd>Español o inglés, con el botón <span class="ui">ES</span> · <span class="ui">EN</span> de la barra superior. En este manual los nombres de botones, campos y menús se escriben como aparecen en pantalla en español, por ejemplo <span class="ui">Armar la serie y revisarla →</span>.</dd>
+  </dl>
+
+  <h4>Cómo citar el programa</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos</i> (versión 1.0) [Programa de cómputo].</div>
+  <h4>Cómo citar este manual</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>PhenologyPro. Manual de usuario</i> (1.ª ed.). Distribuido con PhenologyPro, versión 1.0.</div>
+  <p class="small">El identificador de objeto digital (DOI) se añadirá a ambas citas cuando la versión 1.0 se archive. Mientras tanto, la cita del programa aparece en la sección <span class="ui">Cómo citar</span> de la portada de la app y al final de cada informe del Bloque 10.</p>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Privacidad</div>
+    <p>PhenologyPro funciona por completo dentro de tu navegador. La serie de la estación que abres se lee en tu computadora y <b>nunca se envía a ningún servidor</b>. Puedes trabajar con los datos de una estación privada, de un ensayo en curso o de una tesis sin que nada de eso salga de tu equipo. El programa tampoco necesita internet: una vez copiado, funciona con la máquina desconectada.</p>
+  </div>
+
+  <p class="small" style="margin-top:0.4in;color:var(--gris)">Las ilustraciones, los diagramas y las capturas de pantalla de este manual son originales: se generaron con el propio programa o con código escrito para el manual. Las seis series climáticas de ejemplo que trae el programa —y con las que se ilustra este manual— son <b>sintéticas y ficticias</b>: reproducen el orden de magnitud y la estacionalidad de seis climas de México, pero no son observaciones de ninguna estación real, y así lo dice la app cada vez que se cargan. Los coeficientes de cultivo, las fracciones de agotamiento y los factores de respuesta al agua provienen de las tablas públicas de la FAO (Documentos de Riego y Drenaje 24, 33 y 56); los requerimientos térmicos del catálogo son <b>orientativos</b> y el programa insiste en calibrarlos con fechas observadas.</p>
+</section>
+
+<!-- ====================================================================== ÍNDICE -->
+<section class="preliminares indice" id="indice" data-nueva-hoja>
+  <h1>Índice</h1>
+  <div class="indice-sub">Contenido general del manual</div>
+
+  <ol class="toc">
+    <li>
+      <div class="toc-cap"><span class="chip k0">P</span><a href="#como-leer">Cómo leer este manual</a><a class="pag" href="#como-leer"></a></div>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k0">In</span><a href="#cap-intro">Introducción a PhenologyPro</a><a class="pag" href="#cap-intro"></a></div>
+      <ul>
+        <li><span class="n">I.1</span><a href="#si-1"><span class="t">¿Qué es PhenologyPro?</span></a></li>
+        <li><span class="n">I.2</span><a href="#si-2"><span class="t">Preguntas que responde</span></a></li>
+        <li><span class="n">I.3</span><a href="#si-3"><span class="t">Cinco ideas que sostienen el manual</span></a></li>
+        <li><span class="n">I.4</span><a href="#si-4"><span class="t">Datos que acepta y qué entrega</span></a></li>
+        <li><span class="n">I.5</span><a href="#si-5"><span class="t">Qué necesitas y cómo abrirlo</span></a></li>
+        <li><span class="n">I.6</span><a href="#si-6"><span class="t">Recorrido por la interfaz</span></a></li>
+        <li><span class="n">I.7</span><a href="#si-7"><span class="t">Los seis climas de práctica</span></a></li>
+        <li><span class="n">I.8</span><a href="#si-8"><span class="t">Cómo se recorre un estudio</span></a></li>
+        <li><span class="n">I.9</span><a href="#si-9"><span class="t">Lo que el programa no hace</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k1">1</span><a href="#cap-b1">Inicio: el motor, los laboratorios y la teoría</a><a class="pag" href="#cap-b1"></a></div>
+      <ul>
+        <li><span class="n">1.1</span><a href="#s1-1"><span class="t">Lo que se ve al abrir la app</span></a></li>
+        <li><span class="n">1.2</span><a href="#s1-2"><span class="t">Cómo funciona: los diez pasos</span></a></li>
+        <li><span class="n">1.3</span><a href="#s1-3"><span class="t">El laboratorio de tiempo térmico</span></a></li>
+        <li><span class="n">1.4</span><a href="#s1-4"><span class="t">El laboratorio de agua</span></a></li>
+        <li><span class="n">1.5</span><a href="#s1-5"><span class="t">Qué incluye y para qué sistema de producción</span></a></li>
+        <li><span class="n">1.6</span><a href="#s1-6"><span class="t">Los veinte métodos y los cinco de ETo, lado a lado</span></a></li>
+        <li><span class="n">1.7</span><a href="#s1-7"><span class="t">La teoría, en lenguaje claro</span></a></li>
+        <li><span class="n">1.8</span><a href="#s1-8"><span class="t">Cómo citar y las referencias</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k2">2</span><a href="#cap-b2">Datos climáticos del sitio</a><a class="pag" href="#cap-b2"></a></div>
+      <ul>
+        <li><span class="n">2.1</span><a href="#s2-1"><span class="t">De la estación a la serie</span></a></li>
+        <li><span class="n">2.2</span><a href="#s2-2"><span class="t">El sitio</span></a></li>
+        <li><span class="n">2.3</span><a href="#s2-3"><span class="t">La serie diaria: cuatro formas de traerla</span></a></li>
+        <li><span class="n">2.4</span><a href="#s2-4"><span class="t">Qué columna es cada cosa</span></a></li>
+        <li><span class="n">2.5</span><a href="#s2-5"><span class="t">El control de calidad</span></a></li>
+        <li><span class="n">2.6</span><a href="#s2-6"><span class="t">Lo que estos datos permiten</span></a></li>
+        <li><span class="n">2.7</span><a href="#s2-7"><span class="t">La serie limpia y el proyecto</span></a></li>
+        <li><span class="n">2.8</span><a href="#s2-8"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k3">3</span><a href="#cap-b3">El clima del sitio</a><a class="pag" href="#cap-b3"></a></div>
+      <ul>
+        <li><span class="n">3.1</span><a href="#s3-1"><span class="t">Qué es una normal y de qué años sale</span></a></li>
+        <li><span class="n">3.2</span><a href="#s3-2"><span class="t">Con qué años y con qué criterios</span></a></li>
+        <li><span class="n">3.3</span><a href="#s3-3"><span class="t">El clima en una página: el climograma</span></a></li>
+        <li><span class="n">3.4</span><a href="#s3-4"><span class="t">Las normales mensuales</span></a></li>
+        <li><span class="n">3.5</span><a href="#s3-5"><span class="t">El régimen de lluvias</span></a></li>
+        <li><span class="n">3.6</span><a href="#s3-6"><span class="t">Las heladas</span></a></li>
+        <li><span class="n">3.7</span><a href="#s3-7"><span class="t">Índices, balance climático y clasificación</span></a></li>
+        <li><span class="n">3.8</span><a href="#s3-8"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k4">4</span><a href="#cap-b4">Grados-día y tiempo térmico</a><a class="pag" href="#cap-b4"></a></div>
+      <ul>
+        <li><span class="n">4.1</span><a href="#s4-1"><span class="t">La planta no cuenta días</span></a></li>
+        <li><span class="n">4.2</span><a href="#s4-2"><span class="t">Cultivo, método y fecha</span></a></li>
+        <li><span class="n">4.3</span><a href="#s4-3"><span class="t">Desde esa fecha, cada año</span></a></li>
+        <li><span class="n">4.4</span><a href="#s4-4"><span class="t">El calendario térmico del sitio</span></a></li>
+        <li><span class="n">4.5</span><a href="#s4-5"><span class="t">Lo que ofrece cada fecha de siembra</span></a></li>
+        <li><span class="n">4.6</span><a href="#s4-6"><span class="t">Cuánto importa el método</span></a></li>
+        <li><span class="n">4.7</span><a href="#s4-7"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k5">5</span><a href="#cap-b5">Evapotranspiración de referencia</a><a class="pag" href="#cap-b5"></a></div>
+      <ul>
+        <li><span class="n">5.1</span><a href="#s5-1"><span class="t">La demanda de la atmósfera</span></a></li>
+        <li><span class="n">5.2</span><a href="#s5-2"><span class="t">Cómo se estima lo que falta</span></a></li>
+        <li><span class="n">5.3</span><a href="#s5-3"><span class="t">La ETo del sitio, por cinco métodos</span></a></li>
+        <li><span class="n">5.4</span><a href="#s5-4"><span class="t">De dónde sale la ETo</span></a></li>
+        <li><span class="n">5.5</span><a href="#s5-5"><span class="t">Hargreaves calibrado contra Penman–Monteith</span></a></li>
+        <li><span class="n">5.6</span><a href="#s5-6"><span class="t">Qué ETo usarán los bloques siguientes</span></a></li>
+        <li><span class="n">5.7</span><a href="#s5-7"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k6">6</span><a href="#cap-b6">Balance hídrico del cultivo</a><a class="pag" href="#cap-b6"></a></div>
+      <ul>
+        <li><span class="n">6.1</span><a href="#s6-1"><span class="t">El suelo como cubeta</span></a></li>
+        <li><span class="n">6.2</span><a href="#s6-2"><span class="t">Cultivo, suelo y siembra</span></a></li>
+        <li><span class="n">6.3</span><a href="#s6-3"><span class="t">El balance en temporal, año por año</span></a></li>
+        <li><span class="n">6.4</span><a href="#s6-4"><span class="t">Por etapa del cultivo</span></a></li>
+        <li><span class="n">6.5</span><a href="#s6-5"><span class="t">El agua según la fecha de siembra</span></a></li>
+        <li><span class="n">6.6</span><a href="#s6-6"><span class="t">Necesidad climática de riego, por mes</span></a></li>
+        <li><span class="n">6.7</span><a href="#s6-7"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k7">7</span><a href="#cap-b7">Calendarización del riego</a><a class="pag" href="#cap-b7"></a></div>
+      <ul>
+        <li><span class="n">7.1</span><a href="#s7-1"><span class="t">Cuándo y cuánto</span></a></li>
+        <li><span class="n">7.2</span><a href="#s7-2"><span class="t">Sistema y regla de riego</span></a></li>
+        <li><span class="n">7.3</span><a href="#s7-3"><span class="t">El calendario, año por año</span></a></li>
+        <li><span class="n">7.4</span><a href="#s7-4"><span class="t">Cuatro estrategias, lado a lado</span></a></li>
+        <li><span class="n">7.5</span><a href="#s7-5"><span class="t">Por mes, diseño y ahorro</span></a></li>
+        <li><span class="n">7.6</span><a href="#s7-6"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k8">8</span><a href="#cap-b8">Predicción de etapas fenológicas</a><a class="pag" href="#cap-b8"></a></div>
+      <ul>
+        <li><span class="n">8.1</span><a href="#s8-1"><span class="t">Fechar la fenología</span></a></li>
+        <li><span class="n">8.2</span><a href="#s8-2"><span class="t">Cultivo, requerimientos y siembra</span></a></li>
+        <li><span class="n">8.3</span><a href="#s8-3"><span class="t">El calendario fenológico del sitio</span></a></li>
+        <li><span class="n">8.4</span><a href="#s8-4"><span class="t">Calibrar con fechas observadas</span></a></li>
+        <li><span class="n">8.5</span><a href="#s8-5"><span class="t">El frío invernal</span></a></li>
+        <li><span class="n">8.6</span><a href="#s8-6"><span class="t">El fotoperiodo</span></a></li>
+        <li><span class="n">8.7</span><a href="#s8-7"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k9">9</span><a href="#cap-b9">Riesgos y escenarios</a><a class="pag" href="#cap-b9"></a></div>
+      <ul>
+        <li><span class="n">9.1</span><a href="#s9-1"><span class="t">Qué puede salir mal y cuándo</span></a></li>
+        <li><span class="n">9.2</span><a href="#s9-2"><span class="t">Cultivo, umbrales y criterios</span></a></li>
+        <li><span class="n">9.3</span><a href="#s9-3"><span class="t">Helada y golpe de calor por etapa</span></a></li>
+        <li><span class="n">9.4</span><a href="#s9-4"><span class="t">La ventana de siembra</span></a></li>
+        <li><span class="n">9.5</span><a href="#s9-5"><span class="t">Escenarios: si el sitio se calienta</span></a></li>
+        <li><span class="n">9.6</span><a href="#s9-6"><span class="t">Los avisos de este bloque</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k10">10</span><a href="#cap-b10">Figuras, informe y paquete</a><a class="pag" href="#cap-b10"></a></div>
+      <ul>
+        <li><span class="n">10.1</span><a href="#s10-1"><span class="t">Lo que sale de la app</span></a></li>
+        <li><span class="n">10.2</span><a href="#s10-2"><span class="t">El estado del estudio</span></a></li>
+        <li><span class="n">10.3</span><a href="#s10-3"><span class="t">El catálogo de figuras y el estudio de figuras</span></a></li>
+        <li><span class="n">10.4</span><a href="#s10-4"><span class="t">El informe</span></a></li>
+        <li><span class="n">10.5</span><a href="#s10-5"><span class="t">El paquete reproducible</span></a></li>
+        <li><span class="n">10.6</span><a href="#s10-6"><span class="t">Antes de entregar</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip kx">Ap</span><a href="#cap-ap">Apéndices</a><a class="pag" href="#cap-ap"></a></div>
+      <ul>
+        <li><span class="n">A</span><a href="#ap-a"><span class="t">Los archivos que la app lee y escribe</span></a></li>
+        <li><span class="n">B</span><a href="#ap-b"><span class="t">Las reglas de decisión, reunidas</span></a></li>
+        <li><span class="n">C</span><a href="#ap-c"><span class="t">Glosario</span></a></li>
+        <li><span class="n">D</span><a href="#ap-d"><span class="t">Cuando algo no sale</span></a></li>
+        <li><span class="n">E</span><a href="#ap-e"><span class="t">Referencias</span></a></li>
+        <li><span class="n">F</span><a href="#ap-f"><span class="t">La herramienta: licencia y cómo citarla</span></a></li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- ====================================================================== CÓMO LEER -->
+<section class="preliminares" id="como-leer" data-nueva-hoja style="--acento: var(--b0)">
+  <h2 style="margin-top:0.2in">Cómo leer este manual</h2>
+  <p class="lead">El manual sigue el mismo orden que la app: diez bloques numerados que se recorren de izquierda a derecha en la barra de arriba. Cada capítulo explica un bloque y lleva su mismo número —el capítulo 5 es el Bloque 5, y sus secciones, figuras y tablas se numeran 5.1, 5.2…—. Cada uno empieza con la idea agroclimática que el bloque necesita, sigue con lo que la pantalla calcula y cómo se lee, y termina con los avisos que el bloque puede mostrar y qué hacer con ellos. Esta introducción no lleva número: sus secciones van como I.1, I.2…</p>
+
+  <h3>Un color para cada bloque</h3>
+  <p>El color del bloque aparece en la apertura de su capítulo, en el número de cada sección, en la pestaña del borde de la hoja y en el índice, y es el mismo de la franja de la portada. Así sabes de un vistazo en qué parte de la app estás.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.6in">Bloque</th><th style="width:1.55in">Nombre en la app</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k1">1</span></td><td><span class="ui">Inicio</span></td><td>Portada, el motor agroclimático completo, dos laboratorios que calculan de verdad, veinte métodos, la teoría en lenguaje claro y las referencias</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">Datos climáticos</span></td><td>El sitio, la serie diaria de la estación (pegada, desde archivo o de ejemplo), el papel de cada columna, el control de calidad y el proyecto</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td><span class="ui">Clima del sitio</span></td><td>Normales, climograma de Walter–Lieth, régimen de lluvias, heladas con sus fechas al 50, 20 y 10 % de riesgo, índices de aridez, balance climático y Köppen–Geiger</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><span class="ui">Grados-día</span></td><td>Tiempo térmico desde la siembra con seis métodos y cuatro cortes, año por año, el calendario térmico y el mapa por fecha de siembra</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td><span class="ui">Evapotranspiración</span></td><td>Penman–Monteith FAO-56 con lo que haya (estimando lo que falta y anotándolo), Hargreaves, Priestley–Taylor, Turc y Thornthwaite, comparados y calibrados</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><span class="ui">Balance hídrico</span></td><td>El balance diario de la zona radical de FAO-56 con la curva de Kc, en temporal, año por año, por etapa y por fecha de siembra; el rendimiento relativo de FAO-33</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><span class="ui">Riego</span></td><td>Cuándo y cuánto regar con la regla que elijas; láminas netas y brutas, cuatro estrategias comparadas, riego por mes, capacidad de diseño y ahorro</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td><span class="ui">Fenología</span></td><td>Las etapas BBCH fechadas por tiempo térmico, la calibración con fechas observadas, el frío invernal de los frutales y el fotoperiodo</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td><span class="ui">Riesgos y escenarios</span></td><td>Helada y golpe de calor por etapa, la ventana de siembra que junta calor, agua y heladas, y los escenarios de +1, +2 y +3 °C</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">Informe</span></td><td>El catálogo de figuras hasta 900 ppp, el informe que se abre en cualquier navegador y el paquete .zip que reproduce el estudio</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tipos de recuadros</h3>
+  <div class="dos">
+    <div class="caja nota" style="margin:0"><div class="caja-t"><span class="ico">i</span>Nota</div><p>Aclaraciones y consejos prácticos que ahorran tiempo.</p></div>
+    <div class="caja importante" style="margin:0"><div class="caja-t"><span class="ico">!</span>Importante</div><p>Lo que puede cambiar tus conclusiones si se pasa por alto.</p></div>
+    <div class="caja teoria" style="margin:0"><div class="caja-t"><span class="ico">θ</span>Teoría en breve</div><p>La idea detrás de un cálculo, sin fórmulas innecesarias.</p></div>
+    <div class="caja ejemplo" style="margin:0"><div class="caja-t"><span class="ico">▸</span>Ejemplo</div><p>Un caso con los datos incluidos en el programa, paso a paso.</p></div>
+  </div>
+  <div class="caja regla" style="margin-top:0.18in">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> el resultado cae en este caso…</td><td><b>entonces</b> esta es la lectura recomendada.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Son guías para interpretar, no leyes: lo que sabes del cultivo, del cultivar y de la parcela siempre manda.</p>
+  </div>
+  <div class="caja dato">
+    <div class="dato-cifra">0.16</div>
+    <div class="dato-txt"><div class="caja-t">Dato clave</div>Una cifra o un hecho que conviene recordar; por ejemplo, el coeficiente kRs con que FAO-56 estima la radiación a partir de la amplitud térmica en un sitio interior.</div>
+  </div>
+
+  <h3>Convenciones de escritura</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:38%">Así se escribe</th><th>Significa</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Armar la serie y revisarla →</span></td><td>Un botón, casilla o menú de la app, con su texto tal como aparece en pantalla en español.</td></tr>
+      <tr><td><span class="ruta">Bloque 5<span class="sep">›</span>Qué ETo usarán los bloques siguientes</span></td><td>Una ruta: abre lo primero y dentro busca lo segundo.</td></tr>
+      <tr><td><code>tmax</code>, <code>.csv</code></td><td>Un nombre de columna, de archivo o un valor que se escribe tal cual.</td></tr>
+      <tr><td>ETo, ETc, Kc, ADT, AFA · ETo, ETc, Kc, TAW, RAW</td><td>Siglas en español; entre paréntesis, cuando ayuda, la sigla inglesa de la literatura (la app en inglés usa las segundas).</td></tr>
+      <tr><td>1,450 °C·d · 3.74 mm/día · 20 may</td><td>Grados-día con el punto de multiplicación, láminas en milímetros, fechas con el día y el mes abreviado, como en la app.</td></tr>
+      <tr><td>P20 · P80 · mediana</td><td>Los percentiles 20 y 80 entre los años del registro y el valor central: la app resume así casi todo lo que calcula año por año.</td></tr>
+      <tr><td><span class="si">●</span> <span class="parcial">◐</span> <span class="no">—</span></td><td>Disponible · disponible en parte o con condiciones · no aplica.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Las cifras de este manual</div>
+    <p>Todos los resultados que aparecen en el texto se obtuvieron corriendo la app con la serie de ejemplo <b>«Bajío semiárido (1 800 m)», 20 años, sin errores sembrados</b>, y se copiaron de la pantalla. Si repites los pasos con esa misma serie, debes ver los mismos números: los ejemplos se generan con una semilla fija y todos los cálculos son deterministas. Cuando un capítulo usa otra serie —el «Valle templado» para las heladas y el frío invernal, o el ejemplo con errores sembrados para el control de calidad— lo dice antes de dar la cifra.</p>
+  </div>
+</section>
+
+<!-- ====================================================================== INTRODUCCIÓN -->
+<section class="capitulo" id="cap-intro" data-pestana="In" data-orden="0" style="--acento: var(--b0)">
+  <div class="cap-apertura">
+    <div class="cap-num">In</div>
+    <div class="cap-etiqueta">Introducción · Antes de los bloques</div>
+    <h1 data-corto="Introducción">Introducción a PhenologyPro</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Qué es el programa, qué preguntas de la agroclimatología y la fenología responde, qué datos acepta y cómo se recorre de principio a fin. Incluye las cinco ideas que sostienen todo lo demás —la planta cuenta calor, la atmósfera pide agua, el suelo es una cubeta, el registro es la probabilidad y lo que no se mide se estima y se declara— y una lista honesta de lo que el programa no hace.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k5"></span><span class="k6"></span><span class="k7"></span><span class="k8"></span><span class="k9"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>I.1</b>¿Qué es PhenologyPro?</li>
+      <li><b>I.2</b>Preguntas que responde</li>
+      <li><b>I.3</b>Cinco ideas que sostienen el manual</li>
+      <li><b>I.4</b>Datos que acepta y qué entrega</li>
+      <li><b>I.5</b>Qué necesitas y cómo abrirlo</li>
+      <li><b>I.6</b>Recorrido por la interfaz</li>
+      <li><b>I.7</b>Los seis climas de práctica</li>
+      <li><b>I.8</b>Cómo se recorre un estudio</li>
+      <li><b>I.9</b>Lo que el programa no hace</li>
+    </ul>
+  </div>
+
+  <!-- I.1 -->
+  <h2 id="si-1"><span class="num">I.1</span>¿Qué es PhenologyPro?</h2>
+  <p class="lead">PhenologyPro es una plataforma para hacer el estudio agroclimático de un sitio y el calendario de un cultivo <b>de la serie de la estación al informe</b>: limpia los datos diarios, describe el clima, acumula el calor que la planta necesita, calcula cuánta agua pide la atmósfera y cuánta queda en el suelo, arma el calendario de riego, fecha las etapas fenológicas, cuenta el frío del invierno, mide el riesgo de helada y de calor, encuentra la ventana de siembra, prueba qué pasaría con un clima más cálido y entrega un informe con figuras, métodos redactados y un paquete que lo reproduce.</p>
+  <p>Todo ocurre dentro del navegador. No hay que instalar nada, no se necesita saber programar y los datos no salen de la computadora. Está escrito para agrónomos, tesistas y técnicos de campo: sabe que una estación casi nunca mide radiación ni humedad y que aun así hay que calcular la evapotranspiración; que la respuesta a «¿cuándo siembro?» no es una fecha sino una probabilidad; que un requerimiento térmico sacado de un manual extranjero hay que calibrarlo con las fechas de la propia parcela; y que el resultado de un estudio se defiende con el número, con la figura y con el método escrito, no con la pantalla.</p>
+
+  <figure>
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="Jost, sans-serif" role="img"
+         aria-label="El camino de un estudio agroclimático a través de los diez bloques de PhenologyPro: la serie de la estación alimenta el clima del sitio; de la temperatura salen los grados-día y de ellos la fenología; de la temperatura, la humedad, el viento y la radiación sale la ETo, de ella el balance hídrico y de él el riego; fenología, clima y balance se cruzan en los riesgos y la ventana de siembra; todo desemboca en el informe.">
+      <defs>
+        <marker id="fi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#5a6b7a"/></marker>
+        <marker id="fiv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#16557a"/></marker>
+      </defs>
+
+      <!-- el lazo: un resultado que no convence manda a cambiar un parámetro aguas arriba -->
+      <path d="M646 70 C 680 44 672 14 560 12 L 150 12 C 40 16 36 46 58 70" fill="none" stroke="#16557a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#fiv)"/>
+      <text x="350" y="8" text-anchor="middle" font-size="10.5" fill="#16557a" font-weight="500">si un resultado no convence, se cambia un dato o un parámetro y todo lo de abajo se recalcula</text>
+
+      <g font-size="10" text-anchor="middle">
+        <!-- 2 · la serie -->
+        <rect x="14" y="120" width="98" height="62" rx="9" fill="#eef0f4" stroke="#5f6b86"/>
+        <text x="63" y="142" font-weight="600" fill="#3e4859" font-size="11.5">La serie</text>
+        <text x="63" y="158" fill="#4a5262">Tmax, Tmin, lluvia,</text><text x="63" y="171" fill="#4a5262">HR, viento, sol</text>
+
+        <!-- 3 · clima -->
+        <rect x="134" y="36" width="104" height="56" rx="9" fill="#e9f5f4" stroke="#3aa39a"/>
+        <text x="186" y="57" font-weight="600" fill="#1f6f68" font-size="11.5">El clima</text>
+        <text x="186" y="73" fill="#33504d">normales, climograma,</text><text x="186" y="85" fill="#33504d">lluvias, heladas, Köppen</text>
+
+        <!-- 4 · grados-día -->
+        <rect x="134" y="120" width="104" height="56" rx="9" fill="#fdeee9" stroke="#d9552c"/>
+        <text x="186" y="141" font-weight="600" fill="#963818" font-size="11.5">Grados-día</text>
+        <text x="186" y="157" fill="#5a4035">seis métodos, por año,</text><text x="186" y="169" fill="#5a4035">por fecha de siembra</text>
+
+        <!-- 5 · ETo -->
+        <rect x="134" y="204" width="104" height="56" rx="9" fill="#fdf3e3" stroke="#d8901c"/>
+        <text x="186" y="225" font-weight="600" fill="#8a5a0c" font-size="11.5">ETo</text>
+        <text x="186" y="241" fill="#5a4a30">Penman–Monteith y</text><text x="186" y="253" fill="#5a4a30">cuatro métodos simples</text>
+
+        <!-- 8 · fenología -->
+        <rect x="270" y="120" width="108" height="56" rx="9" fill="#f1edf7" stroke="#7b5ea7"/>
+        <text x="324" y="141" font-weight="600" fill="#523a7a" font-size="11.5">Fenología</text>
+        <text x="324" y="157" fill="#463a5a">etapas BBCH, calibración,</text><text x="324" y="169" fill="#463a5a">frío invernal, fotoperiodo</text>
+
+        <!-- 6 · balance -->
+        <rect x="270" y="204" width="108" height="56" rx="9" fill="#e9eefa" stroke="#2f5fc4"/>
+        <text x="324" y="225" font-weight="600" fill="#213f85" font-size="11.5">Balance hídrico</text>
+        <text x="324" y="241" fill="#33405a">Kc, zona radical, estrés,</text><text x="324" y="253" fill="#33405a">rendimiento relativo</text>
+
+        <!-- 7 · riego -->
+        <rect x="410" y="204" width="104" height="56" rx="9" fill="#edf5e8" stroke="#4f8f3a"/>
+        <text x="462" y="225" font-weight="600" fill="#35621f" font-size="11.5">Riego</text>
+        <text x="462" y="241" fill="#3f5236">calendario, láminas,</text><text x="462" y="253" fill="#3f5236">estrategias, diseño</text>
+
+        <!-- 9 · riesgos -->
+        <rect x="410" y="78" width="104" height="70" rx="9" fill="#faeaf0" stroke="#c0406a"/>
+        <text x="462" y="100" font-weight="600" fill="#8a2a4a" font-size="11.5">Riesgos</text>
+        <text x="462" y="116" fill="#5a3a45">helada y calor por etapa,</text><text x="462" y="128" fill="#5a3a45">ventana de siembra,</text><text x="462" y="140" fill="#5a3a45">escenarios +1, +2, +3 °C</text>
+
+        <!-- 10 · informe -->
+        <rect x="560" y="106" width="118" height="80" rx="9" fill="#f4efe9" stroke="#8a6a4a"/>
+        <text x="619" y="130" font-weight="600" fill="#5a4230" font-size="11.5">Informe</text>
+        <text x="619" y="147" fill="#4a4036">figuras hasta 900 ppp,</text><text x="619" y="159" fill="#4a4036">métodos redactados,</text><text x="619" y="171" fill="#4a4036">paquete .zip reproducible</text>
+      </g>
+
+      <g fill="none" stroke="#5a6b7a" stroke-width="1.4" marker-end="url(#fi)">
+        <path d="M112 140 L 132 74"/>
+        <path d="M112 150 L 132 148"/>
+        <path d="M112 162 L 132 226"/>
+        <path d="M238 148 L 268 148"/>
+        <path d="M238 232 L 268 232"/>
+        <path d="M378 232 L 408 232"/>
+        <path d="M378 140 L 408 122"/>
+        <path d="M238 64 L 408 100"/>
+        <path d="M378 218 C 395 190 395 160 408 138"/>
+        <path d="M514 112 L 558 128"/>
+        <path d="M514 232 C 540 232 548 200 558 172"/>
+      </g>
+      <g font-size="9" fill="#5a6b7a">
+        <text x="30" y="200">Bloque 2</text><text x="168" y="106">Bloque 3</text><text x="168" y="190">Bloque 4</text><text x="168" y="274">Bloque 5</text>
+        <text x="305" y="190">Bloque 8</text><text x="305" y="274">Bloque 6</text><text x="443" y="274">Bloque 7</text><text x="443" y="162">Bloque 9</text><text x="600" y="200">Bloque 10</text>
+      </g>
+    </svg>
+    <figcaption><b>Figura I.1.</b> El camino de un estudio agroclimático a través de los bloques. La serie de la estación alimenta todo; de la temperatura salen el calor y la fenología, de la temperatura con la humedad, el viento y la radiación sale el agua; los riesgos cruzan las tres cosas y el informe recoge lo que se calculó. El lazo de arriba es la parte más usada del programa: cambiar un dato o un parámetro y ver cómo se rehace lo que depende de él.</figcaption>
+  </figure>
+
+  <!-- I.2 -->
+  <h2 id="si-2"><span class="num">I.2</span>Preguntas que responde</h2>
+  <p>Cada bloque de la app contesta una pregunta que un productor, un asesor o un tesista se hace de verdad. Estas son, en el orden en que se recorren:</p>
+  <table>
+    <thead><tr><th style="width:0.55in">Bloque</th><th style="width:2.7in">La pregunta</th><th>Con qué la contesta</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span></td><td>¿Sirven mis datos? ¿Qué me permiten calcular?</td><td>Lectura de la serie, control de calidad, cobertura por variable y la lista de lo que esos datos permiten</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>¿Cómo es el clima de este sitio? ¿Cuándo llueve, cuándo hiela?</td><td>Normales, climograma, inicio y fin de las lluvias, fechas de helada al 50, 20 y 10 % de riesgo, índices y clasificación</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td>¿Cuánto calor junta el cultivo desde esta fecha? ¿Le alcanza para madurar?</td><td>Grados-día año por año, días a la meta con su dispersión, mapa por fecha de siembra</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>¿Cuánta agua pide la atmósfera aquí? ¿Me fío de la ETo sin radiación ni humedad?</td><td>Penman–Monteith con lo que haya, cuatro métodos simples, calibración local y la frase que dice qué se estimó</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>En temporal, ¿cuánta agua le falta al cultivo y cuánto rendimiento pierde?</td><td>Balance diario de la zona radical, días con estrés, rendimiento relativo de FAO-33 por año y por etapa</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td>¿Cuándo y cuánto regar? ¿Qué capacidad necesita el sistema?</td><td>Calendario con la regla que elijas, láminas netas y brutas, cuatro estrategias, ETc máxima de diseño y ahorro contra la costumbre</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td>¿Cuándo florece y cuándo madura? ¿Junta el invierno el frío que el frutal necesita?</td><td>Etapas BBCH fechadas por tiempo térmico con su dispersión, calibración con fechas observadas, porciones de frío, unidades Utah y horas frío</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td>¿Cuándo conviene sembrar para que todo salga bien a la vez? ¿Y si el clima se calienta?</td><td>Helada y calor por etapa, la ventana de siembra con una sola probabilidad de éxito, escenarios de +1, +2 y +3 °C</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td>¿Cómo entrego esto en una tesis, un artículo o un dictamen?</td><td>Figuras en el formato y la resolución que pidan, informe con métodos redactados y referencias, paquete reproducible</td></tr>
+    </tbody>
+  </table>
+
+  <!-- I.3 -->
+  <h2 id="si-3"><span class="num">I.3</span>Cinco ideas que sostienen el manual</h2>
+  <p>No hace falta saber agroclimatología para usar la app, pero hay cinco ideas que vuelven una y otra vez. Entenderlas hace que los resultados dejen de ser números y se vuelvan argumentos.</p>
+
+  <h3>1. La planta no cuenta días: cuenta calor</h3>
+  <p>El desarrollo de un cultivo —emerger, echar hojas, florecer, madurar— avanza con la temperatura, no con el calendario. Un maíz sembrado en abril en un valle fresco y otro sembrado en mayo en el Bajío no maduran a los mismos días, pero sí tras acumular más o menos los mismos <b>grados-día</b>: la suma, día tras día, de lo que la temperatura media excede de una <b>temperatura base</b> por debajo de la cual la planta no crece. Por eso la app fecha las etapas por tiempo térmico, por eso la misma fecha de siembra da calendarios distintos en años distintos, y por eso el requerimiento de una etapa se puede medir en la propia parcela con dos o tres años de fechas observadas.</p>
+
+  <h3>2. La atmósfera pide agua; el cultivo modula cuánta</h3>
+  <p>La <b>evapotranspiración de referencia</b> (ETo) es cuánta agua evaporaría y transpiraría un pasto bien regado bajo el clima del sitio: depende de la radiación, la temperatura, la humedad y el viento, y no del cultivo. Penman–Monteith FAO-56 es la forma de calcularla que acepta todo el mundo. El cultivo entra después, con un <b>coeficiente Kc</b> que sube de la siembra al dosel completo y baja hacia la madurez: la demanda real es ETc = Kc × ETo. Separar las dos cosas es lo que permite usar la misma ETo para cualquier cultivo y comparar sitios entre sí.</p>
+
+  <h3>3. El suelo es una cubeta</h3>
+  <p>Entre la capacidad de campo y el punto de marchitez, el suelo guarda una lámina de agua —el <b>agua disponible total</b>— de la que el cultivo puede tomar sin esfuerzo solo una fracción, el <b>agua fácilmente aprovechable</b>. La lluvia y el riego llenan la cubeta; la ETc la vacía; lo que sobra cuando está llena se percola. Cuando el agotamiento pasa del agua fácilmente aprovechable, la planta transpira menos de lo que la atmósfera pide, y esa diferencia es el estrés que cuesta rendimiento. Todo el balance hídrico y todo el calendario de riego de la app son esa cubeta llevada día a día.</p>
+
+  <h3>4. El registro de años es la probabilidad</h3>
+  <p>La app no pronostica el año que viene: recorre cada año del registro como si el cultivo se hubiera sembrado en él, y resume lo que pasó con la <b>mediana</b> y los percentiles <b>20 y 80</b>. «Madura en 127 días (P20 123, P80 133)» quiere decir que en el 60 % central de los años tardó entre 123 y 133 días. «Ventana con 80 % de éxito» quiere decir que en cuatro de cada cinco años del registro todo salió bien a la vez. Por eso importa tanto cuántos años completos tiene la serie, y por eso la app lo dice al principio y lo repite en el informe.</p>
+
+  <h3>5. Lo que no se mide se estima, y se declara</h3>
+  <p>Casi ninguna estación agrícola mide radiación; muchas no miden humedad ni viento. FAO-56 dice exactamente cómo estimar cada una de esas variables a partir de la temperatura, y la app lo hace sin pedir permiso, pero <b>cuenta los días</b> en que lo hizo y redacta una frase que dice qué se estimó, con qué coeficiente y en qué porcentaje de los días. Esa frase pasa tal cual al informe. Un resultado con variables estimadas no es peor: es un resultado honesto sobre lo que se sabe y lo que se supuso.</p>
+
+  <!-- I.4 -->
+  <h2 id="si-4"><span class="num">I.4</span>Datos que acepta y qué entrega</h2>
+  <h4>Lo que entra</h4>
+  <ul>
+    <li><b>Una serie diaria</b> con fecha, temperatura máxima y mínima y, si las hay, lluvia, temperatura media, humedad relativa (media, o máxima y mínima), punto de rocío, viento, horas de sol y radiación. Se pega desde una hoja de cálculo, se abre desde un archivo <code>.csv</code> o <code>.txt</code> (incluido el formato con «Nulo» del Servicio Meteorológico Nacional), o se toma de uno de los seis ejemplos. Con temperatura máxima y mínima ya se puede hacer casi todo.</li>
+    <li><b>El sitio</b>: latitud, altitud, si es costero o interior y si el clima es húmedo o árido. De la latitud sale la radiación extraterrestre y la duración del día; de la altitud, la presión y la constante psicrométrica; de lo demás, cómo se estima lo que la estación no mide.</li>
+    <li><b>El cultivo y el suelo</b>, elegidos de los catálogos de la app (19 cultivos con sus Kc, etapas, raíz, fracción p y Ky de la FAO; 7 texturas de suelo) o escritos a mano, y las <b>fechas observadas</b> de las etapas de tu cultivar, si las tienes, para calibrar.</li>
+    <li><b>Un proyecto</b> guardado antes en <code>.json</code>: la serie limpia con el sitio, tal como salió del Bloque 2.</li>
+  </ul>
+  <h4>Lo que sale</h4>
+  <ul>
+    <li><b>Cuadros en pantalla</b> con escalas de lectura: casi todo número lleva al lado una etiqueta —«moderada», «pérdida moderada», «calibrar»— con la escala que la justifica a un clic de distancia.</li>
+    <li><b>Figuras</b> en cada bloque, exportables una a una desde el botón ⤓ de su esquina, o todas juntas desde el Bloque 10, en PNG, JPG o SVG hasta 900 ppp, con la paleta, la fuente y el fondo del estudio de figuras.</li>
+    <li><b>Archivos .csv</b> de cada cuadro importante: normales, grados-día por año, ETo diaria con todos sus términos, balance por año y diario, calendario de riego, fechas fenológicas, frío por invierno, ventana de siembra.</li>
+    <li><b>El informe</b>: un solo archivo <code>.html</code> que se abre en cualquier navegador y se imprime a PDF, con el resumen, una sección por bloque calculado, los métodos redactados a partir de lo que realmente se corrió, las referencias y el registro de cálculo.</li>
+    <li><b>El paquete</b>: un <code>.zip</code> con el informe, el proyecto, los parámetros, los cuadros y las figuras. Quien lo reciba puede rehacer el estudio completo.</li>
+  </ul>
+
+  <!-- I.5 -->
+  <h2 id="si-5"><span class="num">I.5</span>Qué necesitas y cómo abrirlo</h2>
+  <p>Una computadora con un navegador reciente —Edge, Chrome, Firefox o Safari de los últimos dos o tres años— y la carpeta del programa. No hay instalación: se copia la carpeta y se abre <span class="ruta">index.html</span> con doble clic. También funciona desde una memoria USB y en una computadora sin internet.</p>
+  <ol class="pasos">
+    <li>Copia la carpeta <span class="ruta">PhenologyPro</span> completa a tu computadora (o descárgala y descomprímela). Dentro debe haber <span class="ruta">index.html</span>, las carpetas <span class="ruta">js</span> y <span class="ruta">css</span>, y la carpeta <span class="ruta">tests</span>.</li>
+    <li>Abre <span class="ruta">index.html</span> con doble clic (o con <span class="ruta">Open PhenologyPro.bat</span> en Windows). La primera pantalla es el Bloque 1, la portada.</li>
+    <li>Elige el idioma con <span class="ui">ES</span> · <span class="ui">EN</span> y el tema claro u oscuro con el botón del sol. Ambos se recuerdan para la próxima vez.</li>
+    <li>Si quieres comprobar que el motor calcula bien en tu navegador, abre <span class="ruta">tests/index.html</span>: son las pruebas del programa contra los ejemplos resueltos de FAO-56 y las fórmulas de cada método; todas deben salir en verde.</li>
+  </ol>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>La app recuerda la serie</div>
+    <p>La serie limpia y el sitio se guardan en el navegador de esa computadora (en el <i>almacenamiento local</i>), de modo que al volver a abrir la app aparece el mismo estudio. Es solo una comodidad: el respaldo de verdad es el proyecto <code>.json</code> que se descarga desde el Bloque 2, que se abre en cualquier otra máquina. El botón <span class="ui">Olvidar esta serie</span> borra lo guardado.</p>
+  </div>
+
+  <!-- I.6 -->
+  <h2 id="si-6"><span class="num">I.6</span>Recorrido por la interfaz</h2>
+  <figure>
+    <div class="marco"><img src="../img/inicio.png" alt="La pantalla inicial de PhenologyPro: la barra superior con la marca, el estudio de figuras, el idioma y el tema; la barra de los diez pasos; y la portada con su pregunta y sus dos botones"></div>
+    <figcaption><b>Figura I.2.</b> La pantalla inicial. Arriba, la barra fija con la marca, el botón de la paleta (el estudio de figuras), el selector de idioma y el del tema; debajo, la barra de los diez pasos, que es la columna vertebral de la app; y la portada del Bloque 1 con la pregunta que el programa contesta.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Elemento</th><th>Para qué sirve</th></tr></thead>
+    <tbody>
+      <tr><td><b>La barra de pasos</b></td><td>Diez botones numerados, siempre visibles. El paso activo va en azul. Se puede saltar a cualquiera en cualquier momento; el bloque que necesita algo que todavía no existe lo dice y ofrece el botón para ir a resolverlo.</td></tr>
+      <tr><td><b>Las tarjetas</b></td><td>Cada bloque se divide en tarjetas numeradas —«1 · El sitio», «2 · La serie diaria»…— que se leen de arriba abajo. Las primeras son los parámetros; las siguientes, los resultados.</td></tr>
+      <tr><td><b>Los recuadros de resultados</b></td><td>Una fila de cifras grandes con su etiqueta y una línea de contexto debajo. Es el resumen de la tarjeta: lo que se diría en una frase.</td></tr>
+      <tr><td><b>El signo <span class="ui">?</span></b></td><td>Junto a un título, una cifra o una columna, abre una ficha de ayuda: qué mide, cómo se lee, la escala que dice si el valor es bajo o alto y el error más común. Hay 49 fichas; cada bloque termina con su guía de interpretación, que las reúne.</td></tr>
+      <tr><td><b>Las etiquetas de escala</b></td><td>Al lado de muchos números aparece una palabra en color —<i>moderada</i>, <i>aceptable</i>, <i>calibrar</i>, <i>pérdida severa</i>—. Sale de la escala de la ficha correspondiente. El color va del verde al rojo.</td></tr>
+      <tr><td><b>El botón ⤓ de cada figura</b></td><td>Aparece al pasar el cursor por la esquina de una figura. Abre el menú de exportación: PNG, JPG o SVG; 150 a 900 ppp; claro u oscuro; con título y nota.</td></tr>
+      <tr><td><b>El estudio de figuras</b></td><td>El botón de la paleta en la barra superior. Cambia la paleta (nueve, entre ellas la de Okabe–Ito para daltónicos y una en grises para imprimir), la fuente, las escalas y el fondo de <b>todas</b> las figuras a la vez, en pantalla y en lo que se exporta.</td></tr>
+      <tr><td><b><span class="ui">↻ Recalcular</span></b></td><td>Cada bloque recalcula solo al cambiar un parámetro; el botón fuerza el cálculo cuando se ha escrito algo a mano.</td></tr>
+      <tr><td><b><span class="ui">Continuar al Bloque N →</span></b></td><td>Al pie de cada bloque. Lleva al siguiente cuando ya hay lo que necesita.</td></tr>
+      <tr><td><b>Los mensajes</b></td><td>Bandas de color bajo una tarjeta: azul para información, ámbar para un aviso, rojo para un error que impide seguir. Cada capítulo termina con la lista de los de su bloque.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- I.7 -->
+  <h2 id="si-7"><span class="num">I.7</span>Los seis climas de práctica</h2>
+  <p>El Bloque 2 trae seis series diarias de ejemplo, de 1 a 20 años, generadas por el propio programa con una semilla fija. Son <b>sintéticas y ficticias</b>: imitan la estacionalidad, la amplitud térmica, el régimen de lluvias y la frecuencia de heladas de seis climas de México, con el ruido de un año a otro que tiene una serie real, pero no son observaciones de ninguna estación y no deben citarse como tales. Sirven para aprender la app, para probar un cultivo en un clima que no es el tuyo y para reproducir este manual.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.8in">Ejemplo</th><th style="width:0.9in">Latitud, altitud</th><th>Cómo es</th><th style="width:1.5in">Para qué sirve en el manual</th></tr></thead>
+    <tbody>
+      <tr><td><b>Valle templado (2 250 m)</b></td><td>19.5°, 2 250 m</td><td>Cwb; 15.5 °C de media, 609 mm en verano; hiela en 16 de 20 inviernos</td><td>Heladas (cap. 3), frío invernal (cap. 8)</td></tr>
+      <tr><td><b>Costa cálida seca (50 m)</b></td><td>costera, cálida</td><td>Lluvia escasa de verano, ETo alta, sin heladas</td><td>—</td></tr>
+      <tr><td><b>Trópico húmedo (10 m)</b></td><td>baja, húmeda</td><td>Lluvia abundante casi todo el año, amplitud térmica pequeña</td><td>—</td></tr>
+      <tr><td><b>Altiplano frío (2 650 m)</b></td><td>alta, fría</td><td>Heladas frecuentes, ciclo térmico corto</td><td>—</td></tr>
+      <tr><td><b>Bajío semiárido (1 800 m)</b></td><td>20.6°, 1 800 m</td><td>BSh; 18.5 °C, 546 mm concentrados de junio a octubre; casi sin heladas</td><td><b>El ejemplo principal</b> de todos los capítulos</td></tr>
+      <tr><td><b>Norte seco extremoso (1 400 m)</b></td><td>norte, continental</td><td>Veranos muy calientes, inviernos con helada, lluvia escasa</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p>Cada ejemplo puede cargarse <b>con errores sembrados</b>: valores imposibles, máximas por debajo de mínimas, picos, tramos planos y huecos. Es la mejor forma de ver qué hace el control de calidad del Bloque 2 antes de confiarle una serie real.</p>
+
+  <!-- I.8 -->
+  <h2 id="si-8"><span class="num">I.8</span>Cómo se recorre un estudio</h2>
+  <p>El orden de los bloques es el orden en que se hace un estudio agroclimático. No es obligatorio hacerlo completo: un estudio de heladas termina en el Bloque 3; uno de calendario de riego necesita los Bloques 2, 5, 6 y 7; uno de fenología, los Bloques 2, 4 y 8. Lo que un bloque necesita de otro lo calcula solo al abrirlo, y si lo que necesita todavía no existe lo dice y ofrece el botón para ir por ello.</p>
+  <ol class="pasos">
+    <li><b>Bloque 2.</b> Escribe el sitio, trae la serie, confirma qué columna es cada cosa y revisa el control de calidad. Lee la tarjeta «Lo que estos datos permiten»: te dice qué bloques van a funcionar completos y cuáles con estimaciones. Guarda el proyecto.</li>
+    <li><b>Bloque 3.</b> Lee el clima en una página. Anota el periodo libre de heladas y las fechas al 20 % de riesgo, el inicio y el fin de las lluvias, y el umbral de helada que vas a usar: los bloques siguientes lo heredan.</li>
+    <li><b>Bloques 4 y 8.</b> Elige el cultivo y la fecha de siembra, mira cuántos años alcanza la meta térmica y a qué fechas caen las etapas. Si tienes fechas observadas, calibra. Si es un frutal caducifolio, revisa el frío del invierno.</li>
+    <li><b>Bloque 5.</b> Comprueba la frase que dice qué se estimó, compara los métodos y decide cuál ETo usarán los bloques del agua (casi siempre Penman–Monteith).</li>
+    <li><b>Bloques 6 y 7.</b> Elige el suelo y la fecha de siembra, lee el balance en temporal y su rendimiento relativo, y arma el calendario de riego con la regla y el sistema que tengas. Anota la capacidad de diseño y la lámina de planeación.</li>
+    <li><b>Bloque 9.</b> Cruza todo: helada y calor por etapa, la ventana de siembra y los escenarios. Aquí es donde suele cambiarse la fecha o el cultivar y volver a los bloques de arriba.</li>
+    <li><b>Bloque 10.</b> Recorre el estado del estudio, exporta las figuras, revisa el informe en la vista previa y descarga el paquete. Léelo antes de entregarlo.</li>
+  </ol>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Lo de arriba manda sobre lo de abajo</div>
+    <p>Si cambias la serie en el Bloque 2, todo se recalcula. Si cambias la ETo elegida en el Bloque 5, el balance y el riego se rehacen al abrirlos. Si cambias el cultivo en el Bloque 6, el Bloque 7 lo hereda; si cambias las etapas en el Bloque 8, el Bloque 9 las toma. El informe del Bloque 10 se redacta con lo que exista en ese momento: por eso conviene generarlo al final y volver a generarlo si se tocó algo.</p>
+  </div>
+
+  <!-- I.9 -->
+  <h2 id="si-9"><span class="num">I.9</span>Lo que el programa no hace</h2>
+  <ul>
+    <li><b>No pronostica el tiempo ni descarga datos.</b> Trabaja con la serie que le das; no consulta ningún servicio ni rellena con reanálisis. Cuando la serie es corta, lo dice y baja el crédito de las probabilidades.</li>
+    <li><b>No es un modelo de cultivo.</b> No simula fotosíntesis, biomasa ni rendimiento absoluto. El rendimiento que da es <i>relativo</i> —la fracción del potencial que el agua permite, según FAO-33— y las etapas se fechan por tiempo térmico, no por un modelo de desarrollo completo con fotoperiodo y vernalización.</li>
+    <li><b>No interpola entre estaciones ni hace mapas.</b> Un sitio, una serie. Para un mapa regional hay que correr varias estaciones y llevar los resultados a un sistema de información geográfica.</li>
+    <li><b>No conoce tu cultivar.</b> Los requerimientos térmicos del catálogo son orientativos y así lo dice en cada pantalla; los Kc, las etapas en días y las fracciones p son los de las tablas de la FAO, que son promedios. Todo es editable y el Bloque 8 calibra con tus fechas.</li>
+    <li><b>No lee libros de cálculo.</b> Un <code>.xlsx</code> no se abre a propósito: se guarda como <code>.csv</code> o se copia y pega el bloque de celdas. La app no carga una sola línea de código que no sea propia, y eso es lo que le permite abrirse con doble clic y funcionar sin internet.</li>
+    <li><b>No decide por ti.</b> Las reglas de decisión y las escalas son guías para leer un número, no veredictos. La app no bloquea nada por un aviso: lo señala, explica qué significa y deja la decisión a quien conoce la parcela.</li>
+  </ul>
+</section>
+
+</body>
+</html>

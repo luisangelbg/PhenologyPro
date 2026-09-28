@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>PhenologyPro — tests</title>
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/i18n.js"></script>
+<style>
+  body { padding: 20px; }
+  .t { font-family: var(--mono); font-size: .8rem; padding: 2px 0; }
+  .ok { color: var(--success); } .bad { color: var(--danger); font-weight: 700; }
+  h2 { margin: 18px 0 4px; font-size: 1rem; }
+</style>
+</head>
+<body>
+<h1>PhenologyPro · <span id="sum">…</span></h1>
+<div id="out"></div>
+<script src="../js/core.js"></script>
+<script src="../js/agromet.js"></script>
+<script src="../js/crops.js"></script>
+<script src="../js/climate.js"></script>
+<script src="../js/art.js"></script>
+<script src="../js/plotkit.js"></script>
+<script src="../js/figstyle.js"></script>
+<script src="../js/figure.js"></script>
+<script src="../js/help.js"></script>
+<script src="../js/wxio.js"></script>
+<script src="../js/plots2.js"></script>
+<script>
+/* Unit tests for Block 1. Open this page (double click or server); every line must be green.
+
+   The reference values are the worked examples of FAO Irrigation and Drainage
+   Paper 56 (Allen et al. 1998): examples 2, 3, 4, 8, 9, 10, 11, 15, 17, 18 and
+   20, quoted with the precision the paper prints. The degree-day methods are
+   checked against their closed forms computed by hand, the Ontario heat units
+   against Brown's equations, the Utah weights against Richardson's table, the
+   NRCS runoff against a hand computation, and Thornthwaite's PET against the
+   value of his own formula. Where no published value exists the test checks
+   the definition itself: that a water balance closes to the millimetre, that
+   Ks never leaves [0, 1], that an irrigation happens only when depletion
+   reaches the trigger, that the synthetic climate reproduces its normals. */
+(async function () {
+  const out = document.getElementById('out');
+  let pass = 0, fail = 0;
+  const section = t => out.insertAdjacentHTML('beforeend', `<h2>${t}</h2>`);
+  function check(name, cond, detail) {
+    if (cond) pass++; else fail++;
+    out.insertAdjacentHTML('beforeend', `<div class="t ${cond ? 'ok' : 'bad'}">${cond ? '✓' : '✗'} ${name}${detail != null ? ' — ' + detail : ''}</div>`);
+  }
+  const near = (a, b, tol) => Math.abs(a - b) <= (tol == null ? 1e-9 : tol);
+  const r2 = x => Math.round(x * 100) / 100;
+  const A = Agro;
+
+  /* ---------------- dates ---------------- */
+  section('Fechas');
+  check('doy(2025, 1, 1) = 1', doy(2025, 1, 1) === 1);
+  check('doy(2025, 12, 31) = 365', doy(2025, 12, 31) === 365);
+  check('doy(2024, 12, 31) = 366 (bisiesto)', doy(2024, 12, 31) === 366);
+  check('doy(2025, 7, 6) = 187 (Ejemplo 18 de FAO-56)', doy(2025, 7, 6) === 187);
+  check('fromDoy invierte doy', (() => { for (let j = 1; j <= 365; j += 7) { const d = fromDoy(2025, j); if (doy(d.y, d.m, d.d) !== j) return false; } return true; })());
+  check('fromDoy(2025, 400) pasa al año siguiente', (() => { const d = fromDoy(2025, 400); return d.y === 2026 && doy(2026, d.m, d.d) === 35; })());
+  check('dayNumber / fromDayNumber son inversas', (() => { const d = fromDayNumber(dayNumber(2026, 9, 25)); return d.y === 2026 && d.m === 9 && d.d === 25; })());
+  check('addDays(2025-12-30, 3) = 2026-01-02', toISO(addDays({ y: 2025, m: 12, d: 30 }, 3)) === '2026-01-02');
+  check('parseISO rechaza 2025-02-30', parseISO('2025-02-30') === null && parseISO('2024-02-29') !== null);
+
+  /* ---------------- solar (FAO-56 ch. 3) ---------------- */
+  section('Radiación extraterrestre y duración del día (FAO-56, ejemplos 8 y 9)');
+  const ra8 = A.Ra(-20, 246);
+  check('Ejemplo 8: Ra a 20°S el 3 de septiembre = 32.2 MJ m⁻² d⁻¹', near(ra8, 32.2, 0.1), r2(ra8));
+  check('Ejemplo 8: dr = 0.985', near(A.dr(246), 0.985, 0.001), A.dr(246).toFixed(4));
+  check('Ejemplo 8: δ = 0.120 rad', near(A.declination(246), 0.120, 0.001), A.declination(246).toFixed(4));
+  check('Ejemplo 8: ωs = 1.527 rad', near(A.sunsetAngle(-20, 246), 1.527, 0.002), A.sunsetAngle(-20, 246).toFixed(4));
+  check('Ejemplo 9: N = 11.7 h', near(A.daylength(-20, 246), 11.7, 0.05), A.daylength(-20, 246).toFixed(2));
+  check('Ejemplo 18: Ra a 50°48′N el 6 de julio = 41.09', near(A.Ra(50.8, 187), 41.09, 0.05), r2(A.Ra(50.8, 187)));
+  check('Ejemplo 18: N = 16.1 h', near(A.daylength(50.8, 187), 16.1, 0.05), A.daylength(50.8, 187).toFixed(2));
+  check('En el ecuador el día dura 12 h todo el año', [1, 80, 172, 266, 355].every(J => near(A.daylength(0, J), 12, 0.01)));
+  check('Noche polar: Ra = 0 a 80°N en enero', near(A.Ra(80, 1), 0, 1e-9));
+  check('Fotoperiodo civil (−6°) > duración del día geométrica', A.photoperiod(20, 172, -6) > A.daylength(20, 172) && A.photoperiod(20, 172, -6) - A.daylength(20, 172) < 1.2);
+  check('A 20°N el fotoperiodo de junio supera al de diciembre', A.photoperiod(20, 172) > A.photoperiod(20, 355));
+
+  section('Radiación solar y neta (FAO-56, ejemplos 10, 11 y 15)');
+  const ra10 = A.Ra(-22.9, 135), n10 = A.daylength(-22.9, 135);
+  check('Ejemplo 10: Ra en Río el 15 de mayo = 25.1', near(ra10, 25.1, 0.1), r2(ra10));
+  check('Ejemplo 10: N = 10.9 h', near(n10, 10.9, 0.05), n10.toFixed(2));
+  const rs10 = A.RsAngstrom(25.1, 7.1, 10.9);
+  check('Ejemplo 10: Rs con n = 7.1 h → 14.5', near(rs10, 14.5, 0.06), r2(rs10));
+  check('Ejemplo 10: Rso al nivel del mar = 18.8', near(A.Rso(25.1, 0), 18.8, 0.05), r2(A.Rso(25.1, 0)));
+  const rnl11 = A.Rnl(25.1, 19.1, 2.1, 14.5, 18.8);
+  check('Ejemplo 11: Rnl = 3.5', near(rnl11, 3.5, 0.05), r2(rnl11));
+  check('Ejemplo 11: Rns = 11.1', near(A.Rns(14.5), 11.1, 0.08), r2(A.Rns(14.5)));
+  check('Ejemplo 11: Rn = 7.6', near(A.Rns(14.5) - rnl11, 7.6, 0.08), r2(A.Rns(14.5) - rnl11));
+  const rs15 = A.RsHargreaves(40.6, 26.6, 14.8, 0.16);
+  check('Ejemplo 15: Rs de Hargreaves en Lyon = 22.3', near(rs15, 22.3, 0.05), r2(rs15));
+
+  /* ---------------- atmosphere ---------------- */
+  section('Presión, γ, presión de vapor (FAO-56, ejemplos 2, 3 y 4)');
+  check('Ejemplo 2: P a 1 800 m = 81.8 kPa', near(A.pressure(1800), 81.8, 0.05), r2(A.pressure(1800)));
+  check('Ejemplo 2: γ = 0.054 kPa °C⁻¹', near(A.gamma(A.pressure(1800)), 0.054, 0.0006), A.gamma(A.pressure(1800)).toFixed(4));
+  check('Ejemplo 3: e°(24.5) = 3.075', near(A.es(24.5), 3.075, 0.002), A.es(24.5).toFixed(3));
+  check('Ejemplo 3: e°(15) = 1.705', near(A.es(15), 1.705, 0.002), A.es(15).toFixed(3));
+  check('Ejemplo 3: es media = 2.39', near(A.esMean(24.5, 15), 2.39, 0.005), A.esMean(24.5, 15).toFixed(3));
+  check('Ejemplo 4: ea de RHmax 82 % y RHmin 54 % = 1.70', near(A.eaFromRH(25, 18, 82, 54), 1.70, 0.005), A.eaFromRH(25, 18, 82, 54).toFixed(3));
+  check('Ejemplo 4: ea con RHmax sola = 1.69', near(A.eaFromRHmax(18, 82), 1.69, 0.005), A.eaFromRHmax(18, 82).toFixed(3));
+  check('e°(17) = 1.938 (dew point de 17 °C)', near(A.eaFromTdew(17), 1.938, 0.002), A.eaFromTdew(17).toFixed(3));
+  check('Ejemplo 18: Δ a 16.9 °C = 0.122', near(A.delta(16.9), 0.122, 0.0005), A.delta(16.9).toFixed(4));
+  check('Ejemplo 18: u2 de 10 km/h a 10 m = 2.078 m/s', near(A.u2(10000 / 3600, 10), 2.078, 0.002), A.u2(10000 / 3600, 10).toFixed(3));
+  check('Ejemplo 47: u2 de 3.2 m/s a 10 m = 2.4', near(A.u2(3.2, 10), 2.4, 0.01), A.u2(3.2, 10).toFixed(2));
+
+  /* ---------------- ETo ---------------- */
+  section('ETo Penman–Monteith (FAO-56, ejemplos 17 y 18)');
+  const pm17 = A.etoPM({ delta: 0.246, gamma: 0.0674, tmean: 30.2, u2: 2, rn: 14.33, g: 0.14, es: 4.42, ea: 2.85 });
+  check('Ejemplo 17: Bangkok, abril → ETo = 5.72 mm/día', near(pm17.eto, 5.72, 0.02), pm17.eto.toFixed(3));
+  const pm18 = A.etoPMDaily({ lat: 50.8, z: 100, J: 187, tmax: 21.5, tmin: 12.3, rhmax: 84, rhmin: 63, uz: 10000 / 3600, zw: 10, n: 9.25 });
+  check('Ejemplo 18: Uccle, 6 de julio → ETo = 3.9 mm/día (3.88)', near(pm18.eto, 3.88, 0.03), pm18.eto.toFixed(3));
+  check('Ejemplo 18: es = 2.00 (1.997)', near(pm18.es, 1.997, 0.005), pm18.es.toFixed(3));
+  check('Ejemplo 18: ea = 1.409', near(pm18.ea, 1.409, 0.005), pm18.ea.toFixed(3));
+  check('Ejemplo 18: Rs = 22.07', near(pm18.rs, 22.07, 0.05), r2(pm18.rs));
+  check('Ejemplo 18: Rso = 30.90', near(pm18.rso, 30.9, 0.05), r2(pm18.rso));
+  check('Ejemplo 18: Rnl = 3.71', near(pm18.rnl, 3.71, 0.03), r2(pm18.rnl));
+  check('Ejemplo 18: Rn = 13.28', near(pm18.rn, 13.28, 0.05), r2(pm18.rn));
+  check('Ejemplo 18: γ = 0.0666', near(pm18.gamma, 0.0666, 0.0002), pm18.gamma.toFixed(4));
+  check('Ejemplo 18: la nota dice que la humedad vino de RH y la radiación de la insolación', pm18.notes.includes('rh') && pm18.notes.includes('sun') && pm18.notes.includes('uz'));
+  const pmMin = A.etoPMDaily({ lat: 19.5, z: 2250, J: 150, tmax: 27, tmin: 9 });
+  check('Con solo temperatura, PM estima humedad de Tmin, Rs de Hargreaves y viento de 2 m/s', pmMin.notes.join(',') === 'tmin,hargreaves,wind2' && pmMin.eto > 3 && pmMin.eto < 8, pmMin.eto.toFixed(2));
+  check('La ETo nunca es negativa', A.etoPMDaily({ lat: 60, z: 0, J: 355, tmax: -5, tmin: -15, rhmean: 95, u2: 0.5 }).eto >= 0);
+
+  section('ETo Hargreaves, Priestley–Taylor, Turc y Thornthwaite');
+  const hs20 = A.etoHargreaves(26.6, 14.8, 40.6);
+  check('Ejemplo 20: Lyon, julio → Hargreaves = 5.0 mm/día', near(hs20, 5.0, 0.05), hs20.toFixed(3));
+  check('Hargreaves crece con la amplitud térmica', A.etoHargreaves(30, 10, 40) > A.etoHargreaves(25, 15, 40));
+  const pt = A.etoPriestleyTaylor(20, 12, 0, 0.066);
+  check('Priestley–Taylor a 20 °C con Rn = 12 → 1.26·Δ/(Δ+γ)·12·0.408', near(pt, 1.26 * A.delta(20) / (A.delta(20) + 0.066) * 12 * 0.408, 1e-9), pt.toFixed(3));
+  check('Priestley–Taylor es menor que PM cuando hay advección', pt < A.etoPM({ delta: A.delta(20), gamma: 0.066, tmean: 20, u2: 3, rn: 12, g: 0, es: A.es(20), ea: A.es(20) * 0.4 }).eto);
+  check('Turc: T = 20, Rs = 20 MJ, RH 70 → 0.013·(20/35)·(477.7+50)', near(A.etoTurc(20, 20, 70), 0.013 * 20 / 35 * (20 * 23.885 + 50), 1e-9), A.etoTurc(20, 20, 70).toFixed(3));
+  check('Turc corrige al alza con RH < 50 %', A.etoTurc(20, 20, 30) > A.etoTurc(20, 20, 70));
+  const I20 = A.thornthwaiteIndex(new Array(12).fill(20));
+  check('Índice de calor I con 12 meses a 20 °C = 97.9', near(I20, 97.87, 0.05), I20.toFixed(2));
+  const tw = A.etoThornthwaite(new Array(12).fill(20), 0, 2025);
+  check('Thornthwaite a 20 °C, ecuador, abril (30 días, N = 12) = 73.9 mm (valor sin ajuste)', near(tw[3], 73.9, 0.4), tw[3].toFixed(2));
+  check('Thornthwaite: enero (31 días) > abril (30 días) a la misma T en el ecuador', tw[0] > tw[3] && near(tw[0] / tw[3], 31 / 30, 0.002));
+  check('Thornthwaite: 0 en un mes bajo cero', A.etoThornthwaite([-2, 0, 5, 10, 15, 20, 22, 21, 17, 11, 5, 0], 45)[0] === 0);
+
+  /* ---------------- degree days ---------------- */
+  section('Grados-día: fórmulas cerradas (Tmax 30, Tmin 10, base 15)');
+  check('Promedio: (30+10)/2 − 15 = 5', near(A.degreeDay('average', 30, 10, 15), 5));
+  check('Triángulo: (30−15)²/(2·20) = 5.625', near(A.degreeDay('triangle', 30, 10, 15), 5.625));
+  const sine = A.degreeDay('sine', 30, 10, 15);
+  check('Seno (Allen 1976): (1/π)[(M−b)(π/2−θ) + A cos θ] = 6.090', near(sine, 6.0901, 0.001), sine.toFixed(4));
+  check('Con Tmin ≥ base los tres métodos coinciden', near(A.degreeDay('sine', 30, 20, 15), 10) && near(A.degreeDay('triangle', 30, 20, 15), 10) && near(A.degreeDay('average', 30, 20, 15), 10));
+  check('Con Tmax ≤ base todos dan 0', A.degreeDay('sine', 12, 4, 15) === 0 && A.degreeDay('triangle', 12, 4, 15) === 0 && A.degreeDay('average', 12, 4, 15) === 0);
+  check('Seno doble con Tmin siguiente igual = seno simple', near(A.degreeDay('doubleSine', 30, 10, 15, null, 'none', 10), sine));
+  check('Seno doble promedia las dos mitades', near(A.degreeDay('doubleSine', 30, 10, 15, null, 'none', 20), 0.5 * sine + 0.5 * A.degreeDay('sine', 30, 20, 15)));
+  check('Triángulo doble promedia las dos mitades', near(A.degreeDay('doubleTriangle', 30, 10, 15, null, 'none', 20), 0.5 * 5.625 + 0.5 * 10));
+  section('Grados-día: cortes del umbral superior (Tmax 38, Tmin 12, base 10, umbral 30)');
+  const K = A.CURVES.sine;
+  const aboveB = K.above(38, 12, 10), aboveU = K.above(38, 12, 30), fracU = K.frac(38, 12, 30);
+  check('Sin corte = área sobre la base', near(A.degreeDay('sine', 38, 12, 10, 30, 'none'), aboveB));
+  check('Horizontal = área sobre base − área sobre umbral', near(A.degreeDay('sine', 38, 12, 10, 30, 'horizontal'), aboveB - aboveU));
+  check('Intermedio = horizontal − exceso', near(A.degreeDay('sine', 38, 12, 10, 30, 'intermediate'), aboveB - 2 * aboveU));
+  check('Vertical = horizontal − (umbral − base)·fracción del día sobre el umbral', near(A.degreeDay('sine', 38, 12, 10, 30, 'vertical'), aboveB - aboveU - 20 * fracU));
+  check('Orden: sin corte > horizontal > intermedio y horizontal > vertical', (() => { const n = A.degreeDay('sine', 38, 12, 10, 30, 'none'), h = A.degreeDay('sine', 38, 12, 10, 30, 'horizontal'), i = A.degreeDay('sine', 38, 12, 10, 30, 'intermediate'), v = A.degreeDay('sine', 38, 12, 10, 30, 'vertical'); return n > h && h > i && h > v; })());
+  check('Promedio con corte horizontal: mín(T̄, 30) − 10 = 15 (T̄ = 25)', near(A.degreeDay('average', 38, 12, 10, 30, 'horizontal'), 15));
+  check('Promedio con corte vertical y T̄ > umbral = 0', A.degreeDay('average', 40, 30, 10, 30, 'vertical') === 0);
+  check('Acotado (método del maíz): Tmax 38→30, Tmin 12 → (30+12)/2 − 10 = 11', near(A.degreeDay('capped', 38, 12, 10, 30), 11));
+  check('Acotado: Tmin 5→10, Tmax 25 → (25+10)/2 − 10 = 7.5', near(A.degreeDay('capped', 25, 5, 10, 30), 7.5));
+  check('Acotado nunca excede umbral − base', near(A.degreeDay('capped', 45, 35, 10, 30), 20));
+  check('Tmax y Tmin invertidos se corrigen solos', near(A.degreeDay('sine', 10, 30, 15), sine));
+  section('Unidades calor de Ontario y acumulación');
+  check('CHU Brown (1975): Tmax 30, Tmin 20 → (33 + 28.08)/2 = 30.54', near(A.chu(30, 20), 30.54, 0.001), A.chu(30, 20).toFixed(3));
+  check('CHU: el término diurno es 0 a 10 °C y máximo cerca de 30 °C', A.chu(10, 4.4) === 0 && A.chu(30, 4.4) > A.chu(25, 4.4) && A.chu(30, 4.4) > A.chu(35, 4.4));
+  const days = Array.from({ length: 10 }, () => ({ tmax: 30, tmin: 20 }));
+  const acc = A.accumulate(days, { method: 'average', base: 10 });
+  check('accumulate: 10 días de 15 °C·d suman 150', near(acc.total, 150) && acc.cum.length === 10);
+  check('accumulate.when(45) = índice 3 exacto', near(acc.when(45), 3));
+  check('accumulate.when(37.5) interpola a 2.5', near(acc.when(37.5), 2.5));
+  check('accumulate.when(1000) = null si no se alcanza', acc.when(1000) === null);
+  check('accumulate respeta start', near(A.accumulate(days, { method: 'average', base: 10, start: 5 }).total, 75));
+
+  /* ---------------- hourly and chill ---------------- */
+  section('Temperaturas horarias (Linvill 1990) y frío invernal');
+  const hrs = A.hourlyLinvill(5, 20, 5, 12);
+  check('24 valores', hrs.length === 24);
+  check('El máximo horario alcanza Tmax (±0.3)', Math.max(...hrs) > 19.7 && Math.max(...hrs) <= 20.0001, Math.max(...hrs).toFixed(2));
+  check('Ningún valor baja de Tmin', Math.min(...hrs) >= 5 - 1e-9, Math.min(...hrs).toFixed(2));
+  check('La temperatura baja durante la noche', hrs[22] > hrs[23] && hrs[23] > hrs[0] || hrs[23] >= hrs[0]);
+  const series = A.hourlySeries(Array.from({ length: 30 }, (_, i) => ({ tmax: 12, tmin: 0, J: 1 + i })), 20);
+  check('hourlySeries de 30 días tiene 720 horas dentro de [Tmin, Tmax]', series.length === 720 && series.every(t => t >= -1e-9 && t <= 12 + 1e-9));
+  check('Utah: pesos de la tabla de Richardson', A.utahWeight(1) === 0 && A.utahWeight(2) === 0.5 && A.utahWeight(5) === 1 && A.utahWeight(10) === 0.5 && A.utahWeight(14) === 0 && A.utahWeight(17) === -0.5 && A.utahWeight(20) === -1);
+  const cold = new Array(720).fill(6);
+  check('720 h a 6 °C = 720 horas frío = 720 unidades Utah', A.chillHours(cold) === 720 && A.utahUnits(cold) === 720);
+  check('Horas frío: −2 °C no cuenta salvo con belowOnly', A.chillHours([-2, 3]) === 1 && A.chillHours([-2, 3], true) === 2);
+  check('Utah: 100 h a 20 °C = −100', A.utahUnits(new Array(100).fill(20)) === -100);
+  const cp6 = A.chillPortions(cold);
+  check('Modelo dinámico: 30 días a 6 °C dan entre 22 y 32 porciones (≈ 1 cada 28 h)', cp6 > 22 && cp6 < 32, cp6.toFixed(2));
+  check('Modelo dinámico: 30 días a 20 °C dan 0 porciones', A.chillPortions(new Array(720).fill(20)) < 0.01);
+  check('Modelo dinámico: 30 días a −5 °C dan casi nada', A.chillPortions(new Array(720).fill(-5)) < 1);
+  check('Modelo dinámico: las porciones no se pierden con calor posterior', near(A.chillPortions(cold.concat(new Array(240).fill(25))), cp6, 0.6));
+  check('Modelo dinámico: la serie acumulada es monótona', (() => { const s = A.chillPortions(cold, true).series; for (let i = 1; i < s.length; i++) if (s[i] < s[i - 1] - 1e-12) return false; return true; })());
+  check('GDH: 0 a 4.5 °C, máximo a 25 °C, 0 a 36 °C', A.gdh([4.5]) === 0 && near(A.gdh([25]), 20.5, 1e-9) && A.gdh([36]) === 0 && A.gdh([15]) > 0 && A.gdh([15]) < A.gdh([25]));
+
+  /* ---------------- Kc and water balance ---------------- */
+  section('Curva de Kc, raíces y lluvia efectiva');
+  const L = { ini: 20, dev: 30, mid: 40, late: 20 }, kc = { ini: 0.4, mid: 1.15, end: 0.5 };
+  check('Kc ini durante la etapa inicial', A.kcAt(1, L, kc) === 0.4 && A.kcAt(20, L, kc) === 0.4);
+  check('Kc a la mitad del desarrollo = promedio', near(A.kcAt(35, L, kc), (0.4 + 1.15) / 2));
+  check('Kc mid en media estación', A.kcAt(51, L, kc) === 1.15 && A.kcAt(90, L, kc) === 1.15);
+  check('Kc end el último día', near(A.kcAt(110, L, kc), 0.5));
+  check('Kc null después del ciclo y 0 antes', A.kcAt(111, L, kc) === null && A.kcAt(0, L, kc) === 0);
+  check('kcAdjust no cambia en el clima de la tabla (u2 2, RHmin 45)', near(A.kcAdjust(1.15, 2, 45, 2), 1.15));
+  check('kcAdjust sube con viento y aire seco (FAO-56 eq. 62)', near(A.kcAdjust(1.20, 3, 30, 2), 1.20 + (0.04 + 0.06) * Math.pow(2 / 3, 0.3)));
+  check('kcAdjust no toca Kc < 0.45', A.kcAdjust(0.3, 5, 20, 2) === 0.3);
+  check('Raíz: lineal de zIni a zMax al fin del desarrollo', A.rootDepthAt(0, L, 0.15, 1.2) === 0.15 && A.rootDepthAt(50, L, 0.15, 1.2) === 1.2 && near(A.rootDepthAt(25, L, 0.15, 1.2), 0.675));
+  check('p ajustada: p + 0.04(5 − ETc), acotada en [0.1, 0.8]', near(A.pAdjusted(0.5, 5), 0.5) && near(A.pAdjusted(0.5, 8), 0.38) && A.pAdjusted(0.7, 0) === 0.8 && A.pAdjusted(0.1, 10) === 0.1);
+  check('Lluvia efectiva USDA-SCS: 100 mm → 84 mm; 300 mm → 155', near(A.effectiveRainUSDA(100), 84) && near(A.effectiveRainUSDA(300), 155));
+  check('Lluvia efectiva FAO/AGLW: 100 → 56; 50 → 20; 10 → 0', near(A.effectiveRainFAO(100), 56) && near(A.effectiveRainFAO(50), 20) && A.effectiveRainFAO(10) === 0);
+  check('Escurrimiento NRCS: CN 80, P 50 mm → 13.8 mm', near(A.runoffCN(50, 80), 13.8, 0.05), A.runoffCN(50, 80).toFixed(2));
+  check('Escurrimiento NRCS: 0 por debajo de la abstracción inicial; todo con CN 100', A.runoffCN(10, 80) === 0 && A.runoffCN(30, 100) === 30 && A.runoffCN(30, 0) === 0);
+
+  section('Balance mensual de Thornthwaite–Mather');
+  const P12 = [8, 6, 10, 25, 55, 110, 130, 125, 115, 45, 10, 5], E12 = [45, 55, 75, 90, 100, 95, 85, 85, 75, 65, 50, 42];
+  const tm = A.balanceTM(P12, E12, 100);
+  check('12 filas y almacenamiento en [0, ADT]', tm.rows.length === 12 && tm.rows.every(r => r.ST >= 0 && r.ST <= 100 + 1e-9));
+  check('El almacenamiento se llena en la estación de lluvias', tm.rows.some(r => near(r.ST, 100, 1e-6)));
+  check('En los meses secos: AET = P + |ΔST| y déficit = PET − AET', tm.rows.filter(r => r.diff < 0).every(r => near(r.AET, r.P - r.dST, 1e-9) && near(r.deficit, r.PET - r.AET, 1e-9)));
+  check('En los meses húmedos: AET = PET y sin déficit', tm.rows.filter(r => r.diff >= 0).every(r => near(r.AET, r.PET, 1e-9) && r.deficit === 0));
+  check('Cierre anual: P = AET + excedente (el ciclo se repite)', near(tm.P, tm.AET + tm.surplus, 1e-6), `${tm.P} = ${tm.AET.toFixed(3)} + ${tm.surplus.toFixed(3)}`);
+  check('El excedente solo aparece con el suelo lleno', tm.rows.every(r => r.surplus === 0 || near(r.ST, 100, 1e-6)));
+  check('Con lluvia siempre mayor que la PET no hay déficit', A.balanceTM(new Array(12).fill(200), E12, 100).deficit === 0);
+
+  section('Balance diario de la zona radical (FAO-56 cap. 8)');
+  const din = Array.from({ length: 110 }, (_, i) => ({ P: i % 9 === 0 ? 18 : 0, eto: 5 }));
+  const opts = { taw: 140, L, kc, zIni: 0.15, zMax: 1.0, p: 0.5, dr0: 0, cn: 0 };
+  const bal = A.balanceDaily(din, opts);
+  check('Una fila por día', bal.rows.length === 110);
+  check('Ks en [0, 1] y agotamiento en [0, ADT]', bal.rows.every(r => r.ks >= 0 && r.ks <= 1 && r.dr >= -1e-9 && r.dr <= r.taw + 1e-9));
+  check('Cierre diario: Dr,i = Dr,inicio − Pe − I + ETc,adj + DP (al mm exacto)', bal.rows.every(r => near(r.dr, r.drStart - r.Pe - r.I + r.etcAdj + r.DP, 1e-9)));
+  check('Ks = 1 mientras Dr ≤ AFA y < 1 cuando lo supera', bal.rows.every(r => (r.drStart - r.I <= r.raw ? r.ks === 1 : r.ks < 1)));
+  check('Sin riego en temporal', bal.totals.events === 0 && bal.totals.I === 0);
+  check('Hay estrés en temporal con 5 mm/día de ETo y 2 mm/día de lluvia', bal.totals.stressDays > 10 && bal.totals.ksMean < 1);
+  check('ADT crece con la raíz: 23.4 mm el primer día (raíz de 0.167 m), 140 mm al final del desarrollo', near(bal.rows[0].taw, 140 * (0.15 + 0.85 / 50), 1e-9) && near(bal.rows[60].taw, 140));
+  const irr = A.balanceDaily(din, Object.assign({}, opts, { irrigation: { mode: 'auto', trigger: 1, depth: null, efficiency: 0.8 } }));
+  check('Con riego automático hay eventos y ya no hay estrés', irr.totals.events > 3 && irr.totals.stressDays === 0, `${irr.totals.events} riegos`);
+  check('El riego ocurre solo cuando Dr ≥ AFA y rellena exactamente Dr', irr.rows.filter(r => r.I > 0).every(r => r.drStart >= r.raw - 1e-9 && near(r.I, r.drStart)));
+  check('Lámina bruta = neta / eficiencia', near(irr.totals.Igross, irr.totals.I / 0.8));
+  check('La percolación aparece cuando la lluvia cae sobre suelo lleno', A.balanceDaily([{ P: 40, eto: 4 }], opts).rows[0].DP > 0);
+  check('irrigationEvents lista los mismos eventos con su intervalo', (() => { const ev = A.irrigationEvents(irr); return ev.length === irr.totals.events && ev.slice(1).every(e => e.interval > 0); })());
+  const irrDates = A.balanceDaily(din, Object.assign({}, opts, { irrigation: { mode: 'dates', dates: { 10: 25, 40: 30 } } }));
+  check('Riego por fechas aplica las láminas dadas', near(irrDates.totals.I, 55) && irrDates.rows[10].I === 25 && irrDates.rows[40].I === 30);
+
+  /* ---------------- indices ---------------- */
+  section('Índices climáticos');
+  check('Aridez PNUMA: 0.03 hiperárido, 0.1 árido, 0.3 semiárido, 0.6 subhúmedo seco, 1 húmedo', A.aridityUNEP(3, 100).cls === 'hyperarid' && A.aridityUNEP(10, 100).cls === 'arid' && A.aridityUNEP(30, 100).cls === 'semiarid' && A.aridityUNEP(60, 100).cls === 'drysubhumid' && A.aridityUNEP(100, 100).cls === 'humid');
+  check('De Martonne: 644 mm y 15.5 °C → I = 25.3 subhúmedo', near(A.deMartonne(644, 15.5).I, 25.25, 0.01) && A.deMartonne(644, 15.5).cls === 'subhumid');
+  check('Lang: 355 mm y 18 °C → 19.7 desierto/árido', near(A.lang(355, 18).I, 19.72, 0.01) && A.lang(355, 18).cls === 'desert');
+  check('Índice de humedad de Thornthwaite: 100 (S − D)/PET', near(A.moistureIndexTW(50, 200, 900), 100 * (50 - 200) / 900));
+  check('monthlyMeans promedia por mes', (() => { const rows = [{ y: 2025, m: 1, d: 1, t: 10 }, { y: 2025, m: 1, d: 2, t: 20 }, { y: 2025, m: 2, d: 1, t: 5 }]; const m = A.monthlyMeans(rows, 't'); return m[0] === 15 && m[1] === 5 && m[2] === null; })());
+
+  /* ---------------- catalogue and synthetic climate ---------------- */
+  section('Catálogo de cultivos y suelos');
+  check('19 cultivos, todos con Kc, etapas FAO y raíz', Crops.LIST.length === 19 && Crops.LIST.every(c => c.kc && c.L && c.zMax > c.zIni && c.p > 0 && c.p < 1));
+  check('Los anuales tienen etapas con tiempo térmico creciente', Crops.annuals().every(c => c.stages.every((s, i) => i === 0 || s.gdd > c.stages[i - 1].gdd)));
+  check('Kc dentro de los rangos de FAO-56 (0.15–1.30)', Crops.LIST.every(c => [c.kc.ini, c.kc.mid, c.kc.end].every(k => k >= 0.15 && k <= 1.3)));
+  check('Base < umbral superior en todos', Crops.LIST.every(c => c.tbase < c.tupper));
+  check('Suelos ordenados por textura con ADT creciente de arena a franco', Crops.SOILS[0].taw < Crops.SOILS[3].taw && Crops.SOILS.every(s => s.fc > s.wp && s.taw > 0));
+  check('byId y gddToMaturity', Crops.byId('maize').tbase === 10 && Crops.gddToMaturity(Crops.byId('maize')) === 1450 && Crops.gddToMaturity(Crops.byId('apple')) === null);
+  check('seasonLength del maíz = 140 días', Crops.seasonLength(Crops.byId('maize')) === 140);
+
+  section('Clima sintético de los laboratorios');
+  const site = Climate.byId('temperate');
+  const yr = Climate.synthesize(site, { year: 2025 });
+  check('365 días con Tmax ≥ Tmin', yr.length === 365 && yr.every(d => d.tmax >= d.tmin));
+  check('Reproducible: la misma semilla da la misma serie', JSON.stringify(Climate.synthesize(site, { year: 2025 }).slice(0, 30)) === JSON.stringify(yr.slice(0, 30)));
+  const Pann = Stat.sum(yr.map(d => d.prec)), Pnorm = Stat.sum(site.P);
+  check('La lluvia anual queda a ±30 % de la normal (' + Pnorm + ' mm)', Math.abs(Pann - Pnorm) / Pnorm < 0.3, Pann.toFixed(0));
+  const Tm = Stat.mean(yr.map(d => (d.tmax + d.tmin) / 2));
+  check('La temperatura media anual queda a ±0.8 °C de la normal', Math.abs(Tm - site.tmean) < 0.8, Tm.toFixed(2));
+  check('El mes más lluvioso es de verano (jun–sep)', (() => { const m = A.monthlyMeans(yr.map(d => ({ y: d.y, m: d.m, prec: d.prec })), 'prec', true); const k = m.indexOf(Math.max(...m)); return k >= 5 && k <= 8; })());
+  check('El sitio frío tiene heladas y el tropical no', Climate.synthesize(Climate.byId('cold'), { year: 2025 }).some(d => d.tmin <= 0) && !Climate.synthesize(Climate.byId('tropical'), { year: 2025 }).some(d => d.tmin <= 0));
+  check('Las normales dan 12 meses coherentes', (() => { const n = Climate.normals(site); return n.T.length === 12 && n.Tmax.every((t, i) => t > n.Tmin[i]); })());
+  const etoHS = Climate.etoSeries(site, yr, 'hs'), etoPM = Climate.etoSeries(site, yr, 'pm');
+  check('ETo HS y PM del año: promedios entre 2 y 6 mm/día y a menos de 30 % entre sí', (() => { const a = Stat.mean(etoHS), b = Stat.mean(etoPM); return a > 2 && a < 6 && b > 2 && b < 6 && Math.abs(a - b) / b < 0.3; })(), `${Stat.mean(etoHS).toFixed(2)} vs ${Stat.mean(etoPM).toFixed(2)}`);
+  check('twoYears encadena 730 días', Climate.twoYears(site, { year: 2025 }).length === 730);
+
+  /* ---------------- help, figures ---------------- */
+  section('Ayuda de interpretación, estudio de figuras y exportación');
+  check('16 fichas de ayuda en el Bloque 1, todas con qué y cómo se lee', Help.BLOCK_KEYS[1].length === 16 && Help.BLOCK_KEYS[1].every(k => Help.HELP[k] && Help.HELP[k].what && Help.HELP[k].t));
+  check('Escala de ETo: 1 baja, 3 moderada, 5 alta, 7 muy alta, 9 extrema', Help.band('eto', 1).tone === 'good' && Help.band('eto', 3).label[1] === 'moderate' && Help.band('eto', 5).label[1] === 'high' && Help.band('eto', 7).label[1] === 'very high' && Help.band('eto', 9).label[1] === 'extreme');
+  check('Escala de Ks: 1 sin estrés, 0.9 leve, 0.6 moderado, 0.3 severo', Help.band('ks', 1).label[1] === 'no stress' && Help.band('ks', 0.9).label[1] === 'mild stress' && Help.band('ks', 0.6).label[1] === 'moderate stress' && Help.band('ks', 0.3).label[1] === 'severe stress');
+  check('Escala de heladas: −5 severa, 1 riesgo en superficie, 5 sin helada', Help.band('frost', -5).label[1] === 'severe frost' && Help.band('frost', 1).label[1] === 'risk at the surface' && Help.band('frost', 5).label[1] === 'no frost');
+  check('Help.tag devuelve un chip y vacío sin escala', /help-tag/.test(Help.tag('eto', 5)) && Help.tag('gdd', 5) === '');
+  check('Help.badge genera el botón', /help-badge/.test(Help.badge('gdd')) && Help.badge('nope') === '');
+  check('Las etiquetas del catálogo apuntan a fichas existentes', Object.values(Help.LABELS).every(k => Help.HELP[k]));
+  check('FigStyle escribe --c1 y la fuente en su regla', /--c1:#/.test(FigStyle.cssText()) && /--fig-font/.test(FigStyle.cssText()));
+  check('FigStyle: 9 paletas de 10 colores', FigStyle.PALETTES.length === 9 && FigStyle.PALETTES.every(p => p.c.length === 10));
+  FigStyle.set({ palette: 'okabe' });
+  check('FigStyle.set cambia los colores resueltos', FigStyle.vars().c1 === '#0072B2');
+  FigStyle.reset();
+  check('FigStyle.reset vuelve a la paleta propia', FigStyle.vars().c1 === '#1f6f9f');
+  check('CRC-32 de "123456789" = CBF43926', Fig.crc32(new TextEncoder().encode('123456789')).toString(16).toUpperCase() === 'CBF43926');
+  check('Fig.bake sustituye var(--x) por el color', Fig.bake('fill="var(--c1)" stroke="var(--nope, #123456)"', { c1: '#abcdef' }) === 'fill="#abcdef" stroke="#123456"');
+  const svgT = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgT.setAttribute('viewBox', '0 0 100 50');
+  svgT.appendChild(svgEl('rect', { x: 0, y: 0, width: 10, height: 10, fill: 'var(--c1)' }));
+  const comp = Fig.compose(svgT, { title: 'Prueba', note: 'nota' });
+  check('Fig.compose añade título y nota y conserva el ancho', comp.getAttribute('width') === '100' && comp.querySelectorAll('text').length === 2);
+  check('Fig.serialize resuelve las variables', !/var\(/.test(Fig.serialize(comp)) && /#/.test(Fig.serialize(comp)));
+  check('Todas las ilustraciones de Art devuelven SVG', Object.keys(Art).filter(k => !k.startsWith('_')).every(k => { try { const s = Art[k](); return typeof s === 'string' && s.indexOf('<svg') === 0; } catch (e) { return false; } }));
+  check('Plot.niceTicks(0, 100) = 0, 20, …, 100', Plot.niceTicks(0, 100).join(',') === '0,20,40,60,80,100');
+  check('Plot.monthTicks(100, 200) = 121, 152, 182', Plot.monthTicks(100, 200).join(',') === '121,152,182');
+
+  /* the later blocks add their tests from their own files, through this handle */
+  window.__t = { check, section, near, r2, finish() {
+    const sum = document.getElementById('sum');
+    sum.textContent = `${pass} ✓ · ${fail} ✗`;
+    sum.className = fail ? 'bad' : 'ok';
+    document.title = `PhenologyPro — tests: ${pass} ok, ${fail} fail`;
+    window.__tests = { pass, fail };
+  } };
+  window.__t.finish();
+})();
+</script>
+<script src="tests2.js"></script>
+<script src="../js/climate3.js"></script>
+<script src="../js/plots3.js"></script>
+<script src="tests3.js"></script>
+<script src="../js/thermal4.js"></script>
+<script src="../js/plots4.js"></script>
+<script src="tests4.js"></script>
+<script src="../js/eto5.js"></script>
+<script src="../js/plots5.js"></script>
+<script src="tests5.js"></script>
+<script src="../js/water6.js"></script>
+<script src="../js/plots6.js"></script>
+<script src="tests6.js"></script>
+<script src="../js/irrig7.js"></script>
+<script src="../js/plots7.js"></script>
+<script src="tests7.js"></script>
+<script src="../js/pheno8.js"></script>
+<script src="../js/plots8.js"></script>
+<script src="tests8.js"></script>
+<script src="../js/risk9.js"></script>
+<script src="../js/plots9.js"></script>
+<script src="tests9.js"></script>
+<script src="../js/zip.js"></script>
+<script src="../js/report.js"></script>
+<script src="tests10.js"></script>
+</body>
+</html>
