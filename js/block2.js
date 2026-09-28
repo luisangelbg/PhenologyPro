@@ -60,7 +60,7 @@
     const sample = table.rows.slice(0, 5);
     let html = '<div class="table-scroll"><table class="roles"><thead><tr>';
     table.header.forEach((h, j) => {
-      html += `<th class="rg-${roles[j] === 'ignore' ? 'ignore' : roles[j] === 'date' || roles[j] === 'year' || roles[j] === 'month' || roles[j] === 'day' || roles[j] === 'doy' ? 'date' : 'var'}"><select data-col="${j}">${WxIO.ROLES.map(r => `<option value="${r.id}"${r.id === roles[j] ? ' selected' : ''}>${T(r.es, r.en)}</option>`).join('')}</select><div class="col-name">${esc(h)}</div></th>`;
+      html += `<th class="rg-${roles[j] === 'ignore' ? 'ignore' : roles[j] === 'date' || roles[j] === 'year' || roles[j] === 'month' || roles[j] === 'day' || roles[j] === 'doy' ? 'date' : 'var'}"><select data-col="${j}" aria-label="${esc(T('Papel de la columna ', 'Role of column ') + h)}">${WxIO.ROLES.map(r => `<option value="${r.id}"${r.id === roles[j] ? ' selected' : ''}>${T(r.es, r.en)}</option>`).join('')}</select><div class="col-name">${esc(h)}</div></th>`;
     });
     html += '</tr></thead><tbody>' + sample.map(r => '<tr>' + r.map((c, j) => `<td class="${roles[j] === 'ignore' ? 'rg-ignore' : ''}">${esc(c)}</td>`).join('') + '</tr>').join('') + '</tbody></table></div>';
     box.innerHTML = html;

@@ -61,6 +61,20 @@ const Block10 = {};
   function figOpts() {
     return { format: el('b10Format').value, dpi: +el('b10Dpi').value, theme: el('b10Theme').value === 'auto' ? Theme.current() : el('b10Theme').value, background: el('b10Bg').value === 'auto' ? null : el('b10Bg').value, withTitle: el('b10WithTitle').checked };
   }
+  /* a thumbnail is a copy of a live figure: its inner ids (clip paths, patterns)
+     get a suffix so the page never holds the same id twice */
+  function thumbIds(svg, suf) {
+    const map = {};
+    svg.querySelectorAll('[id]').forEach(n => { map[n.id] = n.id + suf; n.id = map[n.id]; });
+    if (!Object.keys(map).length) return;
+    svg.querySelectorAll('*').forEach(n => {
+      for (const a of [...n.attributes]) {
+        let v = a.value.replace(/url\(#([^)]+)\)/g, (m, k) => map[k] ? 'url(#' + map[k] + ')' : m);
+        if (/href$/.test(a.name) && v[0] === '#' && map[v.slice(1)]) v = '#' + map[v.slice(1)];
+        if (v !== a.value) n.setAttribute(a.name, v);
+      }
+    });
+  }
   function renderCatalogue() {
     const cat = catalogue();
     const host = el('b10Catalogue');
@@ -71,7 +85,7 @@ const Block10 = {};
     let cur = null, h = '';
     cat.forEach(f => {
       if (f.block !== cur) { cur = f.block; h += `<div class="b10-group"><span class="b10-num">${f.block}</span> ${BLOCK_NAME(f.block)} <button class="btn btn-ghost btn-sm" data-sel-block="${f.block}">${two('solo estas', 'only these')}</button></div>`; }
-      const clone = f.svg.cloneNode(true); clone.removeAttribute('id'); clone.setAttribute('class', 'b10-thumb'); clone.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      const clone = f.svg.cloneNode(true); clone.removeAttribute('id'); clone.setAttribute('class', 'b10-thumb'); clone.setAttribute('preserveAspectRatio', 'xMidYMid meet'); thumbIds(clone, '-t' + f.id);
       h += `<label class="b10-fig ${selected.has(f.id) ? 'on' : ''}" data-fig="${f.id}"><input type="checkbox" ${selected.has(f.id) ? 'checked' : ''} data-id="${f.id}"><div class="b10-thumbwrap">${clone.outerHTML}</div><div class="b10-figtitle">${esc(f.title)}</div><button class="btn btn-ghost btn-sm" type="button" data-one="${f.id}" title="${two('Exportar solo esta figura', 'Export this figure only')}">⤓</button></label>`;
     });
     host.innerHTML = h;
