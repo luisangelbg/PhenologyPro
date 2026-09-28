@@ -253,7 +253,7 @@ const Report = {};
     if (use('climate') || use('risk')) fam.add('clima');
     if (use('phenology')) fam.add('chill');
     const refs = (window.Home ? Home.REFS : []).filter(r => fam.has(r[0])).map(r => r[1] + ' ' + r[2]).sort();
-    refs.push(two(`Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión ${APP_VERSION}) [software].`, `Barrera-Guzmán, L.Á. (2026). PhenologyPro: a browser-based platform for agroclimatology and crop phenology (Version ${APP_VERSION}) [Computer software].`));
+    refs.push(two(`Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión ${APP_VERSION}) [software]. https://doi.org/10.5281/zenodo.23004710`, `Barrera-Guzmán, L.Á. (2026). PhenologyPro: a browser-based platform for agroclimatology and crop phenology (Version ${APP_VERSION}) [Computer software]. https://doi.org/10.5281/zenodo.23004710`));
     return `<h2>${two('Referencias', 'References')}</h2><ol class="refs">${refs.map(r => `<li>${r}</li>`).join('')}</ol>`;
   }
 
@@ -317,7 +317,7 @@ dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:2px 14px;font-size:
     secs.forEach(([k, fn]) => { if (!inc(k)) return; let h = fn(); if (!h) return; n++; h = h.replace(/<h2>\d+\. /, `<h2>${n}. `); body += h; });
     body += secMethods();
     body += secRefs();
-    body += `<h2>${two('Cómo citar', 'How to cite')}</h2><div class="cite">${two(`Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión ${APP_VERSION}) [software].`, `Barrera-Guzmán, L.Á. (2026). PhenologyPro: a browser-based platform for agroclimatology and crop phenology (Version ${APP_VERSION}) [Computer software].`)}</div>`;
+    body += `<h2>${two('Cómo citar', 'How to cite')}</h2><div class="cite">${two(`Barrera-Guzmán, L.Á. (2026). PhenologyPro: plataforma en el navegador para la agroclimatología y la fenología de cultivos (versión ${APP_VERSION}) [software]. https://doi.org/10.5281/zenodo.23004710`, `Barrera-Guzmán, L.Á. (2026). PhenologyPro: a browser-based platform for agroclimatology and crop phenology (Version ${APP_VERSION}) [Computer software]. https://doi.org/10.5281/zenodo.23004710`)}</div>`;
     if (opt.appendix) body += `<h2>${two('Anexo. Registro de cálculo', 'Appendix. Calculation record')}</h2><p>${two('Todos los parámetros con que se obtuvo este informe. Con el archivo de proyecto (.json) que acompaña al paquete, la app reproduce cada cuadro y cada figura.', 'Every parameter with which this report was obtained. With the project file (.json) that accompanies the package, the app reproduces every table and figure.')}</p><pre>${escPre(JSON.stringify(params(), null, 1))}</pre>`;
     INC = null;
     return `<!DOCTYPE html><html lang="${I18N.lang}"><head><meta charset="UTF-8"><title>${esc(title)}</title><style>${CSS}</style></head><body>${body}</body></html>`;

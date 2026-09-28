@@ -1,6 +1,6 @@
 # PhenologyPro
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23004710.svg)](https://doi.org/10.5281/zenodo.23004710)
 
 **Agroclimatology and crop phenology — without writing code.** Degree-days, reference evapotranspiration
 (FAO-56 Penman–Monteith, Hargreaves–Samani, Priestley–Taylor, Thornthwaite, Turc), crop coefficients, the daily
@@ -85,14 +85,14 @@ online at the address below.
 - Source: <https://github.com/luisangelbg/PhenologyPro>
 - Online, with no installation: <https://luisangelbg.github.io/PhenologyPro/> (the same files; the data never leave
   your browser)
-- Archived versions with DOI on Zenodo: the concept DOI is added to `CITATION.cff`, `codemeta.json` and the app as
-  soon as the first release is archived.
+- Archived versions with DOI on Zenodo: concept DOI <https://doi.org/10.5281/zenodo.23004710> (always the latest
+  version); each release has its own version DOI (v1.0.1: 10.5281/zenodo.23004711).
 
 If you use PhenologyPro, please cite it (the app copies the citation from the **How to cite** section of its home
 page, and every report of Block 10 ends with it):
 
 > Barrera-Guzmán, L.Á. (2026). *PhenologyPro: a browser-based platform for agroclimatology and crop phenology*
-> (Version 1.0) [Computer software]. https://github.com/luisangelbg/PhenologyPro
+> (Version 1.0) [Computer software]. https://doi.org/10.5281/zenodo.23004710
 
 ## Provenance
 

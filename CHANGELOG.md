@@ -4,6 +4,9 @@
 
 Two small fixes found while writing the Spanish manual, and the manual itself.
 
+Published on GitHub (luisangelbg/PhenologyPro, GitHub Pages) and archived on Zenodo: concept DOI
+10.5281/zenodo.23004710, version DOI 10.5281/zenodo.23004711.
+
 - Block 7: when the controlled-deficit strategy applies *more* water than irrigating at RAW depletion (it can,
   with summer rains: it irrigates later and refills an emptier bucket), the comparison sentence says so instead
   of reporting a negative saving.

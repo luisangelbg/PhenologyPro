@@ -22,8 +22,11 @@ version: "1.0.1"
 date-released: "2026-09-27"
 repository-code: "https://github.com/luisangelbg/PhenologyPro"
 url: "https://luisangelbg.github.io/PhenologyPro/"
-# Cuando se deposite en Zenodo, agregar aqui el DOI de concepto:
-#   doi: 10.5281/zenodo.XXXXXXX
+doi: "10.5281/zenodo.23004710"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23004710"
+    description: "Concept DOI of all versions on Zenodo"
 license: GPL-3.0-or-later
 keywords:
   - agroclimatology
