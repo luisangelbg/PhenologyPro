@@ -73,6 +73,8 @@ function showMessage(container, type, text) {
   if (typeof container === 'string') container = el(container);
   if (!container) return null;
   const div = mk('div', { class: 'msg msg-' + type }, text);
+  /* errors and warnings are announced to screen readers */
+  if (window.LABG) LABG.messageRole(div, type);
   container.appendChild(div);
   return div;
 }
@@ -229,11 +231,69 @@ function goStep(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const btn = document.querySelector('.step-btn[data-step="' + n + '"]');
   if (btn && btn.scrollIntoView) btn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  if (window.LABG) {
+    LABG.setCurrentStep(n);
+    LABG.announce(T('Bloque ', 'Block ') + stepLabel(n));
+  }
   document.dispatchEvent(new CustomEvent('stepchange', { detail: { step: Number(n) } }));
+  refreshStepFooters();
 }
 function enableStep(n, on) {
   const b = document.querySelector('.step-btn[data-step="' + n + '"]');
   if (b) b.disabled = (on === false);
+  refreshStepMarks();
+  refreshStepFooters();
+}
+
+/* ---------------- common LABG Suite bar ----------------
+   Every block is open from the start, so "done" cannot mean "the next block
+   became available": a block is done when its result is in the state (the
+   series for Block 2, the climate for Block 3, and so on). */
+const STEP_RESULT = { 2: 'weather', 3: 'climate', 4: 'degreeDays', 5: 'eto', 6: 'balance', 7: 'irrigation', 8: 'phenology', 9: 'risk', 10: 'report' };
+const stepOn = n => { const b = document.querySelector('.step-btn[data-step="' + n + '"]'); return !!b && !b.disabled; };
+/* "3 · Clima del sitio" in the active language */
+function stepLabel(n) {
+  const s = STEPS.find(x => String(x.n) === String(n));
+  return s ? s.n + ' · ' + T(s.es, s.en) : String(n);
+}
+function refreshStepMarks() {
+  if (!window.LABG) return;
+  STEPS.forEach(s => {
+    const key = STEP_RESULT[s.n];
+    if (!key) return;
+    const done = !!state[key] && (s.n === 2 || !!state.weather);
+    LABG.markStep(s.n, done ? 'done' : null);
+  });
+}
+/* Previous / Next at the foot of every block, with the name of the block in
+   both languages (the CSS shows the active one, as everywhere in the app). */
+function refreshStepFooters() {
+  if (!window.LABG) return;
+  const order = STEPS.map(s => String(s.n));
+  const label = n => { const s = STEPS.find(x => String(x.n) === n); return L2(s.n + ' · ' + s.es, s.n + ' · ' + s.en); };
+  els('.step-panel').forEach(p => {
+    const n = p.id.replace('panel-', '');
+    const i = order.indexOf(n);
+    if (i < 0) return;
+    let f = p.querySelector(':scope > .step-footer');
+    if (!f) {
+      f = mk('nav', { class: 'step-footer no-print' });
+      f.innerHTML = '<button type="button" class="btn btn-secondary prev"></button><button type="button" class="btn btn-primary next"></button>';
+      f.addEventListener('click', e => { const b = e.target.closest('button[data-go]'); if (b && !b.disabled) goStep(b.dataset.go); });
+      p.appendChild(f);
+    }
+    f.setAttribute('aria-label', T('Bloques', 'Blocks'));
+    const prev = order.slice(0, i).reverse().find(stepOn);
+    const next = order.slice(i + 1).find(s => document.querySelector('.step-btn[data-step="' + s + '"]'));
+    const bp = f.querySelector('.prev'), bn = f.querySelector('.next');
+    bp.hidden = !prev;
+    if (prev) { bp.dataset.go = prev; bp.innerHTML = `← <span><small>${L2('Anterior', 'Previous')}</small>${label(prev)}</span>`; }
+    bn.hidden = !next;
+    if (next) {
+      bn.dataset.go = next; bn.disabled = !stepOn(next);
+      bn.innerHTML = `<span><small>${L2('Siguiente', 'Next')}</small>${label(next)}</span> →`;
+    }
+  });
 }
 
 /* Persisted preferences (figure style, last settings) */
@@ -352,4 +412,36 @@ Object.assign(window, {
 /* every place on the page that shows the version reads it from the constant */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.app-v').forEach(n => { n.textContent = APP_VERSION; });
+});
+
+/* Common LABG Suite bar: help, shortcuts, theme label, finished blocks and the
+   warning before closing with a series loaded. Only in the app: the tests load
+   core.js without labg-core.js. It waits one turn so that home.js has already
+   drawn the block bar. */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.LABG) return;
+  setTimeout(() => {
+    const hb = el('helpBtn');
+    if (hb) hb.addEventListener('click', () => LABG.showShortcuts());
+    LABG.shortcuts([]);
+    LABG.bindStepKeys(goStep);
+    LABG.guardUnload(() => !!state.weather);
+    /* the app keeps its own theme switch (i18n.js); the common core only
+       writes the button's label, in the active language */
+    LABG.theme.paint();
+    const nav = el('stepper');
+    const labelNav = () => { if (nav) nav.setAttribute('aria-label', T('Bloques', 'Blocks')); };
+    labelNav();
+    document.addEventListener('themechange', () => LABG.theme.paint());
+    document.addEventListener('langchange', () => { LABG.theme.paint(); labelNav(); refreshStepMarks(); refreshStepFooters(); });
+    const cur = document.querySelector('.step-panel.active');
+    LABG.setCurrentStep(cur ? cur.id.replace('panel-', '') : '1');
+    /* results are written by each block when it runs: the marks are
+       recomputed shortly after anything the user does */
+    let pending = 0;
+    const later = () => { clearTimeout(pending); pending = setTimeout(refreshStepMarks, 250); };
+    ['click', 'change', 'stepchange', 'weatherchange'].forEach(ev => document.addEventListener(ev, later));
+    refreshStepMarks();
+    refreshStepFooters();
+  }, 0);
 });
