@@ -176,14 +176,15 @@
     el('b7System').addEventListener('change', () => { systemId = null; run(); });
     ['b7Eff', 'b7Mode', 'b7Refill', 'b7Depth', 'b7Deficit', 'b7Interval', 'b7Stop', 'b7Start', 'b7MinInt', 'b7Presow', 'b7Capacity', 'b7CustInt', 'b7CustDepth'].forEach(id => el(id).addEventListener('change', () => { if (id === 'b7Eff') { el('b7System').value = 'custom'; systemId = 'custom'; } run(); }));
     el('b7Year').addEventListener('change', () => { viewYear = +el('b7Year').value; if (state.irrigation) drawYear(state.irrigation.all, state.irrigation.params, state.irrigation.capacity); });
-    el('b7Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b7Run').addEventListener('click', () => { const w = ppWork('Simulando el riego', 'Simulating irrigation'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b7ToBalance').addEventListener('click', () => goStep(6));
     el('b7Continue').addEventListener('click', () => goStep(8));
     el('b7ExportCal').addEventListener('click', exportCalendar);
     el('b7ExportYears').addEventListener('click', exportYears);
     document.addEventListener('balancechange', () => { state.irrigation = null; if (document.querySelector('#panel-7.active')) run(); });
     document.addEventListener('weatherchange', () => { state.irrigation = null; });
-    document.addEventListener('stepchange', e => { if (e.detail.step === 7 && !state.irrigation) { if (state.weather && !state.eto && window.Block5) Block5.run(); if (state.eto && !state.balance && window.Block6) Block6.run(); run(); } });
+    document.addEventListener('stepchange', e => { if (e.detail.step === 7 && !state.irrigation) { const w = state.weather ? ppWork('Simulando el riego', 'Simulating irrigation') : null; ppAfterPaint(() => { if (state.weather && !state.eto && window.Block5) Block5.run(); if (state.eto && !state.balance && window.Block6) Block6.run(); run(); if (!ready() && w) w._failed = true; }, w); } });
     document.addEventListener('langchange', () => { fillSelects(); if (document.querySelector('#panel-7.active') && ready()) run(); });
   }
   document.addEventListener('DOMContentLoaded', wire);

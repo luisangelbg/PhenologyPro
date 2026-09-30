@@ -207,8 +207,9 @@
     el('b8Crop').addEventListener('change', () => { cropId = null; run(); });
     ['b8Method', 'b8Cutoff', 'b8Base', 'b8Upper', 'b8SowM', 'b8SowD'].forEach(id => el(id).addEventListener('change', run));
     ['b8ChillStart', 'b8ChillEnd', 'b8ChillUnit', 'b8ChillReq', 'b8Gdh'].forEach(id => el(id).addEventListener('change', () => { if (ready()) { runChill(); Fig.decorate(el('panel-8')); } }));
-    el('b8Run').addEventListener('click', run);
-    el('b8ObsRun').addEventListener('click', () => { if (ready()) renderCalibration(state.weather.rows, params()); });
+    /* from the button, a long run shows the common waiting window */
+    el('b8Run').addEventListener('click', () => { const w = ppWork('Calculando la fenología', 'Computing phenology'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
+    el('b8ObsRun').addEventListener('click', () => { if (!ready()) return; const w = ppWork('Calibrando con las observaciones', 'Calibrating with the observations'); ppAfterPaint(() => { renderCalibration(state.weather.rows, params()); if (!calRes && w) w._failed = true; }, w); });
     el('b8ObsExample').addEventListener('click', loadExampleObs);
     el('b8CalApply').addEventListener('click', () => applyCalibration(false));
     el('b8CalApplyBase').addEventListener('click', () => applyCalibration(true));

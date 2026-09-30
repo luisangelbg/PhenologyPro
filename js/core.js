@@ -75,6 +75,8 @@ function showMessage(container, type, text) {
   const div = mk('div', { class: 'msg msg-' + type }, text);
   /* errors and warnings are announced to screen readers */
   if (window.LABG) LABG.messageRole(div, type);
+  /* an error inside an open waiting window ends it without the tick */
+  if (type === 'error' && ppWork.current) ppWork.current._failed = true;
   container.appendChild(div);
   return div;
 }
@@ -402,7 +404,27 @@ function buildTable(container, columns, rows, opts) {
   return table;
 }
 
+/* ---------------- waiting window ----------------
+   A long analysis opens the common LABG window (it only shows after 300 ms, so
+   a quick one never flashes). ppAfterPaint lets the window paint, runs the
+   unchanged body and closes it: with the tick, or quietly if it failed. The
+   tests load core.js without labg-core.js: everything checks window.LABG. */
+function ppWork(es, en) { if (!window.LABG || !LABG.work) return null; const w = LABG.work({ title: LABG.t(es, en || es), delay: 300 }); ppWork.current = w; return w; }
+ppWork.current = null;
+function ppAfterPaint(f, w) {
+  const done = () => { if (ppWork.current === w) ppWork.current = null; if (w && !w.ended) { if (w._failed) w.close(); else w.done(); } };
+  return (window.LABG ? LABG.nextPaint() : new Promise(r => setTimeout(r, 30))).then(f).then(done, e => { console.error(e); if (w) w._failed = true; done(); });
+}
+/* an export button: dots while it works and a tick at the end (the plain
+   pulse when the common core is missing) */
+function ppBusy(btn, task) {
+  if (window.LABG && LABG.busyButton) return LABG.busyButton(btn, task).catch(e => { if (e) console.error(e); });
+  btn.disabled = true; btn.classList.add('is-busy');
+  return Promise.resolve().then(task).catch(e => { if (e) console.error(e); }).then(() => { btn.disabled = false; btn.classList.remove('is-busy'); });
+}
+
 Object.assign(window, {
+  ppWork, ppAfterPaint, ppBusy,
   STEPS, el, els, mk, esc, L2, keepGreek, svgEl, showMessage, clearMessages, notice,
   fmtNum, fmtFixed, fmtPct, fmtTemp, fmtMm, plural, parseNum,
   MONTHS, MONTHS_SHORT, monthName, isLeap, daysInMonth, daysInYear, doy, fromDoy, dayNumber, fromDayNumber, addDays, parseISO, toISO, fmtDate, fmtDoy,
@@ -420,6 +442,15 @@ document.addEventListener('DOMContentLoaded', () => {
    drawn the block bar. */
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.LABG) return;
+  /* the waiting window: a sprouting plant and a few true tips of the app */
+  if (LABG.work) {
+    LABG.work.scene = 'grow';
+    LABG.work.tips = [
+      ['El paquete .zip del Bloque 10 lleva proyecto.json: se abre en el Bloque 2 y reproduce todo el estudio.', 'The Block 10 .zip package carries proyecto.json: it opens in Block 2 and reproduces the whole study.'],
+      ['En el Bloque 8 puedes pegar fechas observadas de las etapas y calibrar con ellas los grados-día y la temperatura base.', 'In Block 8 you can paste observed stage dates and calibrate the degree-days and the base temperature with them.'],
+      ['Los escenarios del Bloque 9 aceptan varios aumentos de temperatura separados por comas, por ejemplo 1, 2, 3.', 'The Block 9 scenarios take several temperature increases separated by commas, for instance 1, 2, 3.'],
+    ];
+  }
   setTimeout(() => {
     const hb = el('helpBtn');
     if (hb) hb.addEventListener('click', () => LABG.showShortcuts());

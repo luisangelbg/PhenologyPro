@@ -170,7 +170,8 @@
 
   function wire() {
     ['b3Years', 'b3FrostThr', 'b3Awc', 'b3OnsetMm', 'b3DryRun'].forEach(id => el(id).addEventListener('change', run));
-    el('b3Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b3Run').addEventListener('click', () => { const w = ppWork('Calculando el clima del sitio', 'Computing the site climate'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b3Continue').addEventListener('click', () => goStep(4));
     el('b3ToData').addEventListener('click', () => goStep(2));
     el('b3ExportNormals').addEventListener('click', () => {

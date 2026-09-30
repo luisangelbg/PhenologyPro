@@ -112,10 +112,12 @@ const Block10 = {};
     }
     return out;
   }
-  async function exportSelected() {
+  /* the button works with dots and ends in a tick; the status line keeps
+     reporting "i of n" as each figure is written */
+  function exportSelected() {
     const o = figOpts();
-    const btn = el('b10ExportSel'); btn.disabled = true; btn.classList.add('is-busy');
-    try {
+    const btn = el('b10ExportSel');
+    return ppBusy(btn, async () => {
       const files = await figureFiles(o, (i, n) => { el('b10CatStatus').textContent = two(`Exportando ${i} de ${n}…`, `Exporting ${i} of ${n}…`); });
       if (files.length > 6) {
         /* many downloads at once get blocked by the browser: one .zip instead */
@@ -126,7 +128,7 @@ const Block10 = {};
         for (const f of files) { download(f.data, f.name.replace(/^figuras\//, ''), f.data.type); await new Promise(r => setTimeout(r, 350)); }
         el('b10CatStatus').innerHTML = two(`<b>${files.length} figuras</b> descargadas (${o.format.toUpperCase()}${o.format !== 'svg' ? ', ' + o.dpi + ' ppp' : ''}).`, `<b>${files.length} figures</b> downloaded (${o.format.toUpperCase()}${o.format !== 'svg' ? ', ' + o.dpi + ' dpi' : ''}).`);
       }
-    } finally { btn.disabled = !selected.size; btn.classList.remove('is-busy'); }
+    });
   }
 
   /* ---------- 3 · the report ---------- */
@@ -183,9 +185,9 @@ const Block10 = {};
   }
   async function buildPackage() {
     if (!state.weather) return;
-    const btn = el('b10Build'); btn.disabled = true; btn.classList.add('is-busy');
+    const btn = el('b10Build');
     const st = el('b10PkgStatus');
-    try {
+    return ppBusy(btn, async () => { try {
       const o = figOpts();
       const files = [];
       st.textContent = two('Redactando el informe…', 'Writing the report…');
@@ -209,7 +211,8 @@ const Block10 = {};
       st.innerHTML = two(`<b>Paquete listo</b> · ${files.length} archivos · ${fmtSize(blob.size)}. Guárdalo junto al artículo o la tesis: quien lo abra tiene el informe, las figuras, los cuadros y el proyecto que los reproduce.`, `<b>Package ready</b> · ${files.length} files · ${fmtSize(blob.size)}. Keep it with the paper or the thesis: whoever opens it has the report, the figures, the tables and the project that reproduces them.`);
     } catch (e) {
       st.innerHTML = `<b>${two('No se pudo construir el paquete', 'The package could not be built')}</b> · ${esc(e && e.message || String(e))}`;
-    } finally { btn.disabled = false; btn.classList.remove('is-busy'); }
+      throw null; /* the button ends without the tick; the message is already on the page */
+    } });
   }
   const fmtSize = b => (b < 1024 * 1024 ? `${Math.round(b / 1024)} kB` : `${(b / 1024 / 1024).toFixed(1)} MB`);
   function renderPkgList() {
@@ -242,7 +245,7 @@ const Block10 = {};
     el('b10SelAll').addEventListener('click', () => { selected = new Set(catalogue().map(f => f.id)); renderCatalogue(); renderPkgList(); });
     el('b10SelNone').addEventListener('click', () => { selected = new Set(); renderCatalogue(); renderPkgList(); });
     el('b10Style').addEventListener('click', () => FigStyle.show());
-    el('b10ZipFigs').addEventListener('click', async () => { const o = figOpts(); const b = el('b10ZipFigs'); b.disabled = true; b.classList.add('is-busy'); try { const files = await figureFiles(o, (i, n) => { el('b10CatStatus').textContent = two(`Figura ${i} de ${n}…`, `Figure ${i} of ${n}…`); }); const blob = await Zip.build(files); download(blob, `${slug((state.site && state.site.name) || 'phenologypro')}_figuras.zip`, 'application/zip'); el('b10CatStatus').innerHTML = two(`<b>${files.length} figuras</b> en un .zip de ${fmtSize(blob.size)}.`, `<b>${files.length} figures</b> in a ${fmtSize(blob.size)} .zip.`); } finally { b.disabled = false; b.classList.remove('is-busy'); } });
+    el('b10ZipFigs').addEventListener('click', () => { const o = figOpts(); const b = el('b10ZipFigs'); ppBusy(b, async () => { const files = await figureFiles(o, (i, n) => { el('b10CatStatus').textContent = two(`Figura ${i} de ${n}…`, `Figure ${i} of ${n}…`); }); const blob = await Zip.build(files); download(blob, `${slug((state.site && state.site.name) || 'phenologypro')}_figuras.zip`, 'application/zip'); el('b10CatStatus').innerHTML = two(`<b>${files.length} figuras</b> en un .zip de ${fmtSize(blob.size)}.`, `<b>${files.length} figures</b> in a ${fmtSize(blob.size)} .zip.`); }); });
     el('b10Format').addEventListener('change', () => { el('b10DpiWrap').style.display = el('b10Format').value === 'svg' ? 'none' : ''; });
     el('b10Preview_btn').addEventListener('click', preview);
     el('b10Download').addEventListener('click', downloadReport);

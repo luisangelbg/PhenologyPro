@@ -165,7 +165,8 @@
     el('b6Soil').addEventListener('change', () => { soilId = null; run(); });
     ['b6SowM', 'b6SowD', 'b6Lini', 'b6Ldev', 'b6Lmid', 'b6Llate', 'b6KcIni', 'b6KcMid', 'b6KcEnd', 'b6Zini', 'b6Zmax', 'b6P', 'b6Ky', 'b6Taw', 'b6Cn', 'b6Runoff', 'b6Dr0', 'b6KcCorrect'].forEach(id => el(id).addEventListener('change', () => { if (id === 'b6Taw' || id === 'b6Cn') { el('b6Soil').value = 'custom'; soilId = 'custom'; } run(); }));
     el('b6Year').addEventListener('change', () => { viewYear = +el('b6Year').value; if (state.balance) drawYear(state.balance.all); });
-    el('b6Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b6Run').addEventListener('click', () => { const w = ppWork('Calculando el balance hídrico', 'Computing the water balance'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b6ToData').addEventListener('click', () => goStep(2));
     el('b6ToEto').addEventListener('click', () => goStep(5));
     el('b6Continue').addEventListener('click', () => goStep(7));

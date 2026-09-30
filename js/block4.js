@@ -151,7 +151,8 @@
     const months = el('b4SowM'); months.innerHTML = MONTHS.es.map((_, i) => `<option value="${i + 1}">${monthName(i + 1)}</option>`).join(''); months.value = '4';
     el('b4Crop').addEventListener('change', () => { cropId = null; run(); });
     ['b4Method', 'b4Cutoff', 'b4Base', 'b4Upper', 'b4SowM', 'b4SowD', 'b4Target', 'b4Season', 'b4Frost'].forEach(id => el(id).addEventListener('change', run));
-    el('b4Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b4Run').addEventListener('click', () => { const w = ppWork('Calculando los grados-día', 'Computing degree-days'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b4ToData').addEventListener('click', () => goStep(2));
     el('b4Continue').addEventListener('click', () => goStep(5));
     el('b4ExportYears').addEventListener('click', () => {

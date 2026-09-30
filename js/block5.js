@@ -133,7 +133,8 @@
 
   function wire() {
     ['b5Krs', 'b5Arid', 'b5Wind', 'b5As', 'b5Bs', 'b5Albedo', 'b5Alpha', 'b5HsCoef', 'b5HsExp', 'b5Use'].forEach(id => el(id).addEventListener('change', run));
-    el('b5Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b5Run').addEventListener('click', () => { const w = ppWork('Calculando la evapotranspiración', 'Computing evapotranspiration'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b5Reset').addEventListener('click', () => { el('b5Wind').value = 2; el('b5As').value = 0.25; el('b5Bs').value = 0.5; el('b5Albedo').value = 0.23; el('b5Alpha').value = 1.26; el('b5HsCoef').value = 0.0023; el('b5HsExp').value = 0.5; syncSite(); run(); });
     el('b5ToData').addEventListener('click', () => goStep(2));
     el('b5Continue').addEventListener('click', () => goStep(6));

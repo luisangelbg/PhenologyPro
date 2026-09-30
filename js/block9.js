@@ -159,14 +159,15 @@
     fillSelects();
     el('b9Crop').addEventListener('change', () => { cropId = null; run(); });
     ['b9SowM', 'b9SowD', 'b9Frost', 'b9Heat', 'b9Sensitive', 'b9YieldMin', 'b9Target', 'b9UseWater', 'b9FrostWhere', 'b9Deltas', 'b9DeltaP', 'b9Chill', 'b9ChillReq'].forEach(id => el(id).addEventListener('change', run));
-    el('b9Run').addEventListener('click', run);
+    /* from the button, a long run shows the common waiting window */
+    el('b9Run').addEventListener('click', () => { const w = ppWork('Calculando riesgos y escenarios', 'Computing risks and scenarios'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });
     el('b9ToData').addEventListener('click', () => goStep(2));
     el('b9Continue').addEventListener('click', () => goStep(10));
     el('b9ExportWindow').addEventListener('click', exportWindow);
     document.addEventListener('weatherchange', () => { state.risk = null; });
     document.addEventListener('phenologychange', () => { state.risk = null; cropId = null; });
     document.addEventListener('climatechange', () => { const fr = state.climate && state.climate.fr; if (fr) el('b9Frost').value = fr.threshold; });
-    document.addEventListener('stepchange', e => { if (e.detail.step === 9 && !state.risk) { if (state.climate && state.climate.fr) el('b9Frost').value = state.climate.fr.threshold; run(); } });
+    document.addEventListener('stepchange', e => { if (e.detail.step === 9 && !state.risk) { if (state.climate && state.climate.fr) el('b9Frost').value = state.climate.fr.threshold; const w = ready() ? ppWork('Calculando riesgos y escenarios', 'Computing risks and scenarios') : null; ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); } });
     document.addEventListener('langchange', () => { fillSelects(); if (document.querySelector('#panel-9.active') && ready()) run(); });
   }
   document.addEventListener('DOMContentLoaded', wire);
