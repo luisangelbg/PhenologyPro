@@ -106,7 +106,7 @@ ${fs.lineScale !== 1 ? `path,polyline{stroke-width:${(1.8 * fs.lineScale).toFixe
       t.textContent = title; svg.appendChild(t);
     }
     const g = document.createElementNS(NS, 'g');
-    g.setAttribute('transform', `translate(0 ${pad + titleH})`);
+    g.setAttribute('transform', `translate(${-(vb[0] || 0)} ${pad + titleH - (vb[1] || 0)})`);   /* the figure editor may have enlarged the box upwards */
     [...source.childNodes].forEach(n => g.appendChild(n.cloneNode(true)));
     svg.appendChild(g);
     noteLines.forEach((line, i) => {
@@ -123,6 +123,8 @@ ${fs.lineScale !== 1 ? `path,polyline{stroke-width:${(1.8 * fs.lineScale).toFixe
     const clone = svg.cloneNode(true);
     clone.setAttribute('xmlns', NS);
     clone.removeAttribute('data-w'); clone.removeAttribute('data-h'); clone.removeAttribute('data-theme');
+    /* the bookkeeping of the figure editor stays in the app */
+    clone.querySelectorAll('*').forEach(n => [...n.attributes].forEach(a => { if (/^data-(fe-|li$|role$)/.test(a.name)) n.removeAttribute(a.name); }));
     const text = new XMLSerializer().serializeToString(clone);
     return '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' + bake(text, svg.__vars || readVars());
   }

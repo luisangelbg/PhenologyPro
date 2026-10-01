@@ -18,8 +18,8 @@ authors:
     family-names: "Barrera-Guzmán"
     email: lbarrerag@chapingo.mx
     orcid: "https://orcid.org/0000-0001-8057-2583"
-version: "1.0.1"
-date-released: "2026-09-27"
+version: "1.1.0"
+date-released: "2026-09-30"
 repository-code: "https://github.com/luisangelbg/PhenologyPro"
 url: "https://luisangelbg.github.io/PhenologyPro/"
 doi: "10.5281/zenodo.23004710"

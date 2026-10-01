@@ -904,6 +904,23 @@ const Help = {};
       'If you change a parameter in a block after generating the report, the old sentence goes stale: generate again. The app does not store reports; it stores the study.'],
   });
 
+  E('figedit', {
+    t: ['El editor de cada figura (✎)', 'The editor of each figure (✎)'],
+    what: ['El estudio de figuras de la barra superior cambia todas las figuras a la vez. El botón <b>✎</b> de la esquina de cada figura abre su editor propio, con seis pestañas: <b>General</b> (título, subtítulo y nota al pie dentro de la figura, familia tipográfica, tamaños, grosor, fondo y marco), <b>Ejes y rejilla</b> (títulos de los ejes, números, color y grosor de los ejes, rejilla y recuadro del área de trazado), <b>Series</b> (cada color con el nombre de su entrada de leyenda: color, grosor, trazo, opacidad, ocultar), <b>Leyenda</b> (mostrar, ocho posiciones, en fila o en columna, tamaño, recuadro, rótulos), <b>Textos</b> (cada texto uno por uno) y <b>Anotaciones</b> (notas, flechas, líneas de referencia en un valor del eje, bandas y letra de panel).',
+      'The figure studio of the top bar changes every figure at once. The <b>✎</b> button at the corner of each figure opens its own editor, with six tabs: <b>General</b> (title, subtitle and footnote inside the figure, font family, sizes, line weight, background and border), <b>Axes & grid</b> (axis titles, numbers, colour and weight of the axes, grid and the box of the plot area), <b>Series</b> (every colour named after its legend entry: colour, weight, stroke, opacity, hide), <b>Legend</b> (show, eight positions, row or column, size, box, labels), <b>Texts</b> (every text one by one) and <b>Annotations</b> (notes, arrows, reference lines at a value of the axis, bands and a panel letter).'],
+    scaleTitle: ['Qué tocar según el destino', 'What to touch by destination'],
+    scale: [
+      S(null, null, ['artículo: fuente serif o Arial, textos a 1.2–1.4×, sin rejilla o tenue, leyenda dentro del área', 'paper: serif or Arial, texts at 1.2–1.4×, no grid or a faint one, legend inside the plot area'], 'good'),
+      S(null, null, ['diapositiva: textos a 1.5× o más, líneas a 1.5×, pocos rótulos y un título dentro de la figura', 'slide: texts at 1.5× or more, lines at 1.5×, few labels and a title inside the figure'], 'good'),
+      S(null, null, ['figura compuesta: letra de panel (A, B, C) y la misma tipografía copiada a todas', 'multi-panel figure: a panel letter (A, B, C) and the same type copied to all'], 'ok'),
+    ],
+    conv: true,
+    read: ['La leyenda, las notas, las letras y las flechas <b>se arrastran</b> sobre la figura mientras el editor está abierto, y un clic en cualquier texto de la figura salta a su renglón. Los cambios se guardan por figura y se vuelven a poner cada vez que la figura se redibuja (al cambiar los datos, el idioma o el tema): los textos se reconocen por su redacción original y los colores por su valor original. Lo que ves es lo que sale en la exportación, en el catálogo del Bloque 10, en el informe y en el paquete. «Copiar el estilo a todas las figuras» lleva la tipografía, los tamaños, los ejes, la rejilla y el fondo a las demás, sin tocar sus textos ni sus anotaciones.',
+      'The legend, the notes, the letters and the arrows <b>are dragged</b> on the figure while the editor is open, and a click on any text of the figure jumps to its row. The changes are kept per figure and put back every time the figure is redrawn (when the data, the language or the theme change): texts are recognised by their original wording and colours by their original value. What you see is what the export, the catalogue of Block 10, the report and the package take. "Copy the style to every figure" carries the type, the sizes, the axes, the grid and the background to the others, leaving their texts and annotations alone.'],
+    care: ['Un texto reescrito deja de traducirse: si cambias de idioma, la figura trae su redacción original en el otro idioma y tu texto se queda con la versión en la que lo escribiste. Y una línea de referencia se coloca en el valor del eje: si los datos cambian la escala y el valor queda fuera, la línea no se dibuja.',
+      'A rewritten text is no longer translated: if you switch language the figure brings its original wording in the other language and your text stays with the version you wrote it for. And a reference line sits at the value of the axis: if the data change the scale and the value falls outside, the line is not drawn.'],
+  });
+
   E('reproducible', {
     t: ['Qué hace reproducible un estudio agroclimático', 'What makes an agroclimatic study reproducible'],
     what: ['Tres cosas: los <b>datos</b> tal como entraron al cálculo (la serie limpia, no la cruda), los <b>parámetros</b> de cada paso (base, umbrales, Kc, suelo, regla de riego, fechas) y la <b>versión</b> del programa. El paquete guarda las tres: proyecto.json, parametros.json y el número de versión en el informe. Con ellas, la misma serie da los mismos cuadros en cualquier computadora, sin conexión.',
@@ -930,7 +947,7 @@ const Help = {};
     7: ['irrstrategy', 'efficiency', 'depletion', 'taw', 'irrdesign', 'kyield'],
     8: ['bbch', 'gdd', 'tbase', 'gddvar', 'calibration', 'chill', 'chillwindow', 'gdh', 'photoperiod'],
     9: ['frost', 'frostdates', 'heatstress', 'season', 'sowingwindow', 'kyield', 'scenarios'],
-    10: ['figformat', 'dpi', 'reportmethods', 'reproducible'],
+    10: ['figformat', 'dpi', 'figedit', 'reportmethods', 'reproducible'],
   };
   /* labels the app prints, in either language, and the entry each one belongs to (matching by prefix) */
   const LABELS = {

@@ -6,7 +6,7 @@
 
 /* the version of the app, written once: the report cites it and the page shows
    it, so it cannot drift from one place to another */
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.1.0";
 window.APP_VERSION = APP_VERSION;
 
 const state = {

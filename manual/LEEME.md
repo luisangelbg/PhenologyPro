@@ -77,5 +77,5 @@ Los de la franja de la portada, en el mismo orden; son los de la app.
    la figura necesita, y la captura se recorta con `-Recorte`.
 3. Al terminar todas las partes: `powershell -ExecutionPolicy Bypass -File herramientas\unir-manual.ps1 es` desde
    `manual/`, y se imprime `es/manual-completo.html` a PDF con `tools\local\shot.ps1 -Pdf` (hecho el 27 sep 2026:
-   `PhenologyPro User's Manual.pdf`, 120 hojas tamaño carta, 14 MB). Las capturas más altas que la ventana de 900 px
+   `PhenologyPro User's Manual.pdf`, 121 hojas tamaño carta, 14 MB; reimpreso el 30 sep 2026 con el editor de figuras). Las capturas más altas que la ventana de 900 px
    se toman con `-Alto 1400` o `-Alto 1800`; una figura que no cabe en la hoja se reduce con `figure.media` o un ancho fijo.

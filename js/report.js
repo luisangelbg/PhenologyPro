@@ -272,6 +272,7 @@ const Report = {};
       phenology: state.phenology ? { crop: state.phenology.crop, params: state.phenology.params, stages: state.phenology.stages, calibrated: !!(state.phenology.calibration && state.phenology.calibration.stages.length), chill: state.phenology.chill ? { startM: state.phenology.chill.startM, endM: state.phenology.chill.endM, unit: state.phenology.chill.unit, req: state.phenology.chill.req } : null } : null,
       risk: state.risk ? { crop: state.risk.crop, thresholds: state.risk.thr, sensitive: state.risk.sensitive, window: state.risk.window ? strip(state.risk.window.opts, ['step', 'yieldMin', 'useWater', 'frostWhere', 'target']) : null, scenarios: state.risk.scenarios ? state.risk.scenarios.map(s => ({ dT: s.dT, dP: s.dP })) : null } : null,
       figureStyle: window.FigStyle ? FigStyle.get() : null,
+      figureEdits: window.FigEdit ? FigEdit.summary() : null,
     };
   }
 

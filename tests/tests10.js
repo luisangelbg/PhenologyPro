@@ -95,7 +95,7 @@
   const fewer = Report.build({});
   check('Report.build con 5 bloques: 5 secciones, sin frío ni riesgo en métodos ni referencias de frío', fewer.includes('<h2>5. ') && !fewer.includes('<h2>6. ') && !fewer.includes('Linvill') && !fewer.includes('Richardson, E.A.') && Report.csvs().length === 7 && Report.summary().length === 5);
   Object.assign(state, keep);
-  check('Help: 4 fichas del Bloque 10 con la escala de resolución', Help.BLOCK_KEYS[10].length === 4 && Help.BLOCK_KEYS[10].every(k => Help.HELP[k]) && Help.band('dpi', 300).tone === 'good' && Help.band('dpi', 100).tone === 'ok');
+  check('Help: 5 fichas del Bloque 10 con la escala de resolución', Help.BLOCK_KEYS[10].length === 5 && Help.BLOCK_KEYS[10].every(k => Help.HELP[k]) && Help.band('dpi', 300).tone === 'good' && Help.band('dpi', 100).tone === 'ok');
   check('STEPS: los diez bloques listos y la versión es 1.x', STEPS.every(s => s.ready) && /^1\.\d+\.\d+$/.test(APP_VERSION));
 
   window.__t.finish();

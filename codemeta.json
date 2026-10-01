@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "PhenologyPro",
   "description": "A browser-based platform for agroclimatology and crop phenology: degree-days, FAO-56 Penman-Monteith and Hargreaves evapotranspiration, crop coefficients, daily root-zone water balance, irrigation scheduling, BBCH stages by thermal time, winter chill (chill hours, Utah, Dynamic model), photoperiod, Walter-Lieth climographs and frost risk. No installation, no third-party libraries, Spanish and English.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "dateCreated": "2026-09-25",
   "datePublished": "2026-09-27",
   "identifier": "https://doi.org/10.5281/zenodo.23004710",

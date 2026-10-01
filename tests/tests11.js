@@ -1,0 +1,111 @@
+/* PhenologyPro — tests of the editor of each figure (js/figedit.js). */
+(function () {
+  const { check, section, near } = window.__t;
+
+  section('Editor de figuras · una figura de prueba dibujada con el kit');
+  /* a visible pane with a real figure: two lines, bars on the right axis and a legend */
+  const pane = document.createElement('div');
+  pane.className = 'pg-pane'; pane.style.cssText = 'width:700px;margin:10px 0';
+  pane.innerHTML = '<div class="pg-title">Figura de prueba</div><svg id="feTest"></svg>';
+  document.body.appendChild(pane);
+  const svg = pane.querySelector('svg');
+  function draw() {
+    const f = Plot.frame(svg, { W: 700, H: 320, m: { l: 46, r: 46, t: 24, b: 36 }, x: [0, 10], y: [0, 40], y2: [0, 100], xlab: 'día', ylab: 'temperatura (°C)', y2lab: 'lluvia (mm)' });
+    Plot.line(f, [[f.sx(0), f.sy(10)], [f.sx(10), f.sy(30)]], 'var(--c5)');
+    Plot.line(f, [[f.sx(0), f.sy(5)], [f.sx(10), f.sy(15)]], 'var(--c1)');
+    Plot.bars(f, [2, 4, 6], [20, 60, 40], 'var(--c4)', { sy: f.sy2 });
+    Plot.dots(f, [[5, 20]], 'var(--c5)', 3);
+    Plot.legend(f, [['Tmax', 'var(--c5)', 'ln'], ['Tmin', 'var(--c1)', 'ln'], ['lluvia', 'var(--c4)', 'sq']], 12, f.m.l + 2);
+    return f;
+  }
+  draw();
+  check('Plot.frame marca el área de trazado y los rangos de los ejes para el editor', svg.dataset.plot === '46 24 608 260' && svg.dataset.xr === '0 10' && svg.dataset.yr === '0 40' && svg.dataset.y2r === '0 100');
+  check('Plot.frame marca títulos de eje y números; Plot.legend marca la leyenda y empareja marca y rótulo', svg.querySelectorAll('[data-role="xlab"], [data-role="ylab"], [data-role="y2lab"]').length === 3 && svg.querySelectorAll('[data-role="ytick"]').length >= 4 && svg.querySelector('[data-role="legend"]') && svg.querySelectorAll('[data-li]').length === 6);
+  const lg = FigEdit.legendOf(svg);
+  check('legendOf: tres entradas con su color original y su rótulo', lg && lg.items.length === 3 && lg.items[0].key === 'var(--c5)' && lg.items[0].label === 'Tmax' && lg.items[2].key === 'var(--c4)');
+  const ser = FigEdit.seriesOf(svg);
+  check('seriesOf: las tres series llevan el nombre de la leyenda y ninguna es un eje', ser.length === 3 && ser.every(s => s.name) && ser.find(s => s.key === 'var(--c5)').name === 'Tmax' && /^#[0-9a-f]{6}$/.test(ser[0].hex));
+  check('textsOf: sin los números de los ejes por omisión, con ellos si se pide', FigEdit.textsOf(svg).includes('día') && !FigEdit.textsOf(svg).includes('20') && FigEdit.textsOf(svg, true).includes('20'));
+
+  section('Editor de figuras · textos, tipografía y series');
+  FigEdit.reset('feTest');
+  const ed = FigEdit.get('feTest');
+  ed.texts['día'] = { t: 'día del ciclo', scale: 1.5, bold: false, italic: true, color: '#ff0000' };
+  ed.texts['Tmin'] = { hidden: true };
+  ed.font = 'times'; ed.fontScale = 1.2; ed.tickScale = 1.5; ed.tickColor = '#00aa00';
+  ed.colors['var(--c5)'] = '#123456';
+  ed.series['var(--c1)'] = { width: 2, dash: 'dot', opacity: 0.5 };
+  ed.series['var(--c4)'] = { hidden: true };
+  ed.lineScale = 1.5; ed.markerScale = 2;
+  FigEdit.watch(svg); FigEdit.apply(svg);
+  const xlab = svg.querySelector('[data-role="xlab"]'), ytick = svg.querySelector('[data-role="ytick"]');
+  check('Texto reescrito, en cursiva, con su color y su tamaño (10.5 × 1.2 × 1.5)', xlab.textContent === 'día del ciclo' && xlab.getAttribute('font-style') === 'italic' && xlab.getAttribute('fill') === '#ff0000' && near(parseFloat(xlab.style.fontSize), 10.5 * 1.2 * 1.5, 0.02) && xlab.getAttribute('font-weight') === '400');
+  check('La familia tipográfica se pone en línea (gana a la regla del estudio) y los números toman su escala y su color', /Times/.test(xlab.style.fontFamily) && near(parseFloat(ytick.style.fontSize), 9 * 1.2 * 1.5, 0.02) && ytick.getAttribute('fill') === '#00aa00');
+  const tmin = [...svg.querySelectorAll('text')].find(t => t.getAttribute('data-fe-t') === 'Tmin');
+  check('Un texto oculto no se muestra y conserva su redacción original', tmin.style.display === 'none' && tmin.textContent === 'Tmin');
+  const lines = [...svg.querySelectorAll('path[data-fe-stroke]')];
+  const l5 = lines.find(p => p.getAttribute('data-fe-stroke') === 'var(--c5)'), l1 = lines.find(p => p.getAttribute('data-fe-stroke') === 'var(--c1)');
+  check('El color de una serie se sustituye en la línea, en el punto y en la marca de la leyenda', l5.getAttribute('stroke') === '#123456' && svg.querySelector('circle').getAttribute('fill') === '#123456' && lg.items[0].mark.getAttribute('stroke') === '#123456');
+  check('Grosor (1.8 × 1.5 × 2), trazo de puntos y opacidad de una serie', near(parseFloat(l1.style.strokeWidth), 1.8 * 1.5 * 2, 0.01) && l1.style.strokeDasharray.replace(/px|,/g, '').replace(/\s+/g, ' ').trim() === '1.5 3.5' && near(+l1.style.opacity, 0.5, 1e-6) && near(parseFloat(l5.style.strokeWidth), 2.7, 0.01));
+  check('Una serie oculta desaparece (barras) y el punto crece con su escala', [...svg.querySelectorAll('rect[data-fe-fill="var(--c4)"]')].every(r => r.style.display === 'none') && near(+svg.querySelector('circle').getAttribute('r'), 6, 1e-6));
+
+  section('Editor de figuras · ejes, rejilla, título y fondo');
+  Object.assign(ed, { grid: true, gridDash: 'dash', gridOpacity: 0.3, axisColor: '#000000', axisWidth: 2, box: true, border: true, title: 'Mi figura', subtitle: 'Bajío, 2006–2025', note: 'Fuente: serie de ejemplo.', titleAlign: 'center', bg: 'white' });
+  FigEdit.apply(svg);
+  const grid = svg.querySelector('.art-grid'), axis = [...svg.querySelectorAll('.art-ax:not(.art-grid)')].find(n => !n.hasAttribute('data-fe-own') && n.getAttribute('data-fe-sw') === '1.2');
+  check('Rejilla con guiones y opacidad; ejes con color y grosor propios', grid.style.strokeDasharray.replace(/px|,/g, '').replace(/\s+/g, ' ').trim() === '6 4' && near(+grid.style.opacity, 0.3, 1e-6) && /rgb\(0, 0, 0\)|#000000/.test(axis.style.stroke) && near(parseFloat(axis.style.strokeWidth), 2.4, 0.01));
+  const vb = svg.getAttribute('viewBox').split(' ').map(Number);
+  check('Título, subtítulo y nota agrandan el recuadro hacia arriba y hacia abajo sin mover el dibujo', vb[0] === 0 && vb[1] < 0 && near(vb[1], -(19 + 14 + 5), 0.11) && vb[3] > 320 - vb[1] && svg.dataset.feVb0 === '0 0 700 320');
+  const title = svg.querySelector('[data-fe-part="title"]');
+  check('El título va centrado, en negrita y con la familia elegida; el fondo cubre el recuadro ampliado', title.textContent === 'Mi figura' && title.getAttribute('text-anchor') === 'middle' && +title.getAttribute('x') === 350 && /Times/.test(title.style.fontFamily) && (() => { const b = svg.querySelector('[data-fe-part="bg"]'); return b === svg.firstElementChild && +b.getAttribute('y') === vb[1] && +b.getAttribute('height') === vb[3] && b.getAttribute('fill') === '#ffffff'; })());
+  check('Recuadro del área de trazado y marco de la figura', (() => { const b = svg.querySelector('[data-fe-part="box"]'); return b && +b.getAttribute('x') === 46 && +b.getAttribute('width') === 608 && svg.querySelector('[data-fe-part="border"]'); })());
+  ed.grid = false; FigEdit.apply(svg);
+  check('La rejilla se apaga', grid.style.display === 'none');
+
+  section('Editor de figuras · leyenda y anotaciones');
+  ed.legend = { pos: 'tr', vertical: true, box: true, scale: 1.2 };
+  FigEdit.apply(svg);
+  const g = svg.querySelector('[data-role="legend"]'), bb = g.getBoundingClientRect(), sb = svg.getBoundingClientRect();
+  const k = sb.width / 700;
+  check('Leyenda en columna: cada entrada baja 13 unidades y se alinea con la primera', lg.items[1].mark.getAttribute('transform') !== null && /translate\([-\d.]+ 13\.0\)/.test(FigEdit.legendOf(svg).items[1].mark.getAttribute('transform')) && /translate\([-\d.]+ 26\.0\)/.test(FigEdit.legendOf(svg).items[2].mark.getAttribute('transform')));
+  check('Leyenda arriba a la derecha, dentro del área de trazado, con recuadro y a 1.2×', g.querySelector('rect[data-fe-own]') && /scale\(1\.2\)/.test(g.getAttribute('transform')) && (bb.right - sb.left) / k <= 46 + 608 + 1 && (bb.right - sb.left) / k > 46 + 608 - 30 && g.getAttribute('data-fe-drag') === 'legend', `${((bb.right - sb.left) / k).toFixed(0)}`);
+  ed.legend.pos = 'below'; FigEdit.apply(svg);
+  check('Leyenda debajo de la figura: el recuadro crece por abajo', svg.getAttribute('viewBox').split(' ').map(Number)[3] > vb[3]);
+  ed.legend = { hidden: true }; FigEdit.apply(svg);
+  check('La leyenda se oculta', g.style.display === 'none');
+  ed.legend = {};
+  const n1 = FigEdit.addNote('feTest', 'hline', { v: 30, t: 'umbral', color: '#c0406a' });
+  const n2 = FigEdit.addNote('feTest', 'band', { v: 10, v2: 20 });
+  const n3 = FigEdit.addNote('feTest', 'vline', { v: 5, t: 'siembra' });
+  const n4 = FigEdit.addNote('feTest', 'text', { t: 'Nota libre', x: 0.5, y: 0.5, box: true });
+  const n5 = FigEdit.addNote('feTest', 'arrow', { x: 0.2, y: 0.2, x2: 0.4, y2: 0.4 });
+  const n6 = FigEdit.addNote('feTest', 'letter');
+  const n7 = FigEdit.addNote('feTest', 'hline', { v: 50, axis: 'y2' });
+  const n8 = FigEdit.addNote('feTest', 'hline', { v: 999 });
+  FigEdit.apply(svg);
+  const layer = svg.querySelector('[data-fe-part="notes"]');
+  const hl = [...layer.querySelectorAll('line')].filter(l => l.getAttribute('y1') === l.getAttribute('y2') && +l.getAttribute('x1') === 46);
+  check('Línea horizontal en y = 30: a 3/4 del área de trazado (24 + 260 × 0.25 = 89) con su rótulo', hl.some(l => near(+l.getAttribute('y1'), 89, 0.01)) && [...layer.querySelectorAll('text')].some(t => t.textContent === 'umbral'));
+  check('Línea en el eje derecho (50 de 0–100): a media altura (154); la que cae fuera de la escala no se dibuja', hl.some(l => near(+l.getAttribute('y1'), 154, 0.01)) && hl.length === 2);
+  check('Banda de 10 a 20: de y = 154 a y = 219', (() => { const r = [...layer.querySelectorAll('rect')].find(x => +x.getAttribute('x') === 46 && +x.getAttribute('width') === 608); return r && near(+r.getAttribute('y'), 154, 0.01) && near(+r.getAttribute('height'), 65, 0.01); })());
+  check('Línea vertical en x = 5: al centro del área (350)', [...layer.querySelectorAll('line')].some(l => near(+l.getAttribute('x1'), 350, 0.01) && +l.getAttribute('y1') === 24 && +l.getAttribute('y2') === 284));
+  check('Nota con recuadro en el centro de la figura, arrastrable; flecha con punta; letra de panel A', (() => { const t = [...layer.querySelectorAll('text')].find(x => x.textContent === 'Nota libre'); return t && +t.getAttribute('x') === 350 && +t.getAttribute('y') === 160 && t.getAttribute('data-fe-drag') === 'note:' + n4.id && t.previousElementSibling.tagName === 'rect'; })() && layer.querySelector(`g[data-fe-drag="note:${n5.id}"] path`) && [...layer.querySelectorAll('text')].some(t => t.textContent === 'A' && t.getAttribute('font-weight') === '700'));
+  check('addNote: la segunda letra de panel es B y los valores por omisión caen dentro de la escala', FigEdit.addNote('feTest', 'letter').t === 'B' && (() => { const h = FigEdit.addNote('feTest', 'hline'); return h.v > 0 && h.v < 40; })());
+
+  section('Editor de figuras · redibujo, exportación y deshacer');
+  draw();
+  FigEdit.apply(svg);
+  check('Tras redibujar la figura, los cambios vuelven: texto, color, título y anotaciones', svg.querySelector('[data-role="xlab"]').textContent === 'día del ciclo' && [...svg.querySelectorAll('path')].some(p => p.getAttribute('stroke') === '#123456') && svg.querySelector('[data-fe-part="title"]') && svg.querySelector('[data-fe-part="notes"]') && svg.querySelectorAll('[data-fe-part="title"]').length === 1);
+  const comp = Fig.compose(svg, { theme: 'light', background: 'white' });
+  const xml = Fig.serialize(comp);
+  check('Fig.compose respeta el recuadro ampliado: el dibujo se desplaza por el origen negativo y nada queda fuera', (() => { const v = svg.getAttribute('viewBox').split(' ').map(Number); const gg = comp.querySelector('g'); return gg.getAttribute('transform') === `translate(0 ${10 - v[1]})` && +comp.getAttribute('height') === v[3] + 20; })());
+  check('El SVG exportado lleva el título, el texto reescrito y el color nuevo, y no lleva la contabilidad del editor', xml.includes('Mi figura') && xml.includes('día del ciclo') && xml.includes('#123456') && !/data-fe-|data-li=|data-role=/.test(xml) && !/var\(/.test(xml));
+  const sum = FigEdit.summary();
+  check('summary: la figura editada con su título, sus textos, sus series y sus anotaciones', sum.feTest && sum.feTest.title === 'Mi figura' && sum.feTest.texts === 2 && sum.feTest.colours === 1 && sum.feTest.series === 2 && sum.feTest.annotations === 10 && sum.feTest.font === 'times');
+  FigEdit.reset('feTest');
+  check('Deshacer todo: el recuadro, los textos, los colores y los trazos vuelven a ser los del dibujo', svg.getAttribute('viewBox') === '0 0 700 320' && !svg.querySelector('[data-fe-own]') && svg.querySelector('[data-role="xlab"]').textContent === 'día' && !svg.querySelector('[data-role="xlab"]').style.fontSize && [...svg.querySelectorAll('path')].some(p => p.getAttribute('stroke') === 'var(--c5)') && !FigEdit.has('feTest') && svg.querySelector('.art-grid').style.display === '' && [...svg.querySelectorAll('rect[data-fe-fill="var(--c4)"]')].every(r => r.style.display === ''));
+  Fig.decorate(document.body);
+  check('Cada figura recibe su botón ✎ junto al de exportar, una sola vez', pane.querySelectorAll('.fig-ed').length === 1 && pane.querySelectorAll('.fig-dl').length === 1 && (Fig.decorate(document.body), pane.querySelectorAll('.fig-ed').length === 1));
+  check('Help: la ficha del editor está en la guía del Bloque 10', Help.HELP.figedit && Help.BLOCK_KEYS[10].includes('figedit'));
+  pane.remove();
+})();

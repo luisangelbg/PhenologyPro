@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.1.0 — 2026-09-30
+
+The editor of each figure.
+
+- **`js/figedit.js`**: every figure of every block gets a ✎ button next to the export button. It opens a
+  six-tab editor for that one figure: **General** (title, subtitle and footnote inside the figure, which
+  enlarges its box; font family; size and colour of every text; line weight; point size; background;
+  border), **Axes & grid** (axis titles, tick numbers, axis colour and weight, plot-area box, grid on/off,
+  dash, strength and colour), **Series** (every colour named after its legend entry: colour, weight, dash,
+  opacity, hide), **Legend** (show, eight positions, row or column, box, size, entry labels), **Texts**
+  (every text one by one: wording, size, bold, italics, colour, hide) and **Annotations** (notes, arrows,
+  horizontal and vertical reference lines at an axis value, shaded bands, panel letter).
+- The legend, the notes, the letters and the arrows are dragged on the figure; a click on a text of the
+  figure jumps to its row; the panel itself is moved by its header.
+- The edits are stored per figure and reapplied on every redraw (data, parameters, language, theme); they go
+  into the export menu, the catalogue of Block 10, the report and the package, and the calculation record
+  lists the edited figures. "Copy the style to every figure" and "Undo everything on this figure".
+- The plotting kit tags the legend, the axis titles, the ticks, the plot area and the axis ranges; the export
+  honours a figure whose box was enlarged upwards and strips the editor's bookkeeping from the SVG.
+- Help entry `figedit`; 33 new tests (424 in all); the manual's chapter 10 describes the editor.
+
+
 ## 1.0.1 — 2026-09-27
 
 Two small fixes found while writing the Spanish manual, and the manual itself.

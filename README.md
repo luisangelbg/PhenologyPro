@@ -74,9 +74,16 @@ them at once: nine palettes (including Okabe–Ito and greyscale), seven fonts, 
 and grid. The ⤓ button of every panel exports that figure as PNG, JPG or SVG at 150 to 900 dpi, light or dark,
 with a title and a footnote, and with the resolution written into the file.
 
+The **✎ button** next to it opens the editor of that one figure (`js/figedit.js`), in six tabs: title, subtitle and
+footnote inside the figure, font family, sizes, background and border; axis titles, tick numbers, axis colour and
+weight, grid and plot-area box; colour, weight, dash, opacity and visibility of every series, named after its legend
+entry; the legend (eight positions, row or column, box, size, labels); every text one by one; and annotations
+(notes, arrows, reference lines at an axis value, shaded bands, panel letter). The legend and the notes are dragged
+on the figure. The edits are kept per figure, survive every redraw and go into the export, the report and the package.
+
 ## Manual
 
-The user's manual in Spanish (120 letter-size pages) is in `manual/`: the parts in HTML (`manual/es/`, one chapter per
+The user's manual in Spanish (121 letter-size pages) is in `manual/`: the parts in HTML (`manual/es/`, one chapter per
 block, with the same figures and numbers as the app) and the printed **`PhenologyPro User's Manual.pdf`**. It opens
 online at the address below.
 
