@@ -1,4 +1,4 @@
-/* PhenologyPro — tests of the editor of each figure (js/figedit.js). */
+/* PhenologyPro — tests of the editor of each figure (js/labg-figedit.js, the common editor of the suite). */
 (function () {
   const { check, section, near } = window.__t;
 
@@ -37,7 +37,7 @@
   ed.series['var(--c1)'] = { width: 2, dash: 'dot', opacity: 0.5 };
   ed.series['var(--c4)'] = { hidden: true };
   ed.lineScale = 1.5; ed.markerScale = 2;
-  FigEdit.watch(svg); FigEdit.apply(svg);
+  FigEdit.apply(svg);   /* the common editor watches every figure by itself */
   const xlab = svg.querySelector('[data-role="xlab"]'), ytick = svg.querySelector('[data-role="ytick"]');
   check('Texto reescrito, en cursiva, con su color y su tamaño (10.5 × 1.2 × 1.5)', xlab.textContent === 'día del ciclo' && xlab.getAttribute('font-style') === 'italic' && xlab.getAttribute('fill') === '#ff0000' && near(parseFloat(xlab.style.fontSize), 10.5 * 1.2 * 1.5, 0.02) && xlab.getAttribute('font-weight') === '400');
   check('La familia tipográfica se pone en línea (gana a la regla del estudio) y los números toman su escala y su color', /Times/.test(xlab.style.fontFamily) && near(parseFloat(ytick.style.fontSize), 9 * 1.2 * 1.5, 0.02) && ytick.getAttribute('fill') === '#00aa00');
@@ -63,11 +63,21 @@
   check('La rejilla se apaga', grid.style.display === 'none');
 
   section('Editor de figuras · leyenda y anotaciones');
+  /* the common editor lays out the visible entries only, with no gap: «Tmin» (text) and «lluvia» (series) were
+     hidden above, so they are shown for the legend checks and hidden again afterwards */
+  const hid = { t: ed.texts['Tmin'], s: ed.series['var(--c4)'] };
+  delete ed.texts['Tmin']; delete ed.series['var(--c4)'];
   ed.legend = { pos: 'tr', vertical: true, box: true, scale: 1.2 };
   FigEdit.apply(svg);
   const g = svg.querySelector('[data-role="legend"]'), bb = g.getBoundingClientRect(), sb = svg.getBoundingClientRect();
   const k = sb.width / 700;
-  check('Leyenda en columna: cada entrada baja 13 unidades y se alinea con la primera', lg.items[1].mark.getAttribute('transform') !== null && /translate\([-\d.]+ 13\.0\)/.test(FigEdit.legendOf(svg).items[1].mark.getAttribute('transform')) && /translate\([-\d.]+ 26\.0\)/.test(FigEdit.legendOf(svg).items[2].mark.getAttribute('transform')));
+  check('Leyenda en columna: cada entrada baja un renglón y se alinea con la primera', (() => {
+    const its = FigEdit.legendOf(svg).items;
+    const tr = it => /translate\(([-\d.]+) ([-\d.]+)\)/.exec(it.mark.getAttribute('transform') || ''), left = it => it.mark.getBoundingClientRect().left;
+    const a = its.length === 3 && tr(its[1]);
+    return !!a && +a[2] > 8 && its.slice(1).every((it, i) => { const m = tr(it); return m && near(+m[2], (i + 1) * +a[2], 0.11 * (i + 1)) && near(left(it), left(its[0]), 0.6); });
+  })());
+  ed.texts['Tmin'] = hid.t; ed.series['var(--c4)'] = hid.s;
   check('Leyenda arriba a la derecha, dentro del área de trazado, con recuadro y a 1.2×', g.querySelector('rect[data-fe-own]') && /scale\(1\.2\)/.test(g.getAttribute('transform')) && (bb.right - sb.left) / k <= 46 + 608 + 1 && (bb.right - sb.left) / k > 46 + 608 - 30 && g.getAttribute('data-fe-drag') === 'legend', `${((bb.right - sb.left) / k).toFixed(0)}`);
   ed.legend.pos = 'below'; FigEdit.apply(svg);
   check('Leyenda debajo de la figura: el recuadro crece por abajo', svg.getAttribute('viewBox').split(' ').map(Number)[3] > vb[3]);
@@ -104,8 +114,9 @@
   check('summary: la figura editada con su título, sus textos, sus series y sus anotaciones', sum.feTest && sum.feTest.title === 'Mi figura' && sum.feTest.texts === 2 && sum.feTest.colours === 1 && sum.feTest.series === 2 && sum.feTest.annotations === 10 && sum.feTest.font === 'times');
   FigEdit.reset('feTest');
   check('Deshacer todo: el recuadro, los textos, los colores y los trazos vuelven a ser los del dibujo', svg.getAttribute('viewBox') === '0 0 700 320' && !svg.querySelector('[data-fe-own]') && svg.querySelector('[data-role="xlab"]').textContent === 'día' && !svg.querySelector('[data-role="xlab"]').style.fontSize && [...svg.querySelectorAll('path')].some(p => p.getAttribute('stroke') === 'var(--c5)') && !FigEdit.has('feTest') && svg.querySelector('.art-grid').style.display === '' && [...svg.querySelectorAll('rect[data-fe-fill="var(--c4)"]')].every(r => r.style.display === ''));
-  Fig.decorate(document.body);
-  check('Cada figura recibe su botón ✎ junto al de exportar, una sola vez', pane.querySelectorAll('.fig-ed').length === 1 && pane.querySelectorAll('.fig-dl').length === 1 && (Fig.decorate(document.body), pane.querySelectorAll('.fig-ed').length === 1));
+  /* the common editor puts its buttons by itself (it watches the page); here, at once */
+  Fig.decorate(document.body); FigEdit.decorate(document.body);
+  check('Cada figura recibe su botón ✎ junto al de exportar, una sola vez', pane.querySelectorAll('.fig-ed').length === 1 && pane.querySelectorAll('.fig-dl').length === 1 && (Fig.decorate(document.body), FigEdit.decorate(document.body), pane.querySelectorAll('.fig-ed').length === 1));
   check('Help: la ficha del editor está en la guía del Bloque 10', Help.HELP.figedit && Help.BLOCK_KEYS[10].includes('figedit'));
   pane.remove();
 })();
