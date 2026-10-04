@@ -169,7 +169,7 @@ sub, sup { line-height: 0; }
 .sim-readout .rd.good { border-left-color: var(--success); } .sim-readout .rd.good .rd-v { color: var(--success-text); }
 .sim-readout .rd.bad { border-left-color: var(--danger); } .sim-readout .rd.bad .rd-v { color: var(--danger-text); }
 .sim-readout .rd.warn { border-left-color: var(--warning); } .sim-readout .rd.warn .rd-v { color: var(--warning-text); }
-.slider-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 10px 22px; margin-top: 14px; }
+.slider-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 10px 22px; margin-top: 14px; }
 .slider-row { display: grid; grid-template-columns: 150px 1fr 118px; gap: 8px; align-items: center; font-size: 0.82rem; }
 .slider-row label { color: var(--text-muted); }
 .slider-row.wide { grid-column: span 2; grid-template-columns: 150px 1fr; }
