@@ -14,9 +14,11 @@
 
   function fillCrops() {
     const s = el('b4Crop'); const cur = s.value;
-    s.innerHTML = `<option value="custom">${T('— Parámetros propios —', '— Custom parameters —')}</option>` + Crops.LIST.map(c => `<option value="${c.id}">${T(c.es, c.en)}</option>`).join('');
+    s.innerHTML = Crops.LIST.map(c => `<option value="${c.id}">${T(c.es, c.en)}</option>`).join('');
     s.value = cur || 'maize';
   }
+  /* the name field shows only for the user's own crop, and carries the name it was given */
+  function ownField() { const on = el('b4Crop').value === 'own'; el('b4OwnField').style.display = on ? '' : 'none'; if (on && document.activeElement !== el('b4OwnName')) el('b4OwnName').value = Crops.ownName(); }
   function applyCrop() {
     const c = Crops.byId(el('b4Crop').value);
     if (!c) { cropId = null; return; }
@@ -40,7 +42,7 @@
   function run() {
     if (!ready()) { el('b4Body').style.display = 'none'; el('b4Empty').style.display = ''; return; }
     el('b4Empty').style.display = 'none'; el('b4Body').style.display = '';
-    applyCrop();
+    applyCrop(); ownField();
     const p = params();
     const rows = state.weather.rows;
     const dd = Therm4.daily(rows, p);
@@ -149,7 +151,9 @@
   function wire() {
     fillCrops();
     const months = el('b4SowM'); months.innerHTML = MONTHS.es.map((_, i) => `<option value="${i + 1}">${monthName(i + 1)}</option>`).join(''); months.value = '4';
-    el('b4Crop').addEventListener('change', () => { cropId = null; run(); });
+    el('b4Crop').addEventListener('change', () => { cropId = null; ownField(); run(); });
+    el('b4OwnName').addEventListener('change', () => Crops.setOwnName(el('b4OwnName').value));
+    document.addEventListener('owncropchange', () => { fillCrops(); ownField(); if (document.querySelector('#panel-4.active') && ready()) run(); });
     ['b4Method', 'b4Cutoff', 'b4Base', 'b4Upper', 'b4SowM', 'b4SowD', 'b4Target', 'b4Season', 'b4Frost'].forEach(id => el(id).addEventListener('change', run));
     /* from the button, a long run shows the common waiting window */
     el('b4Run').addEventListener('click', () => { const w = ppWork('Calculando los grados-día', 'Computing degree-days'); ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); });

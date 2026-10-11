@@ -262,6 +262,7 @@ const Report = {};
     const strip = (o, keys) => { if (!o) return null; const out = {}; Object.keys(o).forEach(k => { if (keys.includes(k)) out[k] = o[k]; }); return out; };
     return {
       app: 'PhenologyPro', version: APP_VERSION, generated: new Date().toISOString(), language: I18N.lang,
+      ownCrop: Crops.ownName() || null,
       site: state.site || null,
       data: state.weather ? { period: [state.weather.meta.first, state.weather.meta.last], days: state.weather.rows.length, qc: state.weather.qc, present: state.weather.meta.present } : null,
       climate: state.climate ? { years: state.climate.years, frostThreshold: state.climate.fr.threshold, awc: state.climate.awc, rainOnset: state.climate.rr.ok ? state.climate.rr.seasons.opts : null } : null,

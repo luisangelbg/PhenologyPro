@@ -62,9 +62,11 @@ methods:
   balance and the FAO-56 daily root-zone balance with automatic, dated or no irrigation;
 - climate indices: UNEP aridity, De Martonne, Lang, Thornthwaite's moisture index.
 
-The crop catalogue (`js/crops.js`) carries 19 crops with the Kc, stage lengths, root depths and depletion fractions
-of FAO-56 Tables 11, 12 and 22, the base and upper temperatures and, for the annuals, orientative thermal-time
-requirements per BBCH stage that Block 8 will let you calibrate. The six climates of the laboratories
+The crop catalogue (`js/crops.js`) carries 20 crops (passion fruit included) with the Kc, stage lengths, root depths
+and depletion fractions of FAO-56 Tables 11, 12 and 22, the base and upper temperatures and, for the annuals,
+orientative thermal-time requirements per BBCH stage that Block 8 will let you calibrate. If your crop is not there,
+"Other crop (your own)" takes the name you type and the numbers you enter, and carries that name through the blocks,
+the report and the package. The six climates of the laboratories
 (`js/climate.js`) are fictional and seeded, so a result can be reproduced.
 
 ## Figures

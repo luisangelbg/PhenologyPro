@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.0 — 2026-10-10
+
+Passion fruit in the catalogue, and a crop of your own with its name.
+
+- **`js/crops.js`**: **passion fruit** (*Passiflora edulis* f. flavicarpa) joins the catalogue as a warm-climate
+  evergreen perennial: base 10 °C, upper threshold 32 °C, photoperiod-sensitive flowering, four orientative stages
+  from transplanting (vine at the wire, first flowering, first fruit set, first ripe fruit), Kc 0.55/1.05/0.95
+  (lysimeter studies, since FAO-56 has no entry), shallow roots (0.3–0.6 m), p 0.40. Every number is editable,
+  as for every other crop.
+- **«Otro cultivo (propio)» / "Other crop (your own)"**: a catalogue entry that takes the **name you type** in a
+  field that appears next to the crop selector of Blocks 4, 6 and 8. The name is shared by the three blocks, by
+  Block 9 and the home laboratories, by the summaries, the report and the package (the calculation record keeps
+  it as `ownCrop`), and it is remembered in this browser. Its starting numbers are generic for an annual crop and
+  are meant to be replaced; Block 4 no longer needs its separate "custom parameters" option.
+- 7 new tests (431 in all); README and manual wording updated (the PDF of the manual is not reprinted).
+
 ## 1.1.0 — 2026-09-30
 
 The editor of each figure.

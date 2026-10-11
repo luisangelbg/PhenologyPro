@@ -354,6 +354,7 @@
     if (wr) wr.addEventListener('click', () => { setSlider('wtSow', 105); setSlider('wtTrigger', 1); setSlider('wtEff', 0.75); setSlider('wtDr0', 30); el('wtIrr').value = 'none'; el('wtEto').value = 'hs'; el('wtSoil').value = 'loam'; ['wtSow', 'wtTrigger', 'wtEff', 'wtDr0'].forEach(id => el(id).dispatchEvent(new Event('input'))); });
     /* both labs redraw with the language (labels live inside the figures) */
     document.addEventListener('langchange', () => { fillSelects(); runGdd(); runWater(); });
+    document.addEventListener('owncropchange', fillSelects);
     if (window.FigStyle) FigStyle.onChange(() => { /* the CSS rule restyles; nothing to recompute */ });
     runGdd();
     runWater();

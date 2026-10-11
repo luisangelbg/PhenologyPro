@@ -19,6 +19,8 @@
     s.innerHTML = Crops.SOILS.map(x => `<option value="${x.id}">${T(x.es, x.en)}</option>`).join('') + `<option value="custom">${T('— Propio —', '— Custom —')}</option>`; s.value = curS || 'loam';
     const m = el('b6SowM'); const curM = m.value; m.innerHTML = MONTHS.es.map((_, i) => `<option value="${i + 1}">${monthName(i + 1)}</option>`).join(''); m.value = curM || '5';
   }
+  /* the name field shows only for the user's own crop, and carries the name it was given */
+  function ownField() { const on = el('b6Crop').value === 'own'; el('b6OwnField').style.display = on ? '' : 'none'; if (on && document.activeElement !== el('b6OwnName')) el('b6OwnName').value = Crops.ownName(); }
   function applyCrop() {
     const c = Crops.byId(el('b6Crop').value); if (!c || cropId === c.id) return;
     cropId = c.id;
@@ -47,7 +49,7 @@
   function run() {
     if (!ready()) { el('b6Body').style.display = 'none'; el('b6Empty').style.display = ''; return; }
     el('b6Empty').style.display = 'none'; el('b6Body').style.display = '';
-    applyCrop(); applySoil();
+    applyCrop(); applySoil(); ownField();
     const p = params();
     const rows = state.weather.rows, eto = state.eto.daily;
     const all = Water6.runAll(rows, eto, p);
@@ -161,7 +163,9 @@
 
   function wire() {
     fillSelects();
-    el('b6Crop').addEventListener('change', () => { cropId = null; run(); });
+    el('b6Crop').addEventListener('change', () => { cropId = null; ownField(); run(); });
+    el('b6OwnName').addEventListener('change', () => Crops.setOwnName(el('b6OwnName').value));
+    document.addEventListener('owncropchange', () => { fillSelects(); ownField(); if (document.querySelector('#panel-6.active') && ready()) run(); });
     el('b6Soil').addEventListener('change', () => { soilId = null; run(); });
     ['b6SowM', 'b6SowD', 'b6Lini', 'b6Ldev', 'b6Lmid', 'b6Llate', 'b6KcIni', 'b6KcMid', 'b6KcEnd', 'b6Zini', 'b6Zmax', 'b6P', 'b6Ky', 'b6Taw', 'b6Cn', 'b6Runoff', 'b6Dr0', 'b6KcCorrect'].forEach(id => el(id).addEventListener('change', () => { if (id === 'b6Taw' || id === 'b6Cn') { el('b6Soil').value = 'custom'; soilId = 'custom'; } run(); }));
     el('b6Year').addEventListener('change', () => { viewYear = +el('b6Year').value; if (state.balance) drawYear(state.balance.all); });

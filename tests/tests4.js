@@ -56,5 +56,22 @@
   check('mapa: P20 ≤ mediana ≤ P80 en todas las fechas', mapx.rows.filter(r => r.total).every(r => r.total.p20 <= r.total.median && r.total.median <= r.total.p80));
   check('Help: 6 fichas del Bloque 4 y escala del CV', Help.BLOCK_KEYS[4].length === 6 && Help.BLOCK_KEYS[4].every(k => Help.HELP[k]) && Help.band('gddvar', 0.03).tone === 'good' && Help.band('gddvar', 0.25).tone === 'bad');
 
+  section('Catálogo · maracuyá y cultivo propio');
+  const pf = Crops.byId('passionfruit');
+  check('El catálogo trae maracuyá: perenne, base 10 °C, fotoperiodo, Kc de plena producción mayor que el inicial y raíz somera', !!pf && pf.tbase === 10 && pf.tupper === 32 && pf.photoperiod === true && pf.kc.mid > pf.kc.ini && pf.zMax <= 0.8 && pf.stages.length === 4);
+  check('Las etapas del maracuyá crecen en °C·d y la última es el fruto maduro (3 300 °C·d desde el trasplante)', pf.stages.every((s, i) => !i || s.gdd > pf.stages[i - 1].gdd) && /^8/.test(pf.stages[pf.stages.length - 1].code) && Crops.gddToMaturity(pf) === 3300);
+  const own = Crops.byId('own');
+  check('«Otro cultivo (propio)» existe, con etapas genéricas y los números de un anual', !!own && own.group === 'custom' && own.stages.length === 3 && Crops.seasonLength(own) === 130 && Crops.annuals().includes(own));
+  const before = Crops.ownName();
+  let fired = 0; const onC = () => fired++; document.addEventListener('owncropchange', onC);
+  Crops.setOwnName('  Maracuyá criollo  ');
+  check('setOwnName recorta, renombra la entrada en ambos idiomas y avisa a los bloques', Crops.ownName() === 'Maracuyá criollo' && own.es === 'Maracuyá criollo' && own.en === 'Maracuyá criollo' && fired === 1);
+  const kept = (() => { try { return localStorage.getItem('phenologypro:owncrop') === 'Maracuyá criollo'; } catch (e) { return true; } })();
+  Crops.setOwnName('');
+  check('El nombre se recuerda en este navegador y al borrarlo vuelve el rótulo genérico', kept && Crops.ownName() === '' && own.es === 'Otro cultivo (propio)' && own.en === 'Other crop (your own)' && fired === 2);
+  check('Un nombre de más de 60 letras se recorta, y repetir el mismo nombre no vuelve a avisar', Crops.setOwnName('x'.repeat(80)).length === 60 && (Crops.setOwnName('x'.repeat(80)), fired === 3));
+  Crops.setOwnName(before); document.removeEventListener('owncropchange', onC);
+  check('Los 21 cultivos del catálogo (20 + el propio) traen Kc, etapas FAO, raíz, p y Ky coherentes', Crops.LIST.length === 21 && Crops.LIST.every(c => c.kc && c.L && c.zIni > 0 && c.zMax >= c.zIni && c.p > 0 && c.p < 1 && c.ky >= 0.5 && c.tupper > c.tbase));
+
   window.__t.finish();
 })();

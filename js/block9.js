@@ -169,6 +169,7 @@
     document.addEventListener('climatechange', () => { const fr = state.climate && state.climate.fr; if (fr) el('b9Frost').value = fr.threshold; });
     document.addEventListener('stepchange', e => { if (e.detail.step === 9 && !state.risk) { if (state.climate && state.climate.fr) el('b9Frost').value = state.climate.fr.threshold; const w = ready() ? ppWork('Calculando riesgos y escenarios', 'Computing risks and scenarios') : null; ppAfterPaint(() => { run(); if (!ready() && w) w._failed = true; }, w); } });
     document.addEventListener('langchange', () => { fillSelects(); if (document.querySelector('#panel-9.active') && ready()) run(); });
+    document.addEventListener('owncropchange', () => { fillSelects(); if (document.querySelector('#panel-9.active') && ready()) run(); });
   }
   document.addEventListener('DOMContentLoaded', wire);
   window.Block9 = { run };

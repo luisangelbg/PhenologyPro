@@ -19,6 +19,8 @@
     const m = el('b8SowM'); const curM = m.value; m.innerHTML = MONTHS.es.map((_, i) => `<option value="${i + 1}">${monthName(i + 1)}</option>`).join(''); m.value = curM || '5';
     ['b8ChillStart', 'b8ChillEnd'].forEach(id => { const s = el(id); const v = s.value; s.innerHTML = MONTHS.es.map((_, i) => `<option value="${i + 1}">${monthName(i + 1)}</option>`).join(''); if (v) s.value = v; });
   }
+  /* the name field shows only for the user's own crop, and carries the name it was given */
+  function ownField() { const on = el('b8Crop').value === 'own'; el('b8OwnField').style.display = on ? '' : 'none'; if (on && document.activeElement !== el('b8OwnName')) el('b8OwnName').value = Crops.ownName(); }
   function applyCrop() {
     const c = Crops.byId(el('b8Crop').value); if (!c || cropId === c.id) return;
     cropId = c.id;
@@ -47,7 +49,7 @@
   function run() {
     if (!ready()) { el('b8Body').style.display = 'none'; el('b8Empty').style.display = ''; return; }
     el('b8Empty').style.display = 'none'; el('b8Body').style.display = '';
-    applyCrop();
+    applyCrop(); ownField();
     const p = params();
     const rows = state.weather.rows, site = state.site || { lat: 20 };
     const dd = Therm4.daily(rows, p);
@@ -204,7 +206,9 @@
     fillSelects();
     const site = state.site;
     el('b8ChillStart').value = site && site.lat < 0 ? '5' : '11'; el('b8ChillEnd').value = site && site.lat < 0 ? '8' : '2';
-    el('b8Crop').addEventListener('change', () => { cropId = null; run(); });
+    el('b8Crop').addEventListener('change', () => { cropId = null; ownField(); run(); });
+    el('b8OwnName').addEventListener('change', () => Crops.setOwnName(el('b8OwnName').value));
+    document.addEventListener('owncropchange', () => { fillSelects(); ownField(); if (document.querySelector('#panel-8.active') && ready()) run(); });
     ['b8Method', 'b8Cutoff', 'b8Base', 'b8Upper', 'b8SowM', 'b8SowD'].forEach(id => el(id).addEventListener('change', run));
     ['b8ChillStart', 'b8ChillEnd', 'b8ChillUnit', 'b8ChillReq', 'b8Gdh'].forEach(id => el(id).addEventListener('change', () => { if (ready()) { runChill(); Fig.decorate(el('panel-8')); } }));
     /* from the button, a long run shows the common waiting window */

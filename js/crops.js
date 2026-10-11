@@ -149,6 +149,15 @@ const Crops = {};
       tbase: 12.5, tupper: 35, method: 'average',
       kc: { ini: 0.70, mid: 0.65, end: 0.70 }, L: { ini: 60, dev: 90, mid: 120, late: 95 },
       zIni: 0.8, zMax: 1.4, p: 0.50, h: 4.0, ky: 1.1 },
+    { id: 'passionfruit', es: 'Maracuyá', en: 'Passion fruit', group: 'evergreen', season: 'perennial',
+      tbase: 10, tupper: 32, method: 'average', photoperiod: true,
+      /* from transplanting; the codes follow the principal stages of the BBCH scale */
+      stages: [S('19', 'La guía llega al alambre', 'The vine reaches the wire', 1000), S('61', 'Primera floración', 'First flowering', 2300),
+        S('71', 'Primer cuajado', 'First fruit set', 2450), S('81', 'Primeros frutos maduros', 'First ripe fruit', 3300)],
+      kc: { ini: 0.55, mid: 1.05, end: 0.95 }, L: { ini: 60, dev: 90, mid: 120, late: 95 },
+      zIni: 0.3, zMax: 0.6, p: 0.40, h: 2.0, ky: 1,
+      note: ['Pasiflora de clima cálido (Passiflora edulis f. flavicarpa): base ≈ 10 °C, florece con fotoperiodos de 11 h o más y el fruto madura 60–80 días después de la antesis. El Kc no está en FAO-56: los valores vienen de estudios lisimétricos en Brasil (≈ 0.6 al establecerse, 1.0–1.2 en plena producción); la raíz es somera (la mayor parte en los primeros 45 cm). Todo es orientativo y cambia con el cultivar: calibra con tus fechas en el Bloque 8.',
+        'Warm-climate passionflower (Passiflora edulis f. flavicarpa): base ≈ 10 °C, it flowers with photoperiods of 11 h or more and the fruit ripens 60–80 days after anthesis. Kc is not in FAO-56: the values come from lysimeter studies in Brazil (≈ 0.6 at establishment, 1.0–1.2 in full production); the roots are shallow (most within the top 45 cm). Everything is orientative and changes with the cultivar: calibrate with your dates in Block 8.'] },
     { id: 'alfalfa', es: 'Alfalfa', en: 'Alfalfa', group: 'forage', season: 'perennial',
       tbase: 5, tupper: 30, method: 'average',
       kc: { ini: 0.40, mid: 0.95, end: 0.90 }, L: { ini: 10, dev: 30, mid: 25, late: 10 },
@@ -158,9 +167,18 @@ const Crops = {};
       tbase: 10, tupper: 38, method: 'average',
       kc: { ini: 0.40, mid: 1.25, end: 0.75 }, L: { ini: 35, dev: 60, mid: 190, late: 120 },
       zIni: 0.3, zMax: 1.5, p: 0.65, h: 3.0, ky: 1.2 },
+    /* ---------------- the user's own crop: a name and every number to be replaced ---------------- */
+    { id: 'own', es: 'Otro cultivo (propio)', en: 'Other crop (your own)', group: 'custom', season: 'any',
+      tbase: 10, tupper: 30, method: 'average',
+      stages: [S('09', 'Emergencia', 'Emergence', 100), S('61', 'Floración', 'Flowering', 700), S('89', 'Madurez', 'Maturity', 1300)],
+      kc: { ini: 0.40, mid: 1.05, end: 0.60 }, L: { ini: 25, dev: 35, mid: 40, late: 30 },
+      zIni: 0.15, zMax: 1.0, p: 0.50, h: 1.0, ky: 1,
+      note: ['Escribe el nombre de tu cultivo y sustituye cada número por el de tu fuente o tu calibración: los valores iniciales son los genéricos de un cultivo anual y no describen ningún cultivo real.',
+        'Type the name of your crop and replace every number with the one from your source or your calibration: the starting values are generic for an annual crop and describe no real crop.'] },
   ];
 
-  /* the soils of FAO-56 Table 19, at the middle of each published range */
+  /* the soils of FAO-56 Table 19
+, at the middle of each published range */
   const SOILS = [
     { id: 'sand', es: 'Arena', en: 'Sand', fc: 0.12, wp: 0.045, taw: 75, cn: 65 },
     { id: 'loamysand', es: 'Arena francosa', en: 'Loamy sand', fc: 0.145, wp: 0.06, taw: 85, cn: 70 },
@@ -174,16 +192,29 @@ const Crops = {};
   const GROUPS = {
     cereal: ['Cereales', 'Cereals'], legume: ['Leguminosas', 'Legumes'], oilseed: ['Oleaginosas', 'Oilseeds'], fibre: ['Fibras', 'Fibres'],
     vegetable: ['Hortalizas', 'Vegetables'], deciduous: ['Frutales caducifolios', 'Deciduous fruit'], evergreen: ['Perennes de hoja perenne', 'Evergreen perennials'],
-    forage: ['Forrajes', 'Forages'], industrial: ['Industriales', 'Industrial'],
+    forage: ['Forrajes', 'Forages'], industrial: ['Industriales', 'Industrial'], custom: ['Cultivo propio', 'Your own crop'],
   };
 
   const byId = id => LIST.find(c => c.id === id) || null;
+  /* the user's own crop keeps the name the user gave it (in this browser) and announces a change to every block */
+  const OWN_DEFAULT = ['Otro cultivo (propio)', 'Other crop (your own)'];
+  const own = () => byId('own');
+  const ownName = () => (own().named ? own().es : '');
+  function setOwnName(name) {
+    const v = String(name == null ? '' : name).trim().slice(0, 60), c = own();
+    if (v === ownName()) return v;
+    c.named = !!v; c.es = v || OWN_DEFAULT[0]; c.en = v || OWN_DEFAULT[1];
+    try { if (v) localStorage.setItem('phenologypro:owncrop', v); else localStorage.removeItem('phenologypro:owncrop'); } catch (e) { /* storage blocked */ }
+    if (typeof document !== 'undefined') document.dispatchEvent(new CustomEvent('owncropchange', { detail: { name: v } }));
+    return v;
+  }
+  try { const v = localStorage.getItem('phenologypro:owncrop'); if (v) { own().named = true; own().es = own().en = v; } } catch (e) { /* storage blocked */ }
   const annuals = () => LIST.filter(c => c.stages && c.stages.length);
   /* the total length of the FAO season, days */
   const seasonLength = c => c.L.ini + c.L.dev + c.L.mid + c.L.late;
   /* the thermal time to the last stage, or null for perennials */
   const gddToMaturity = c => c.stages && c.stages.length ? c.stages[c.stages.length - 1].gdd : null;
 
-  Object.assign(Crops, { LIST, SOILS, GROUPS, byId, annuals, seasonLength, gddToMaturity });
+  Object.assign(Crops, { LIST, SOILS, GROUPS, byId, annuals, seasonLength, gddToMaturity, ownName, setOwnName });
   if (typeof window !== 'undefined') window.Crops = Crops;
 })();
